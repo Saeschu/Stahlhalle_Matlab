@@ -1,15 +1,7 @@
 clear all, clc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %{
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Dim=0.2         %Dimension der Stahltrager  - zurzeitn Quadrate
-l=20         %Länge
-b=16           %Breite zwischen den Stützen
-h=3             %Höhe
-a=1.5          %Binderabstand
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Input Window
 prompt = {'Länge:','Breite:', 'Höhe','Unterkannt', 'Abstand','Dim','Flaechenlast'};
@@ -20,12 +12,12 @@ answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 l= str2num(answer{1});
 b= str2num(answer{2});
 h= str2num(answer{3});
-unterkannt=str2num(answer{4});
+BedH=str2num(answer{4});
 a= str2num(answer{5});
 Dim= str2num(answer{6});
 Flaechenlast= str2num(answer{7});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if unterkannt==1        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist
+if BedH==1        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 1= Unterkannte, 0= Oberkannte
     h=h+2*Dim
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,11 +38,11 @@ zlabel('z - Höhe')
 %Laengstraeger 1
 vert1= [0 0 (h-Dim); Dim 0 (h-Dim); Dim 0 h; 0 0 h; Dim l h; 0 l h; 0 l (h-Dim); Dim l (h-Dim)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
-%patch('Faces', fac,'Vertices',vert1,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert1,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Laengstraeger 2
 vert2= [(b-Dim) 0 (h-Dim); b 0 (h-Dim); b 0 h; (b-Dim) 0 h; b l h; (b-Dim) l h; (b-Dim) l (h-Dim); b l (h-Dim)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-%patch('Faces', fac,'Vertices',vert2,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert2,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 1
 vert3= [0 0 0; 0 Dim 0; Dim Dim 0; Dim 0 0; Dim Dim (h-2*Dim); Dim 0 (h-2*Dim); 0 0 (h-2*Dim); 0 Dim (h-2*Dim)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
