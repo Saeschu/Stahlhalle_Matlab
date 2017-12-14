@@ -17,17 +17,13 @@ a= str2num(answer{5});
 Dim= str2num(answer{6});
 Flaechenlast= str2num(answer{7});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function Lagerhalle_o_Function (l,b,h,BedH,a,Dim,Flaechenlast)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if BedH==0        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
     h=h+2*Dim
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %set axis and figure
 clf;
-figure(1)
+figure(2)
 format compact
 myaxes =axes('xlim', [0, b], 'ylim', [0, l], 'zlim', [0, h]);
 axis equal
@@ -165,7 +161,6 @@ vert3= [SM XMVQ 0; SM (XMVQ+Dim) 0; (SM+Dim) (XMVQ+Dim) 0; (SM+Dim) XMVQ 0; (SM+
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 end
 
-end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
