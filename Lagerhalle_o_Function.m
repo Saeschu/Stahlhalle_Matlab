@@ -23,7 +23,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %set axis and figure
 clf;
-figure(2)
+figure(1)
 format compact
 myaxes =axes('xlim', [0, b], 'ylim', [0, l], 'zlim', [0, h]);
 axis equal
