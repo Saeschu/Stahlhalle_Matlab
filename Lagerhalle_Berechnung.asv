@@ -9,8 +9,8 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
-F=[10,10,50,50]                %Kräft in kN
-x=[3,5,9]            %Distanz von Links her
+F=[1]  %[10,10,50,50]                %Kräft in kN
+x=[1]            %Distanz von Links her
 hI=h*(IT/IS)                                  %Vergleichshöhe für Stütze 
 AZB=1                                         %Indikator für Hallenfaktor
 
@@ -77,7 +77,7 @@ Mr=0+1.*X1+0.*X2+0.*X3
 
 
 % Werte Moment für Superposition
-dx=10.11111111111111111111111111111111111111111111111                                                       %Teilungsfaktor
+dx=10                                                       %Teilungsfaktor
 
 MSupSL=linspace(sum(Ml),sum(Ma),dx)                       %Superposition Stab Links Werte Moment
 MSupSR=linspace(sum(Mb),sum(Mr),dx)                       %Superposition Stab Rechts Werte Moment
@@ -87,12 +87,11 @@ MSupSR=linspace(sum(Mb),sum(Mr),dx)                       %Superposition Stab Re
     MSO{z}=zeros(1,((ba*dx)-1))                    %Momente Stab oben wenn Moment = 0 
     elseif x(z)==0 
     MSO{z}=zeros(1,((ba*dx)-1))                    %Momente Stab oben wenn Moment = 0 
-    else            
+    elseif x(z)~=or(0,ba)            
     MvorbSOL=linspace(Ml(z),Mf(z),(x(z)*dx))              %Moment Stab oben links von F
     MvorbSOR=linspace(Mf(z),Mr(z),((ba-(x(z)))*dx))       %Moment Stab oben rechts von F
     MSO{z}=[MvorbSOL(1:end-1),MvorbSOR]                %Moment Stab oben links + rechts
     end
-   
  end
  
     MSupSO=zeros(1,((ba*dx)-1))
