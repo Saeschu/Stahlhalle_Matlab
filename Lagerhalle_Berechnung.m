@@ -9,10 +9,17 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
+<<<<<<< HEAD
 F=[20]               %Kräft in kN
 x=[2]               %Distanz von Links her
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze 
 AZB=2     %Indikator für Hallenfaktor
+=======
+F=[20,30]               %Kräft in kN
+x=[5,9]               %Distanz von Links her
+
+Anzahlstutzen=2     %Indikator für Hallenfaktor
+>>>>>>> 09c29f74caaed7b9c395546949216c076839045f
 
 
 

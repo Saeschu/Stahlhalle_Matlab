@@ -56,7 +56,7 @@ vert2= [(b-ProfTb) 0 (h-ProfTh); b 0 (h-ProfTh); b 0 h; (b-ProfTb) 0 h; b l h; (
 patch('Faces', fac,'Vertices',vert2,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 1
-vert3= [0 0 0; 0 ProfSt 0; ProfSb ProfSt 0; ProfSb 0 0; ProfSb ProfSt (h-2*ProfTh); ProfSb 0 (h-2*ProfTh); 0 0 (h-2*ProfTh); 0 ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert3= [0 0 0; 0 ProfSt 0; ProfSb ProfSt 0; ProfSb 0 0; ProfSb ProfSt (h-2*ProfTh); ProfSt 0 (h-2*ProfTh); 0 0 (h-2*ProfTh); 0 ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','r');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 2
@@ -131,7 +131,7 @@ vert9= [0 XMHQ (h-2*ProfTh); 0 XMHQ (h-ProfTh); 0 (XMHQ+ProfSt) (h-ProfTh); 0 (X
 patch('Faces', fac,'Vertices',vert9,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze A
-vert10= [0 XMHQ 0; 0 (XMHQ+ProfSt) 0; ProfSb (XMHQ+ProfSt) 0; ProfSb XMHQ 0; ProfSb (XMHQ+ProfSt) (h-2*ProfTh); ProfSb (XMHQ+ProfSt) (h-2*ProfTh); 0 XMHQ (h-2*ProfTh); 0 (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert10= [0 XMHQ 0; 0 (XMHQ+ProfSt) 0; ProfSb (XMHQ+ProfSt) 0; ProfSb XMHQ 0; ProfSb (XMHQ+ProfSt) (h-2*ProfTh); ProfSb ProfSt (h-2*ProfTh); 0 XMHQ (h-2*ProfTh); 0 (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert10,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze B
@@ -157,7 +157,7 @@ vert9= [0 XMVQ (h-2*ProfTh); 0 XMVQ (h-ProfTh); 0 (XMVQ+ProfSt) (h-ProfTh); 0 (X
 patch('Faces', fac,'Vertices',vert9,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze A
-vert10= [0 XMVQ 0; 0 (XMVQ+ProfSt) 0; ProfSb (XMVQ+ProfSt) 0; ProfSb XMVQ 0; ProfSb (XMVQ+ProfSt) (h-2*ProfTh); ProfSb XMVQ (h-2*ProfTh); 0 XMVQ (h-2*ProfTh); 0 (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert10= [0 XMVQ 0; 0 (XMVQ+ProfSt) 0; ProfSb (XMVQ+ProfSt) 0; ProfSb XMVQ 0; ProfSb (XMVQ+ProfSt) (h-2*ProfSt); ProfSb XMVQ (h-2*ProfTh); 0 XMVQ (h-2*ProfTh); 0 (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert10,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze B
