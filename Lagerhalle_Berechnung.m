@@ -236,8 +236,9 @@ Mb=0+0*X1+0*X2+1*X3+0*X4
 S1v=X4
 
 %Moment bei Stütze in Mitte
-if x<(b/2)
-   Ms1=((Av0*0.5*b)+(-F*((0.5*b)-x)))+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*b)*X4
+for x{z1}=[1:length(F)]
+if x{z1}<(b/2)
+   Ms1{z1}=((Av0*0.5*b)+(-F*((0.5*b)-x)))+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*b)*X4
 elseif x ==(b/2)
    Ms1=Av0*x+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*b)*X4
 elseif x>(b/2)
@@ -283,7 +284,7 @@ WerteSTR=linspace(sum(Mb),sum(Mr),dx)                   %Superposition Stab Rech
     VorWerteSTO{z1}=zeros(1,((b*dx)-2))
     elseif x(z1)>0.5*b            
     xSTOLV{z1}=linspace(Ml(z1),Ms1(z1),((0.5*b).*dx))                   %Moment Stab oben links von F
-    xSTOM{z1}V=linspace(Ms1(z1),Mf(z1),((x(z1)-(0.5*b)).*dx))
+    xSTOMV{z1}=linspace(Ms1(z1),Mf(z1),((x(z1)-(0.5*b)).*dx))
     xSTORV{z1}=linspace(Mf(z1),Mr(z1),((b-(x(z1))).*dx))                %Moment Stab oben rechts von F
     VorWerteSTO{z1}=[xSTOLV{z1}(1:end-1),xSTOMV{z1},xSTORV{z1}(2:end)]          %Moment Stab oben links + rechts
  
