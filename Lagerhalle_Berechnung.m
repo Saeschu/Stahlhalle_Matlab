@@ -11,7 +11,7 @@ IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
 F=[20,30]               %Kräft in kN
 x=[5,9]               %Distanz von Links her
-hI=h*(IT/IS)        %Vergleichshöhe für Stütze 
+
 Anzahlstutzen=2     %Indikator für Hallenfaktor
 
 

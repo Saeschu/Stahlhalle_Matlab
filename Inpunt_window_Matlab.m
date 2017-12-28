@@ -67,10 +67,12 @@ PushbuttonStart = uicontrol('style','pushbutton',...
           a=b1+b2
         set(EditHoehe, 'String', num2str(a));
      
-        hallo= (get(DdownBauDimS, 'Value'))
-        if   hallo == 'HEA200'
-          display ('IS: bla, Dim: 0.2')
-      end
+               
+        switch DdownBauDimS('')
+        case 'HEA200'
+             hallo =2 %disp('IS: bla, Dim: 0.2')
+        end
+      
       
         end
     
