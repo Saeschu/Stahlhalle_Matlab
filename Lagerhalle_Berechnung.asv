@@ -9,8 +9,8 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
-F=[20]               %Kräft in kN
-x=[2]               %Distanz von Links her
+F=[20,30]               %Kräft in kN
+x=[2,9]               %Distanz von Links her
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze 
 AZB=2     %Indikator für Hallenfaktor
 
@@ -181,15 +181,15 @@ a30=-a20                                            %0 mit 3 Zustand
 
 for z1=[1:length(F)]
 if x(z1)<=(ba/2)
-    Va40{z1}=(1/12).*((3-4.*((x(z1)./ba).^2))/(1-(x(z1)./ba))).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
+    Va40(z1=(1/12).*((3-4.*((x(z1)./ba).^2))/(1-(x(z1)./ba))).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
 elseif x(z1)>(ba/2)                                      %0 mit 4 Zustand 
-    Va40{z1}=(1/12).*((3-4.*((1-(x(z1)./ba)).^2))/(x(z1)./ba)).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
+    Va40(z1)=(1/12).*((3-4.*((1-(x(z1)./ba)).^2))/(x(z1)./ba)).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
 end
 end
 
     a40=zeros(1,length(F))
  for z1=[1:length(F)]
-     a40=a40{1}+Va40{z1}                      %
+     a40=a40+Va40{z1}                      %
  end
 a11=1*1*1*ba+2*((1/3)*1*1*hI)                        %1 mit 1 Zustand
 
@@ -237,11 +237,11 @@ S1v=X4
 
 %Moment bei Stütze in Mitte
 for z1=[1:length(F)]
-    if x(z1)<(ba*0.5)
+    if x(z1)<(ba/2)
    vMs1{z1}=((Av0(z1)*0.5*ba)+(-F(z1)*((0.5*ba)-x(z1))))+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
-    elseif x(z1) ==(ba*0.5)
+    elseif x(z1) ==(ba/2)
    vMs1{z1}=Av0(z1)*x(z1)+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
-    elseif x(z1)>(ba*0.5)
+    elseif x(z1)>(ba/2)
    vMs1{z1}=Av0(z1)*(0.5*ba)+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
 end
 end
