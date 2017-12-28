@@ -9,18 +9,10 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
-<<<<<<< HEAD
-F=[20]               %Kräft in kN
-x=[2]               %Distanz von Links her
+F=[10,20,100,10,10,100,50,10,30,10,50,70]               %Kräft in kN
+x=[1,2,3,4,5,6,6.5,8,9,10,11,9]               %Distanz von Links her
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze 
 AZB=2     %Indikator für Hallenfaktor
-=======
-F=[20,30]               %Kräft in kN
-x=[5,9]               %Distanz von Links her
-
-Anzahlstutzen=2     %Indikator für Hallenfaktor
->>>>>>> 09c29f74caaed7b9c395546949216c076839045f
-
 
 
 if AZB == 1
@@ -188,16 +180,13 @@ a30=-a20                                            %0 mit 3 Zustand
 
 for z1=[1:length(F)]
 if x(z1)<=(ba/2)
-    Va40{z1}=(1/12).*((3-4.*((x(z1)./ba).^2))/(1-(x(z1)./ba))).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
+    a40(z1)=(1/12).*((3-4.*((x(z1)./ba).^2))/(1-(x(z1)./ba))).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
 elseif x(z1)>(ba/2)                                      %0 mit 4 Zustand 
-    Va40{z1}=(1/12).*((3-4.*((1-(x(z1)./ba)).^2))/(x(z1)./ba)).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
+    a40(z1)=(1/12).*((3-4.*((1-(x(z1)./ba)).^2))/(x(z1)./ba)).*(-0.25.*ba).*(Av0(z1).*x(z1)).*ba
 end
 end
 
-    a40=zeros(1,length(F))
- for z1=[1:length(F)]
-     a40=a40{1}+Va40{z1}                      %
- end
+
 a11=1*1*1*ba+2*((1/3)*1*1*hI)                        %1 mit 1 Zustand
 
 a12=0.5*1*1*ba+0.5*1*1*hI                            %1 mit 2 Zustand
@@ -245,34 +234,26 @@ S1v=X4
 %Moment bei Stütze in Mitte
 for z1=[1:length(F)]
     if x(z1)<(ba*0.5)
-   vMs1{z1}=((Av0(z1)*0.5*ba)+(-F(z1)*((0.5*ba)-x(z1))))+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
+   Ms1(z1)=((Av0(z1).*0.5*ba)+(-F(z1).*((0.5*ba)-x(z1))))+1.*X1(z1)+(0.5).*X2(z1)+(-0.5).*X3(z1)+(-0.25*ba).*X4(z1)
     elseif x(z1) ==(ba*0.5)
-   vMs1{z1}=Av0(z1)*x(z1)+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
+   Ms1(z1)=Av0(z1).*x(z1)+1.*X1(z1)+(0.5).*X2(z1)+(-0.5).*X3(z1)+(-0.25*ba).*X4(z1)
     elseif x(z1)>(ba*0.5)
-   vMs1{z1}=Av0(z1)*(0.5*ba)+1*X1+(0.5)*X2+(-0.5)*X3+(-0.25*ba)*X4
+   Ms1(z1)=Av0(z1).*(0.5*ba)+1.*X1(z1)+(0.5).*X2(z1)+(-0.5).*X3(z1)+(-0.25*ba).*X4(z1)
 end
 end
 
-    Ms1=zeros(1,length(F))
- for z1=[1:length(F)]
-     Ms1=Ms1(z1)+vMs1{z1}                      %
- end
-   
+
 %Moment bei Kraft
 for z1=[1:length(F)]
 if x(z1)<(ba/2)
-   vMf{z1}=Av0(z1)*x(z1)+1*X1+(1-(x(z1)/ba))*X2+(1-(x(z1)/ba))*X3*(-1)+(2*x(z1)/ba)*(-0.25*ba)*X4
+   Mf(z1)=Av0(z1)*x(z1)+1*X1(z1)+(1-(x(z1)/ba))*X2(z1)+(1-(x(z1)/ba))*X3(z1)*(-1)+(2*x(z1)/ba)*(-0.25*ba)*X4(z1)
 elseif x(z1) ==(ba/2)
-   vMf{z1}=Msl(z1)
+   Mf(z1)=Ms1(z1)
 elseif x(z1)>(ba/2)
-   vMf{z1}=Av0(z1)*x(z1)+1*X1+(1-(x(z1)/ba))*X2+(1-(x(z1)/ba))*X3*(-1)+((1-(x(z1)/ba))*2)*(-0.25*ba)*X4
+   Mf(z1)=Av0(z1)*x(z1)+1*X1(z1)+(1-(x(z1)/ba))*X2(z1)+(1-(x(z1)/ba))*X3(z1)*(-1)+((1-(x(z1)/ba))*2)*(-0.25*ba)*X4(z1)
 end
 end
 
-    Mf=zeros(1,length(F))
- for z1=[1:length(F)]
-     Mf=Mf(z1)+vMf{z1}                      %
- end
    
 %Schnittkrafte Ecke Links
 Ml=0+1.*X1+1.*X2+-1.*X3+0*X4
