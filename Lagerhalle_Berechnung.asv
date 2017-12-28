@@ -9,8 +9,8 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
-F=[10,20,100,10,10,100,50,10,30,10,50,70]               %Kräft in kN
-x=[1,2,3,4,5,6,6.5,8,9,10,11,9]               %Distanz von Links her
+F=[10,20,100,10,10,100,50,10,30]               %Kräft in kN
+x=[1,2,3,4,5,6,6.5,8,9]               %Distanz von Links her
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze 
 AZB=2     %Indikator für Hallenfaktor
 
@@ -248,7 +248,7 @@ for z1=[1:length(F)]
 if x(z1)<(ba/2)
    Mf(z1)=Av0(z1)*x(z1)+1*X1(z1)+(1-(x(z1)/ba))*X2(z1)+(1-(x(z1)/ba))*X3(z1)*(-1)+(2*x(z1)/ba)*(-0.25*ba)*X4(z1)
 elseif x(z1) ==(ba/2)
-   Mf(z1)=Ms1(z1)
+   Mf(z1)=Msl(z1)
 elseif x(z1)>(ba/2)
    Mf(z1)=Av0(z1)*x(z1)+1*X1(z1)+(1-(x(z1)/ba))*X2(z1)+(1-(x(z1)/ba))*X3(z1)*(-1)+((1-(x(z1)/ba))*2)*(-0.25*ba)*X4(z1)
 end
