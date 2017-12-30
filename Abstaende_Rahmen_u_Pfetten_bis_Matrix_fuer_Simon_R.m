@@ -75,16 +75,16 @@ end
 
                                 %AnzahlMitteRahm=v
 AnzMiPMi=linspace(FMPB,FMPB,v)  %Anzahl Mittlere Pfetten, generierung für Matrix
-FRMi=[FMPA,AnzMiPMi,FMPA]       %Matrix Kräfte auf mittleren Rahmen
+FR2=[FMPA,AnzMiPMi,FMPA]       %Matrix Kräfte auf mittleren Rahmen
 
 
 %Aufbau Mastermatrix
-A{1,1} = 'Rahmen1 und letzter'; %Name des ersten und letzen Rahmens
-A{1,2} = FR1;                   %Matrix mit Kräften des ersten Rahmens
-A{1,3} = Distanzx;              %Matrix mit den Distanzen der Pfetten von links
+AA{1,1} = 'Rahmen1 und letzter'; %Name des ersten und letzen Rahmens
+AA{1,2} = FR1;                   %Matrix mit Kräften des ersten Rahmens
+AA{1,3} = Distanzx;              %Matrix mit den Distanzen der Pfetten von links
 
-B{1,1} = 'Rahmen Mitte';        %Name der mittleren Rahmen, alle identisch
-B{1,2} = FRMi;                  %Matrix mit Kräften der mittleren Rahmen
-B{1,3} = Distanzx;              %Matrix mit den Distanzen der Pfetten von links
+BB{1,1} = 'Rahmen Mitte';        %Name der mittleren Rahmen, alle identisch
+BB{1,2} = FR2;                   %Matrix mit Kräften der mittleren Rahmen
+BB{1,3} = Distanzx;              %Matrix mit den Distanzen der Pfetten von links
 
-Master = cat(3,A,B);            %Generiung der Matrix in Matrix
+EinwirkungenaufRahmen = cat(3,AA,BB);    %Generiung der Matrix in Matrix
