@@ -14,10 +14,10 @@ IT=5000000000        %I Träger oben [mm^4]
 %x=linspace(0,13,13)
 %F=[50,40,40,40,40,40,40,40,40,40,50]
 %x=[0:1.3:13]
-F=[10]
-x=[6.5]
+F=[100]
+x=[3]
 hI=h*(IT/IS)                                  %Vergleichshöhe für Stütze 
-AZB=2                                         %Indikator für Hallenfaktor
+AZB=3                                         %Indikator für Hallenfaktor
 
 
 
@@ -25,11 +25,16 @@ AZB=2                                         %Indikator für Hallenfaktor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funktion für Bogen 2 bis 4 Stützen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
- 
+  
+
+%function
+%%%k = Kennzahl des Bogens
+%F=F(K)
+%x=x(K)
 
 
-
+%Output
+%Av({K}
 
 
 
@@ -220,14 +225,14 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 
 % Werte Moment für Superposition
-dx=1000                                           % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=(ba*dx)                                        % Anzahl Teilstücke des Verlaufs vom Träger
-dS=1                                              % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
+dx=1000                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dS=1                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
-MSupSL=linspace(sum(Ml),sum(Ma),dS)               % Superposition Stab Links Moment
-MSupSR=linspace(sum(Mb),sum(Mr),dS)               % Superposition Stab Rechts Moment
+MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
+MSupSR=linspace(sum(Mb),sum(Mr),dS)                     % Superposition Stab Rechts Moment
 
-MSupSO=zeros(1,dT)                                % 0 Vektor mit Anzahl Einträgen wie MSO für Addition
+MSupSO=zeros(1,dT)                                      % 0 Vektor mit Anzahl Einträgen wie MSO für Addition
  for z=[1:length(F)]
     if x(z)==0
     MSO{z}=zeros(1,dT)                                  % Momente Stab oben wenn x = 0 
@@ -237,15 +242,15 @@ MSupSO=zeros(1,dT)                                % 0 Vektor mit Anzahl Einträge
     MSO{z}=zeros(1,dT)                                  % Momente Stab oben wenn x = 0 
     elseif x(z)<0.5*ba
     dSOL=round(((dT+2)/ba)*x(z))                        % Anzahl Teilstücke für Moment oben Links von Kraft
-    dSOM=fix(((dT+2)/ba)*(ba*0.5-x(z)))               % Anzahl Teilstücke für Moment oben Rechts von Kraft
+    dSOM=fix(((dT+2)/ba)*(ba*0.5-x(z)))                 % Anzahl Teilstücke für Moment oben Rechts von Kraft
     MvorbSOL=linspace(Ml(z),Mf(z),dSOL)                 % Moment Stab oben Links von F
     MvorbSOM=linspace(Mf(z),Ms1(z),dSOM)                % Moment Stab oben Mitte von F
     MvorbSOR=linspace(Ms1(z),Mr(z),dT+2-dSOL-dSOM)      % Moment Stab oben Rechts von F
     MSO{z}=[MvorbSOL(1:end-1),MvorbSOM,MvorbSOR(2:end)] % Moment Stab oben Links + Mitte + Rechts
     else x(z)>0.5*ba
     dSOM=round(((dT+2)/ba)*(x(z)-0.5*ba))               % Anzahl Teilstücke für Moment oben Links von Kraft
-    dSOR=fix(((dT+2)/ba)*(ba-x(z)))                   % Anzahl Teilstücke für Moment oben Rechts von Kraft
-    MvorbSOL=linspace(Ml(z),Ms1(z),dT+2-dSOM-dSOR)                % Moment Stab oben Links von F
+    dSOR=fix(((dT+2)/ba)*(ba-x(z)))                     % Anzahl Teilstücke für Moment oben Rechts von Kraft
+    MvorbSOL=linspace(Ml(z),Ms1(z),dT+2-dSOM-dSOR)      % Moment Stab oben Links von F
     MvorbSOM=linspace(Ms1(z),Mf(z),dSOM)                % Moment Stab oben Mitte von F
     MvorbSOR=linspace(Mf(z),Mr(z),dSOR)                 % Moment Stab oben Rechts von F
     MSO{z}=[MvorbSOL(1:end-1),MvorbSOM,MvorbSOR(2:end)] % Moment Stab oben Links + Mitte + Rechts
@@ -267,16 +272,16 @@ for z=[1:length(F)]
    VSO{z}=zeros(1,dT)                                               % Momente Stab oben wenn x = 0     
    elseif x(z)<0.5*ba    
    dSOL=round(((dT+2)/ba)*x(z))                                     % Anzahl Teilstücke für Querkraft oben Links von Kraft
-   dSOR=fix(((dT+2)/ba)*(0.5*ba))                                % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
+   dSOR=fix(((dT+2)/ba)*(0.5*ba))                                   % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
    VvorbSOL=linspace(Av(z),Av(z),dSOL)                              % Querkraft Stab oben links von F
    VvorbSOM=linspace(Av(z)-F(z),Av(z)-F(z),dT+2-dSOR-dSOL)          % Querkraft Stab oben Mitte von F
    VvorbSOR=linspace(Av(z)-F(z)+S1v(z),Av(z)-F(z)+S1v(z),dSOR)      % Querkraft Stab oben Rechts von F
    VSO{z}=[VvorbSOL(1:end-1),VvorbSOM,VvorbSOR(2:end)]              % Querkraft Stab oben Links + Mitte + Rechts
    else x(z)>0.5*ba
-   dSOM=round(((dT+2)/ba)*(x(z)-0.5*ba))                                    % Anzahl Teilstücke für Querkraft oben Links von Kraft
-   dSOR=fix(((dT+2)/ba)*(ba-x(z)))                                % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
-   VvorbSOL=linspace(Av(z),Av(z),dT+2-dSOM-dSOR)                              % Querkraft Stab oben links von F
-   VvorbSOM=linspace(Av(z)+S1v(z),Av(z)+S1v(z),dSOM)                  % Querkraft Stab oben Mitte von F
+   dSOM=round(((dT+2)/ba)*(x(z)-0.5*ba))                            % Anzahl Teilstücke für Querkraft oben Links von Kraft
+   dSOR=fix(((dT+2)/ba)*(ba-x(z)))                                  % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
+   VvorbSOL=linspace(Av(z),Av(z),dT+2-dSOM-dSOR)                    % Querkraft Stab oben links von F
+   VvorbSOM=linspace(Av(z)+S1v(z),Av(z)+S1v(z),dSOM)                % Querkraft Stab oben Mitte von F
    VvorbSOR=linspace(Av(z)-F(z)+S1v(z),Av(z)-F(z)+S1v(z),dSOR)      % Querkraft Stab oben Rechts von F
    VSO{z}=[VvorbSOL(1:end-1),VvorbSOM,VvorbSOR(2:end)]              % Querkraft Stab oben Links + Mitte + Rechts    
    end
@@ -288,22 +293,21 @@ end
 NSupSL=linspace(sum(-Av),sum(-Av),dS)                   % Superposition Stab Links Werte Normalkraft
 NSupSR=linspace(sum(Bv),sum(Bv),dS)                     % Superposition Stab Rechts Werte Normalkraft
 NSupSO=linspace(sum(Ah),sum(Bh),dS)                     % Superposition Stab Oben Werte Normalkraft
-NSupS1=linspace(sum(S1v),sum(S1v),dS)                 % Superposition Stab Mitte Normalkraft
+NSupS1=linspace(sum(S1v),sum(S1v),dS)                   % Superposition Stab Mitte Normalkraft
 
 
 
 else  AZB == 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ___________%%%%%%%%%%%%%%             
 %    Berechnung (n=5) mit 4 Stützen            ¦   ¦   ¦   ¦            %                          
-%}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%Verschiebungsgrössen (Überlagerung der Momente)
-
-for z1=[1:length(F)]
+% Verschiebungsgrössen Ergänzung für System (n=5)(Überlagerung der Momente - Kraftgrössenverfahren mit Werte aus Integrationstabelle)
+for z=[1:length(F)]                                     % 0 mit 4 Zustand 
 if x(z)<=(1/3*ba)
     a40(z)=(1/6)*(((2*(1/3)*ba)-((1/3*ba)^2)-(x(z)^2))/((1/3*ba)*(ba-x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
-elseif x(z)<=(ba/2)                                      %0 mit 4 Zustand 
+elseif x(z)<=(ba/2)                                      
     a40(z)=(1/6)*((2*x(z)-(x(z)^2)-(1/3*ba))/((2/3*ba)*x(z)))*(Av0(z).*x(z)).*((2/9).*ba).*ba
 elseif x(z)<=(2/3*ba)
     a40(z)=(1/6)*((2*(ba-x(z))-((ba-x(z))^2)-(1/3*ba))/((2/3*ba)*(ba-x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
@@ -314,19 +318,19 @@ end
 
 a50=a40
 
-a14=0.5*((-2/9)*ba)*1*ba                               %1 mit 4 Zustand
+a14=0.5*((-2/9)*ba)*1*ba                                % 1 mit 4 Zustand
 
-a15=a14                                                %1 mit 5 Zustand
+a15=a14                                                 % 1 mit 5 Zustand
 
-a24=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*1*ba                   %2 mit 4 Zustand
+a24=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*1*ba                 % 2 mit 4 Zustand
 
-a25=a24                                                %2 mit 5 Zustand
+a25=a24                                                 % 2 mit 5 Zustand
 
-a34=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*-1*ba                  %3 mit 4 Zustand
+a34=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*-1*ba                % 3 mit 4 Zustand
 
-a35=a34                                                %3 mit 5 Zustand
+a35=a34                                                 % 3 mit 5 Zustand
 
-a44=(2*(1/3)*(-2/9)*ba*(-2/9)*ba)*ba                     %4 mit 4 Zustand
+a44=(2*(1/3)*(-2/9)*ba*(-2/9)*ba)*ba                    % 4 mit 4 Zustand
 
 a45=(1/12)*(((2*(1/3)*ba)-((1/3*ba)^2)-((1/3*ba)^2))/((1/3*ba)*(2/3*ba)))*(2*(-2/9)*ba)*ba
 
@@ -342,7 +346,7 @@ X1=X(1,:)
 X2=X(2,:)
 X3=X(3,:)
 X4=X(4,:)
-X5=x(5,:)
+X5=X(5,:)
 
 %Auflagerkräfte in A
 Av=Av0+0*X1+(-1/ba)*X2+(1/ba)*X3+(-2/3)*X4+(-1/3)*X5
@@ -370,6 +374,17 @@ for z=[1:length(F)]
    Ms1(z)=Av0(z).*((1/3)*ba)+(F(z).*(x(z)-(1/3)*ba))+1.*X1(z)+(2/3).*X2(z)+(-2/3).*X3(z)+(-2/9*ba).*X4(z)+(0.5*(-2/9*ba)).*X5(z)
 end
 end
+%{
+% Moment bei Stütze in Mitte
+for z=[1:length(F)]
+    if x(z)<=(ba*0.5)
+    Ms1(z)=(Bv0(z).*0.5*ba)+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
+    else x(z)>(ba*0.5)
+    Ms1(z)=((Av0(z).*0.5*ba))+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
+end
+end
+%}
+
 
 %Moment bei Stütze 2 (Rechts)
 for z=[1:length(F)]
@@ -440,58 +455,6 @@ MSupSR=linspace(sum(Mb),sum(Mr),dx)                   %Superposition Stab Rechts
      MSupSO=MSupSO+MSO{z}                      %Supepositin Stab oben Werte Moment
  end
    
-
-%{
-% Darstellung Bogen  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-plot([0,0],[0,h],'k','LineWidth',4)             %Stab Links
-hold on
-axis equal 
-plot([0,ba],[h,h],'k','LineWidth',4)             %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',4)             %Stab Rechts
-
-
-
-dM= (ba*0.25)/max(MSupSO)                   %Darstellungs Faktor (Mmax = 0.25 von Breite)
-
-
-%Graph Momentenverlauf Stab links 
-MxSL=(MSupSL.*dM)
-MySL=linspace(h,0,dx)
-plot(MxSL,MySL,'r','LineWidth',2)               %Stab-Moment Rechts
-plot([0,sum(Ma)*dM],[0,0],'r','LineWidth',2)         %Stab-Moment Ergänzung unten
-plot([0,sum(Ml)*dM],[h,h],'r','LineWidth',2)         %Stab-Moment Ergänzung oben
-text(sum(Ma)*dM,0,num2str(sum(Ma)))                       %Text unten Ma
-text(sum(Ml)*dM,h,num2str(sum(Ml)))                    %Text oben  Ml
-
-%Graph Momentenverlauf Stab rechts
-MxSR=ba-(MSupSR.*dM)           
-MySR=linspace(0,h,dx)
-plot(MxSR,MySR,'r','LineWidth',2)               %Stab-Moment Links
-plot([ba,ba-sum(Mb)*dM],[0,0],'r','LineWidth',2)       %Stab-Moment Ergänzung unten
-plot([ba,ba-sum(Mr)*dM],[h,h],'r','LineWidth',2)       %Stab-Moment Ergänzung oben
-text(ba-sum(Mb)*dM,0,num2str(sum(Mb)))                     %Text unten Mb 
-text(ba-sum(Mr)*dM,h,num2str(sum(Mr)))                     %Text oben  Mr
-
-%Momentenverlauf Stab oben
-MySO=h-(MSupSO.*dM)
-MxSO=linspace(0,ba,length(MSupSO))
-plot(MxSO,MySO,'r','LineWidth',2)               %Stab-Moment Oben
-plot([0,0],[h,h-sum(Ml)*dM],'r','LineWidth',2)       %Stab-Moment Ergänzung Links
-plot([ba,ba],[h,h-sum(Mr)*dM],'r','LineWidth',2)              %Stab-Moment Ergänzung rechts
-text(0,h-sum(Ml)*dM,num2str(sum(Ml)))                       %Text unten Ml
-text(ba,h-sum(Mr)*dM,num2str(sum(Mr)))                       %Text unten Mr
-text((find(MSupSO==max(MSupSO))/length(MSupSO))*ba...
-    ,h-max(MSupSO)*dM,num2str(max(MSupSO)))             %Text Max-Moment Mf
-text((find(MSupSO==min(MSupSO))/length(MSupSO))*ba...
-    ,h-min(MSupSO)*dM,num2str(min(MSupSO)))             %Text Min-Moment Mf
-
-%Auflagerkräfte
-
-hold off    
-
-%}
-
 end
 
 
@@ -505,14 +468,14 @@ subplot(2,4,1)
 hold on
 axis equal
 
-plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
-if AZB==2
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
+plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
+plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
+if AZB>1
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
 end
 if AZB==3
-plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
 end
 
 plot([-0.5,ba+0.5],[-2,-2],'Color',[0.19 0.19 0.19],'LineWidth',1)      %Bemassung Linie (Breite) Grau
@@ -537,22 +500,23 @@ plot([ba+1.5,ba+2.5],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)        %Bemas
 text(ba+1,h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                  %Wert Bemassung (Höhe) (Breite !!h!! -> muss ... sein) Grau
 hold off
 
+dR= -10   %dR = Rundungsziffer weil sehr kleine Null Werte die Grafik verziehen
 
 %Daratellung Moment
-dM= (ba*0.25)/max(abs([MSupSL MSupSO MSupSR]))                   %Darstellungs Faktor Moment (Mmax = 0.25 von Breite)
+dM= (ba*0.25)/roundn(max(abs([MSupSL MSupSO MSupSR])),dR)                   %Darstellungs Faktor Moment (Mmax = 0.25 von Breite)
 subplot(2,4,2)
 hold on
 axis equal
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
-if AZB==2
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
+plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
+plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
+if AZB>1
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
 end
 if AZB==3
-plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
 end
 
 %Momentenverlauf Stab links 
@@ -589,20 +553,20 @@ end
 hold off
 
 % Darstellung Querkraft
-dV=(ba*0.25)/max(abs([VSupSL VSupSO VSupSR])) 
+dV=(ba*0.25)/roundn(max(abs([VSupSL VSupSO VSupSR])),dR) 
 subplot(2,4,3)
 hold on
 axis equal 
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
-plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
-if AZB==2
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
+plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
+plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
+if AZB>1
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
 end
 if AZB==3
-plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
 end
 
 %Querkraftverlauf Stab Links
@@ -630,7 +594,7 @@ hold off
 
 %Normalkaft
 if AZB==1
-dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR])) 
+dN=(ba*0.25)/roundn(max(abs([NSupSL NSupSO NSupSR])),dR) 
 elseif AZB ==2
 dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1]))     
 elseif AZB == 3
@@ -641,14 +605,14 @@ hold on
 axis equal 
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
-plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
-if AZB==2
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
+plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
+plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
+if AZB>1
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
 end
 if AZB==3
-plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
 end
 
 %Normalkraftverlauf Stab Links
