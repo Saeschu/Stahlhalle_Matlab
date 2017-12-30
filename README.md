@@ -1,4 +1,0 @@
-# Stahlhalle_Matlab
-
-Info:
-- 
