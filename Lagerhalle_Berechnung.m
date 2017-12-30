@@ -1,7 +1,6 @@
 close all
 clear all, clc
 
-beep
 
 Dim=0.2             %Dimension der Stahltrager  - zurzeitn Quadrate
 l=20                %Länge
@@ -11,12 +10,12 @@ a=1.5               %Binderabstand
 E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
-F=linspace(30,30,130)                %Kräft in kN
-x=linspace(0,13,130)
+%F=linspace(30,30,13)                %Kräft in kN
+%x=linspace(0,13,13)
 %F=[50,40,40,40,40,40,40,40,40,40,50]
 %x=[0:1.3:13]
-%F=[100]
-%x=3
+F=[10]
+x=[6.5]
 hI=h*(IT/IS)                                  %Vergleichshöhe für Stütze 
 AZB=2                                         %Indikator für Hallenfaktor
 
@@ -155,7 +154,7 @@ elseif  AZB == 2
 for z=[1:length(F)]                                     % 0 mit 4 Zustand
 if x(z)<=(ba/2)
     a40(z)=(1/12).*((3-4.*((x(z)./ba).^2))/(1-(x(z)./ba))).*(-0.25.*ba).*(Av0(z).*x(z)).*ba
-elseif x(z)>(ba/2)                                       
+else x(z)>(ba/2)                                       
     a40(z)=(1/12).*((3-4.*((1-(x(z)./ba)).^2))/(x(z)./ba)).*(-0.25.*ba).*(Av0(z).*x(z)).*ba
 end
 end
@@ -195,12 +194,10 @@ S1v=X4
 
 % Moment bei Stütze in Mitte
 for z=[1:length(F)]
-    if x(z)<(ba*0.5)
-   Ms1(z)=((Av0(z).*0.5*ba)+(-F(z).*((0.5*ba)-x(z))))+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
-    elseif x(z) ==(ba*0.5)
-   Ms1(z)=Av0(z).*x(z)+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
-    elseif x(z)>(ba*0.5)
-   Ms1(z)=Av0(z).*(0.5*ba)+(F(z).*(x(z)-0.5*ba))+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
+    if x(z)<=(ba*0.5)
+    Ms1(z)=(Bv0(z).*0.5*ba)+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
+    else x(z)>(ba*0.5)
+    Ms1(z)=((Av0(z).*0.5*ba))+1.*X1(z)+(0.5).*X2(z)+(-0.5).*X3(z)+(-0.25*ba).*X4(z)
 end
 end
 
@@ -259,7 +256,6 @@ MSupSO=zeros(1,dT)                                % 0 Vektor mit Anzahl Einträge
 %Werte Querkraft für Superposition
 VSupSL=linspace(sum(-Ah),sum(-Ah),dS)                               % Superposition Stab Links Querkraftkraft
 VSupSR=linspace(sum(-Bh),sum(-Bh),dS)                               % Superposition Stab Rechts Querkraftkraft
-VSupS1=linspace(sum(-S1v),sum(-S1v),dS)                             % Superposition Stab Rechts Querkraftkraft
 
 VSupSO=zeros(1,dT)                                                  % 0 Vektor mit Anzahl Einträgen wie MSO für Addition
 for z=[1:length(F)]
@@ -271,16 +267,16 @@ for z=[1:length(F)]
    VSO{z}=zeros(1,dT)                                               % Momente Stab oben wenn x = 0     
    elseif x(z)<0.5*ba    
    dSOL=round(((dT+2)/ba)*x(z))                                     % Anzahl Teilstücke für Querkraft oben Links von Kraft
-   dSOR=fix(((dT+2)/ba)*(ba-x(z)))                                % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
+   dSOR=fix(((dT+2)/ba)*(0.5*ba))                                % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
    VvorbSOL=linspace(Av(z),Av(z),dSOL)                              % Querkraft Stab oben links von F
    VvorbSOM=linspace(Av(z)-F(z),Av(z)-F(z),dT+2-dSOR-dSOL)          % Querkraft Stab oben Mitte von F
    VvorbSOR=linspace(Av(z)-F(z)+S1v(z),Av(z)-F(z)+S1v(z),dSOR)      % Querkraft Stab oben Rechts von F
    VSO{z}=[VvorbSOL(1:end-1),VvorbSOM,VvorbSOR(2:end)]              % Querkraft Stab oben Links + Mitte + Rechts
    else x(z)>0.5*ba
-   dSOL=round(((dT+2)/ba)*x(z))                                     % Anzahl Teilstücke für Querkraft oben Links von Kraft
+   dSOM=round(((dT+2)/ba)*(x(z)-0.5*ba))                                    % Anzahl Teilstücke für Querkraft oben Links von Kraft
    dSOR=fix(((dT+2)/ba)*(ba-x(z)))                                % Anzahl Teilstücke für Querkraft oben Rechts von Kraft
-   VvorbSOL=linspace(Av(z),Av(z),dSOL)                              % Querkraft Stab oben links von F
-   VvorbSOM=linspace(Av(z)+S1v(z),Av(z)+S1v(z),dT+2-dSOR-dSOL)      % Querkraft Stab oben Mitte von F
+   VvorbSOL=linspace(Av(z),Av(z),dT+2-dSOM-dSOR)                              % Querkraft Stab oben links von F
+   VvorbSOM=linspace(Av(z)+S1v(z),Av(z)+S1v(z),dSOM)                  % Querkraft Stab oben Mitte von F
    VvorbSOR=linspace(Av(z)-F(z)+S1v(z),Av(z)-F(z)+S1v(z),dSOR)      % Querkraft Stab oben Rechts von F
    VSO{z}=[VvorbSOL(1:end-1),VvorbSOM,VvorbSOR(2:end)]              % Querkraft Stab oben Links + Mitte + Rechts    
    end
@@ -292,7 +288,7 @@ end
 NSupSL=linspace(sum(-Av),sum(-Av),dS)                   % Superposition Stab Links Werte Normalkraft
 NSupSR=linspace(sum(Bv),sum(Bv),dS)                     % Superposition Stab Rechts Werte Normalkraft
 NSupSO=linspace(sum(Ah),sum(Bh),dS)                     % Superposition Stab Oben Werte Normalkraft
-
+NSupS1=linspace(sum(S1v),sum(S1v),dS)                 % Superposition Stab Mitte Normalkraft
 
 
 
@@ -513,10 +509,10 @@ plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
 plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
 plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
 if AZB==2
-    plot([0.5*ba,0.5*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-elseif AZB==3
-    plot([(1/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-    plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+end
+if AZB==3
+plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
 end
 
 plot([-0.5,ba+0.5],[-2,-2],'Color',[0.19 0.19 0.19],'LineWidth',1)      %Bemassung Linie (Breite) Grau
@@ -553,10 +549,10 @@ plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
 plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
 plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
 if AZB==2
-    plot([0.5*ba,0.5*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-elseif AZB==3
-    plot([(1/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-    plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+end
+if AZB==3
+plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
 end
 
 %Momentenverlauf Stab links 
@@ -586,7 +582,7 @@ text(ba-sum(Mr)*dM,h-sum(Mr)*dM,num2str(roundn(sum(Mr),-2)))                  %T
 text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*ba...
     ,h-1-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))             %Text Max-Moment Mf !!! -1 !!!
 if AZB>1
-text((find(MSupSO==min(MSupSO))/length(MSupSO))*ba...
+text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*ba...
     ,h-min(MSupSO)*dM,num2str(min(MSupSO)))                                 %Text MIN-Moment Mf
 end
 
@@ -603,10 +599,10 @@ plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
 plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
 plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
 if AZB==2
-    plot([0.5*ba,0.5*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-elseif AZB==3
-    plot([(1/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-    plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+end
+if AZB==3
+plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
 end
 
 %Querkraftverlauf Stab Links
@@ -621,7 +617,6 @@ plot([ba,ba-VSupSR*dV],[0,0],'b','LineWidth',2)                      %Querkraft 
 plot([ba,ba-VSupSR*dV],[h,h],'b','LineWidth',2)                      %Querkraft Stab links Ergänzunglinie oben
 text(ba-VSupSR*dV,h*0.5,num2str(roundn(VSupSR,-2)))             %Text Stab Links !!!  !!!
 
-
 %Querkraftverlauf Stab oben
 VySO=h-(VSupSO.*dV)
 VxSO=linspace(0,ba,length(VSupSO))
@@ -634,7 +629,13 @@ text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*ba,h-min(VSupSO)*dV,num2
 hold off
 
 %Normalkaft
-dN=(ba*0.25)/max(abs([NSupSO NSupSR NSupSL])) 
+if AZB==1
+dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR])) 
+elseif AZB ==2
+dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1]))     
+elseif AZB == 3
+dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1 NSupS2])) 
+end 
 subplot(2,4,4)
 hold on
 axis equal 
@@ -644,10 +645,10 @@ plot([0,0],[0,h],'k','LineWidth',3)             %Stab Links
 plot([0,ba],[h,h],'k','LineWidth',3)            %Stab Oben
 plot([ba,ba],[0,h],'k','LineWidth',3)           %Stab Rechts
 if AZB==2
-    plot([0.5*ba,0.5*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-elseif AZB==3
-    plot([(1/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
-    plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
+end
+if AZB==3
+plot([(2/3)*ba,(1/3)*ba],[0,h],'k','LineWidth',3)             %Stab Links 
 end
 
 %Normalkraftverlauf Stab Links
@@ -662,6 +663,15 @@ plot([ba,ba-NSupSR*dN],[0,0],'g','LineWidth',2)                      %Normalkraf
 plot([ba,ba-NSupSR*dN],[h,h],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie oben
 text(ba-NSupSR*dN,h*0.5,num2str(roundn(NSupSR,-2)))                  %Text Stab Links !!!  !!!
 
+%Querkraftverlauf Stab Mitte
+if AZB==2
+plot([(1/AZB)*ba-NSupS1*dN,(1/AZB)*ba-NSupS1*dN],[0,h],'g','LineWidth',2)            %Normalkraft Stab rechts
+plot([(1/AZB)*ba,(1/AZB)*ba-NSupS1*dN],[0,0],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie unten
+plot([(1/AZB)*ba,(1/AZB)*ba-NSupS1*dN],[h,h],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie oben
+text((1/AZB)*ba-NSupS1*dN,h*0.5,num2str(roundn(NSupS1,-2)))                  %Text Stab Links !!!  !!!
+elseif AZB==3
+    
+end
 %Normalkraftverlauf Stab oben
 plot([0,ba],[h+NSupSO*dN,h+NSupSO*dN],'g','LineWidth',2)            %Normalkraft Stab oben
 plot([0,0],[h,h+NSupSO*dN],'g','LineWidth',2)                      %Normalkraft Stab oben Ergänzunglinie unten
