@@ -4,20 +4,19 @@ clear all, clc
 
 Dim=0.2             %Dimension der Stahltrager  - zurzeitn Quadrate
 l=20                %Länge
-ba=13               %Breite zwischen den Stützen
+ba=18               %Breite zwischen den Stützen
 h=6                 %Höhe
 a=1.5               %Binderabstand
-E=200000            %E-Modul
 IS=500000000        %I Stütze [mm^4]
 IT=5000000000        %I Träger oben [mm^4]
 %F=linspace(30,30,13)                %Kräft in kN
 %x=linspace(0,13,13)
 %F=[50,40,40,40,40,40,40,40,40,40,50]
 %x=[0:1.3:13]
-F=[100]
-x=[3]
+F=[10]
+x=[7]
 hI=h*(IT/IS)                                  %Vergleichshöhe für Stütze 
-AZB=3                                         %Indikator für Hallenfaktor
+AZB=3                                        %Indikator für Hallenfaktor
 
 
 
@@ -304,39 +303,58 @@ else  AZB == 3
 
 
 % Verschiebungsgrössen Ergänzung für System (n=5)(Überlagerung der Momente - Kraftgrössenverfahren mit Werte aus Integrationstabelle)
+
+%{
 for z=[1:length(F)]                                     % 0 mit 4 Zustand 
 if x(z)<=(1/3*ba)
     a40(z)=(1/6)*(((2*(1/3)*ba)-((1/3*ba)^2)-(x(z)^2))/((1/3*ba)*(ba-x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
 elseif x(z)<=(ba/2)                                      
-    a40(z)=(1/6)*((2*x(z)-(x(z)^2)-(1/3*ba))/((2/3*ba)*x(z)))*(Av0(z).*x(z)).*((2/9).*ba).*ba
+    a40(z)=(1/6)*((2*x(z))-((x(z))^2)-((1/3*ba)^2)/((2/3*ba)*x(z)))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
 elseif x(z)<=(2/3*ba)
-    a40(z)=(1/6)*((2*(ba-x(z))-((ba-x(z))^2)-(1/3*ba))/((2/3*ba)*(ba-x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
+    a40(z)=(1/6)*(((2*(ba-x(z)))-((ba-x(z))^2)-((1/3*ba)^2))/((2/3*ba)*(ba-x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
 else x(z)>(2/3*ba)
-    a40(z)=(1/6)*(((2*(1/3)*ba)-((1/3*ba)^2)-((ba-x(z))^2))/((1/3*ba)*(x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
+    a40(z)=(1/6)*(((2*((1/3)*ba))-((1/3*ba)^2)-((ba-x(z))^2))/((1/3*ba)*(x(z))))*(Av0(z).*x(z)).*((-2/9).*ba).*ba
 end
 end
+%}
+for z=[1:length(F)]                                     % 0 mit 4 Zustand 
+    if x(z) < (1/3*ba)
+    a40=(((1/3)*(Av0(z)*x(z))*((x(z)/(1/3))*(-2/9*ba)))+...
+        ((1/6)*((2*((x(z)/(1/3))*(-2/9*ba))+(-2/9*ba))*(Av0(z)*x(z))+(((x(z)/(1/3))*(-2/9*ba))+(2*(-2/9*ba)))*(Bv0(z)*(2/3)))+...
+        (((1/3)*(Bv0(z)*(2/3))*((-2/9)*ba))))))
+    else
+    end
+    
+for z=[1:length(F)]                                     % 0 mit 4 Zustand 
+    if x(z) < (2/3*ba)
+    a50=(((1/3)*(Av0(z)*x(z))*((x(z)/(2/3))*(-2/9*ba))+...
+        ((1/6)*((2*((x(z)/(2/3))*(-2/9*ba))+(-2/9*ba))*(Av0(z)*x(z))+(((x(z)/(2/3))*(-2/9*ba))+(2*(-2/9*ba)))*(Bv0(z)*(1/3)))+...
+        (((1/3)*(Bv0(z)*(1/3))*((-2/9)*ba))
+    else
+    end
+    
 
-a50=a40
+%a50=a40
 
-a14=0.5*((-2/9)*ba)*1*ba                                % 1 mit 4 Zustand
+a14=0.5*((-2/9)*ba)*1*ba                                                                        % 1 mit 4 Zustand
 
-a15=a14                                                 % 1 mit 5 Zustand
+a15=a14                                                                                         % 1 mit 5 Zustand
 
-a24=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*1*ba                 % 2 mit 4 Zustand
+a24=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*1*ba                                                         % 2 mit 4 Zustand
 
-a25=a24                                                 % 2 mit 5 Zustand
+a25=a24                                                                                         % 2 mit 5 Zustand
 
-a34=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*-1*ba                % 3 mit 4 Zustand
+a34=(1/6)*(1+(2/3)*ba)*((-2/9)*ba)*-1*ba                                                        % 3 mit 4 Zustand
 
-a35=a34                                                 % 3 mit 5 Zustand
+a35=a34                                                                                         % 3 mit 5 Zustand
 
-a44=(2*(1/3)*(-2/9)*ba*(-2/9)*ba)*ba                    % 4 mit 4 Zustand
+a44=((1/3)*((-2/9)*ba)*((-2/9)*ba))*((1/3*ba)-(2/3*ba))                                                          % 4 mit 4 Zustand
 
-a45=(1/12)*(((2*(1/3)*ba)-((1/3*ba)^2)-((1/3*ba)^2))/((1/3*ba)*(2/3*ba)))*(2*(-2/9)*ba)*ba
+a45=(1/6)*(((2*(1/3)*ba)-((1/3*ba)^2)-((1/3*ba)^2))/((1/3*ba)*(2/3*ba)))*(2*(-2/9)*ba)*ba       % 4 mit 5 Zustand
 
-a55=a44
+a55=a44                                                                                         % 5 mit 5 Zustand
+
 %Matrix der Verschiebungsgrössen [B A] * X = [0;0;0;0;0]
-
 A=[a11,a12,a13,a14,a15;a12,a22,a23,a24,a25;a13,a23,a33,a34,35;a14,a24,a34,a44,a45;a15,a25,a35,a45,a55]
 B=[-a10;-a20;-a30;-a40;-a50]
 
@@ -356,7 +374,7 @@ Ma=0+0*X1+1*X2+0*X3+0*X4+0*X5
 %Auflagerkräfte in B
 Bv=Bv0+0*X1+(1/ba)*X2+(-1/ba)*X3+(-1/3)*X4+(-2/3)*X5
 Bh=0+(1/h)*X1+0*X2+(-1/h)*X3+0*X4+0*X5
-Mb=0+0*X1+0*X2+1*X3+0*X4+0*X
+Mb=0+0*X1+0*X2+1*X3+0*X4+0*X5
 
 %Auflagerkraft in Stütze 1 (links)
 S1v=X4
@@ -547,7 +565,7 @@ text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*ba...
     ,h-1-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))             %Text Max-Moment Mf !!! -1 !!!
 if AZB>1
 text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*ba...
-    ,h-min(MSupSO)*dM,num2str(min(MSupSO)))                                 %Text MIN-Moment Mf
+    ,h-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                                 %Text MIN-Moment Mf
 end
 
 hold off
@@ -643,47 +661,6 @@ plot([ba,ba],[h,h+NSupSO*dN],'g','LineWidth',2)                      %Normalkraf
 text(ba*0.5,h+NSupSR*dN,num2str(roundn(NSupSO,-2)))                  %Text Stab Links !!!  !!!
 
 hold off
-%Auflagerkräfte
 
 
 
-
- 
-
-
-
-
-
-
-
-
-
-%Variante mit Kragarm (Funktioniert nicht)
-%{
-Av0=F
-Ma0=-F.*x
-
-
-
-
-a10=(((b-x)/b)+2)*((-F*x.^2)/6)+(-F)*b*hI
-a20=((-F*x.^2)/2)+0.5*hI
-a30=((-F*x.^2)/2)+hI
-a11=(1/3)*b+hI
-a12=-0.5*b+(-0.5)*hI
-a13=-0.5*b+(-hI)
-a22=b+(2/3)*hI
-a23=b+hI
-a33=b+(2/3)*hI
-
-a10=(1./6)*-F*x*(((b-x)./l)+2*1)*x*(1./IT)+1*1*-F*b*h*(1./IS)
-a20=0.5*-F*x*1*x*(1./IT)+0.5*1*1*h*(1./IS)
-a30=0.5*-F*x*1*x*(1./IT)+1*1*1*h*(1./IS)
-a11=(1/3)*1*1*b*(1./IT)+1*1*1*h*(1/IS)
-a12=0.5*1*-1*b*(1/IT)+0.5*1*-1*h*(1/IS)
-a13=0.5*1*-1*b*(1/IT)+1*1*-1*h*(1/IS)
-a22=1*-1*-1*b*(1/IT)+2*(1/3)*-1*-1*h*(1/IS)
-a23=1*-1*-1*b*(1/IT)+2*0.5*-1*-1*h*(1/IS)
-a33=1*1*1*b*(1/IT)+2*(1/3)*1*1*h*(1/IS)
-%}
-beep

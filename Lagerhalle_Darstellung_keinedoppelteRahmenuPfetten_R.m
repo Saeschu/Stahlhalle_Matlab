@@ -165,66 +165,28 @@ patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Linker teil
-j= (b/2);
-while j> apres
-    j=j-apres;
+j=0;
+while j< (b-(apres))
+    j=j+apres;
   XMRL = (j-(ProfTb/2));      %Hilfsgrösse% Achsabstand der Längsbinder in While Schleife
 
 vert13= [XMRL 0 (h-ProfTh); (XMRL+ProfTb) 0 (h-ProfTh); (XMRL+ProfTb) 0 h; XMRL 0 h; (XMRL+ProfTb) l h; XMRL l h; XMRL l (h-ProfTh); (XMRL+ProfTb) l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert13,'FaceColor','m');            % Erzeugen der Gefärbten Flächen (Polygonen)   
 end
 %rechter teil
-j1=-apres;
-while j1<=(b/2)-apres-ProfTb
-    j1=j1+apres;
- XMLL = ((b/2)+j1-(ProfTb/2));      %Hilfsgrösse% Achsabstand der Längsbinder in While Schleife
-
- vert12= [XMLL 0 (h-ProfTh); (XMLL+ProfTb) 0 (h-ProfTh); (XMLL+ProfTb) 0 h; XMLL 0 h; (XMLL+ProfTb) l h; XMLL l h; XMLL l (h-ProfTh); (XMLL+ProfTb) l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert12,'FaceColor','m');            % Erzeugen der Gefärbten Flächen (Polygonen)
-end
+%gelöscht!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Binderi i Stützen und Querbalken
 %Aufbau von der Mitte aus um Anfang und Endabstand Binder-Stütze gleich
 %gross zu halten
-%Hinterteil
-i=-arres;
-while i <= (l/2)-arres-ProfSt;         
-      i= i + arres;
-   XMHQ = ((l/2)+i-(ProfSt/2));      %Hilfsgrösse% Achsabstand der Stützen in While Schleife
 
-%Querbalken 
-vert9= [0 XMHQ (h-2*ProfTh); 0 XMHQ (h-ProfTh); 0 (XMHQ+ProfSt) (h-ProfTh); 0 (XMHQ+ProfSt) (h-2*ProfTh); b (XMHQ+ProfSt) (h-ProfTh); b (XMHQ+ProfSt) (h-2*ProfTh); b XMHQ (h-2*ProfTh); b XMHQ (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert9,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
+%Hinterteil gelöscht!!!
 
-%Stuetze A
-vert10= [0 XMHQ 0; 0 (XMHQ+ProfSt) 0; ProfSb (XMHQ+ProfSt) 0; ProfSb XMHQ 0; ProfSb (XMHQ+ProfSt) (h-2*ProfTh); ProfSb (XMHQ+ProfSt) (h-2*ProfTh); 0 XMHQ (h-2*ProfTh); 0 (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert10,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze B
-vert11= [b XMHQ 0; b (XMHQ+ProfSt) 0; (b-ProfSb) (XMHQ+ProfSt) 0; (b-ProfSb) XMHQ 0; (b-ProfSb) (XMHQ+ProfSt) (h-2*ProfTh); (b-ProfSb) XMHQ (h-2*ProfTh); b XMHQ (h-2*ProfTh); b (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert11,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-if b >13 & b < 26
-%Stuetze VM   
-vert3= [SMb XMHQ 0; SMb (XMHQ+ProfSt) 0; (SMb+ProfSb) (XMHQ+ProfSt) 0; (SMb+ProfSb) XMHQ 0; (SMb+ProfSb) (XMHQ+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMHQ (h-2*ProfTh); SMb XMHQ (h-2*ProfTh); SMb (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-end
-
-if b > 26
-%Stuetze VM 1/3
-vert3= [S1b XMHQ 0; S1b (XMHQ+ProfSt) 0; (S1b+ProfSb) (XMHQ+ProfSt) 0; (S1b+ProfSb) XMHQ 0; (S1b+ProfSb) (XMHQ+ProfSt) (h-2*ProfTh); (S1b+ProfSb) XMHQ (h-2*ProfTh); S1b XMHQ (h-2*ProfTh); S1b (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze VM 2%3
-vert3= [S2b XMHQ 0; S2b (XMHQ+ProfSt) 0; (S2b+ProfSb) (XMHQ+ProfSt) 0; (S2b+ProfSb) XMHQ 0; (S2b+ProfSb) (XMHQ+ProfSt) (h-2*ProfTh); (S2b+ProfSb) XMHQ (h-2*ProfTh); S2b XMHQ (h-2*ProfTh); S2b (XMHQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-end
-end
 %Vordeteil
-i1=l/2;
-while i1 >= arres; 
-       i1= i1 - arres;
+i1=0;
+while i1 < l-arres; 
+       i1= i1 +arres;
    XMVQ = (i1-(ProfSt/2));           %Hilfsgrösse% Achsabstand der Stütze in While Schleife
 
 %Querbalken 
