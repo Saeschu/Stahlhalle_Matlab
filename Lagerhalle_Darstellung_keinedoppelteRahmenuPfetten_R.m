@@ -20,9 +20,9 @@ ProfT= str2num(answer{7});
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 39
-    
-    
-
+    msgbox('BLBLABLA')
+    return 
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if BedH==0        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
     h=h+2*ProfS
@@ -55,8 +55,6 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 % nur für testrechnung effektieve werte müssen abgefüllt werden für IPE un
 % HEA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
 n1=(b/a1);               %Anzahl Pfetten, wenn Abstand 1.0m
@@ -72,7 +70,6 @@ else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
 apres=(b/(npres-1));      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
-
 
 %Anzahl Binder abhängig von Länge und Abstand
 nr=(l/a);               %Anzahl Rahmen, gegeben durch (Länge/Abstand) von Benutzer gewählt
@@ -133,6 +130,7 @@ patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der 
 vert5= [SMb (l-ProfSt) 0; SMb l 0; (SMb+ProfSb) l 0; (SMb+ProfSb) (l-ProfSt) 0; (SMb+ProfSb) l (h-2*ProfTh); (SMb+ProfSb) (l-ProfSt) (h-2*ProfTh); SMb (l-ProfSt) (h-2*ProfTh); SMb l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert5,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 end
+
 % Wen Hallenbreite grösser 26m ist werden weiter Stützenreihe bei 1/3 und 2/3
 % ergänzt
 if b > 26
@@ -173,17 +171,9 @@ while j< (b-(apres))
 vert13= [XMRL 0 (h-ProfTh); (XMRL+ProfTb) 0 (h-ProfTh); (XMRL+ProfTb) 0 h; XMRL 0 h; (XMRL+ProfTb) l h; XMRL l h; XMRL l (h-ProfTh); (XMRL+ProfTb) l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert13,'FaceColor','m');            % Erzeugen der Gefärbten Flächen (Polygonen)   
 end
-%rechter teil
-%gelöscht!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Binderi i Stützen und Querbalken
-%Aufbau von der Mitte aus um Anfang und Endabstand Binder-Stütze gleich
-%gross zu halten
-
-%Hinterteil gelöscht!!!
-
-%Vordeteil
 i1=0;
 while i1 < l-arres; 
        i1= i1 +arres;
