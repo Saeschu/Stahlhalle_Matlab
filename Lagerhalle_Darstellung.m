@@ -17,6 +17,13 @@ a= str2num(answer{5});
 ProfS= str2num(answer{6});
 ProfT= str2num(answer{7});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
+%Berechnung kann nicht weiter ausgeführt werden.
+if b > 39
+    
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if BedH==0        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
     h=h+2*ProfS
 end
@@ -48,6 +55,7 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 % nur für testrechnung effektieve werte müssen abgefüllt werden für IPE un
 % HEA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
