@@ -20,8 +20,7 @@ ProfT= str2num(answer{7});
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 39
-    msgbox('Die gewählte Gesammtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 39m. Berechnung mit mehr als 4 Stützenreihen bzw. 3 Bögen ist zur zeit nicht möglich.',...
-        'Infobox')
+    msgbox('Die gewählte Gesammtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 13m zwischen den Stützen')
     return 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
