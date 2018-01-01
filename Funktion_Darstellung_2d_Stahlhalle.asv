@@ -5,8 +5,8 @@ function [ ] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,ba,h,MMX,QMX,NMX )
 
 %Werte Raphael für Fundament in Input hinzufügen
 
-%Problem von Simon noch zu lösen: 
-%wie erkennt Funktion ob zum Beispiel: MMX = MMX_1 oder MMX_2 -> mit MMX_ und dann der Wert von K
+%Problem noch zu lösen: wie erkennt Funktion ob zum Beispiel: MMX = MMX_1
+%oder MMX_2 -> mitt MMX_
 
 
 

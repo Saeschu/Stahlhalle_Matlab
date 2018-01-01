@@ -1,9 +1,9 @@
 function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB,EinwirkungenaufRahmen,ba,h,hI )
 %Berechnet die Auflagerkraftematrix und die Plot Linien für die Bogen
 %   Input:
-%   K          Kennzahl für EinwirkungaufRahmen Matrix 
-%                   -   1 = Ersten + Letzten Rahmen  
-%                   -   2 = Mittlere Rahmen
+%   K                               Kennzahl für EinwirkungaufRahmen Matrix 
+%                                        -   1 = Ersten + Letzten Rahmen  
+%                                        -   2 = Mittlere Rahmen
 %   AZB
 %   EinwirkungaufRahmen
 %   ba
@@ -298,7 +298,7 @@ end
 if AZB == 1
 Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb)]                     %Generiung der Matrix für AZB = 1
 elseif AZB == 2
-Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);Sum(Bv),sum(Bh),sum(Mb);sum(S1v),0,0]             %Generiung der Matrix für AZB = 2
+Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb);sum(S1v),0,0]             %Generiung der Matrix für AZB = 2
 else AZB == 3
 Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb);sum(S1v),0,0;sum(S1v),sum(S2v),0]   %Generiung der Matrix für AZB = 3
 end
