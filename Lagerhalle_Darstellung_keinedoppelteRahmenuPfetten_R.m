@@ -17,6 +17,9 @@ a= str2num(answer{5});
 ProfS= str2num(answer{6});
 ProfT= str2num(answer{7});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+f1= figure(1)
+set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [10 438 750 420])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 39
@@ -31,7 +34,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %set axis and figure
 clf;
-figure(1)
+f2=figure(2)
 format compact
 myaxes =axes('xlim', [0, b], 'ylim', [0, l], 'zlim', [0, h]);
 axis equal
@@ -40,6 +43,10 @@ grid on
 xlabel('x - Breite')
 ylabel('y - Länge')
 zlabel('z - Höhe')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+set(f2,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [800 438 750 420])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %ba= b-ProfS           % Breite Achsabstand
 %hI=h*(IT/IS)        %Vergleichshöhe für Stütze

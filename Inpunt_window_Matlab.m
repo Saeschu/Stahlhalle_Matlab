@@ -1,6 +1,6 @@
 function mygui()
-f= figure(1)
-set(f,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [573 438 750 420])
+f1= figure(1)
+set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [573 438 750 420])
 %title (' Input Window Lagerhalle ')
 
 a= []
