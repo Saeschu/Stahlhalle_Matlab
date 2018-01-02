@@ -1,13 +1,11 @@
 clear all, clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%{
-%}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %Input Window
 prompt = {'Länge:','Breite:', 'Höhe','Unterkannt', 'Abstand','ProfS','ProfT'};
 dlg_title = 'Input';
 num_lines = 1;
-defaultans = {'30','27','3','0','4','0.2','0.3',''}; % Zahlenwerte können 'zwischen' entfert werden nur platzhalter
+defaultans = {'60','27','3','0','4','0.2','0.3',''}; % Zahlenwerte können 'zwischen' entfert werden nur platzhalter
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 l= str2num(answer{1});
 b= str2num(answer{2});
@@ -16,9 +14,10 @@ BedH= str2num(answer{4});
 a= str2num(answer{5});
 ProfS= str2num(answer{6});
 ProfT= str2num(answer{7});
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-f1= figure(1)
-set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [10 438 750 420])
+%f1= figure(1)
+%set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [10 438 750 420])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
@@ -28,13 +27,14 @@ if b > 39
     return 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if BedH==0        % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
+% Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
+if BedH==0        
     h=h+2*ProfS
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %set axis and figure
 clf;
-f2=figure(2)
+f2=figure(1)
 format compact
 myaxes =axes('xlim', [0, b], 'ylim', [0, l], 'zlim', [0, h]);
 axis equal
@@ -44,14 +44,14 @@ xlabel('x - Breite')
 ylabel('y - Länge')
 zlabel('z - Höhe')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-set(f2,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [800 438 750 420])
+%set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [800 438 750 420])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %ba= b-ProfS         %Breite Achsabstand
 %hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 %dx= 10              %Teilungsfaktor
-%azb=                %bis 13m 1 bogen bis 26m 2 Bogen und bis 39m 3 Bogen
+azb= 1;               %Anzahl Bögen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
 ProfSb=ProfS;
@@ -100,12 +100,12 @@ arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
 %Rahmen)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Laengstraeger 1
+%Pfette A
 vert1= [0 0 (h-ProfTh); ProfTb 0 (h-ProfTh); ProfTb 0 h; 0 0 h; ProfTb l h; 0 l h; 0 l (h-ProfTh); ProfTb l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
 patch('Faces', fac,'Vertices',vert1,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
-%Laengstraeger 2
+%Pfette B
 vert2= [(b-ProfTb) 0 (h-ProfTh); b 0 (h-ProfTh); b 0 h; (b-ProfTb) 0 h; b l h; (b-ProfTb) l h; (b-ProfTb) l (h-ProfTh); b l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert2,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
@@ -124,11 +124,22 @@ patch('Faces', fac,'Vertices',vert5,'FaceColor','r');            % Erzeugen der 
 %Stuetze 4
 vert6= [b (l-ProfSt) 0; b l 0; (b-ProfSb) l 0; (b-ProfSb) (l-ProfSt) 0; (b-ProfSb) l (h-2*ProfTh); (b-ProfSb) (l-ProfSt) (h-2*ProfTh); b (l-ProfSt) (h-2*ProfTh); b l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert6,'FaceColor','r');            % Erzeugen der Gefärbten Flächen (Polygonen)
+
+%Querbalken Anfang
+vert7= [0 0 (h-2*ProfTh); 0 0 (h-ProfTh); 0 ProfTb (h-ProfTh); 0 ProfTb (h-2*ProfTh); b ProfTb (h-ProfTh); b ProfTb (h-2*ProfTh); b 0 (h-2*ProfTh); b 0 (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+patch('Faces', fac,'Vertices',vert7,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
+
+%Querbalken Ende
+vert8= [0 (l-ProfTb) (h-2*ProfTh); 0 (l-ProfTb) (h-ProfTh); 0 l (h-ProfTh); 0 l (h-2*ProfTh); b l (h-ProfTh); b l (h-2*ProfTh); b (l-ProfTb) (h-2*ProfTh); b (l-ProfTb) (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
+
+%{
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Wenn Hallenbreite grösser 13m ist wird eine weiter Sttzenreihe bei 1/2
 %ergänzt
 %Stützen anfang und ende
 if b > 13 & b < 26
+    azb=2;                            % Anzahl Bögen
    SMb= (b/2) -(ProfSb/2);           %Hilfsgrösse% Pos X (also Stützenabstand) der Stüzte. Einmitung auf Achsmass der Stütze
   
 %Stuetze VM 
@@ -143,6 +154,7 @@ end
 % Wen Hallenbreite grösser 26m ist werden weiter Stützenreihe bei 1/3 und 2/3
 % ergänzt
 if b > 26
+     azb=3;                             % Anzahl Bögen
     S1b= (b/3) -(ProfSb/2);
     S2b= (2*b/3) -(ProfSb/2);
 %Stuetze VM 1/3
@@ -162,16 +174,8 @@ vert5= [S2b (l-ProfSt) 0; S2b l 0; (S2b+ProfSb) l 0; (S2b+ProfSb) (l-ProfSt) 0; 
 patch('Faces', fac,'Vertices',vert5,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Querbalken Anfang
-vert7= [0 0 (h-2*ProfTh); 0 0 (h-ProfTh); 0 ProfTb (h-ProfTh); 0 ProfTb (h-2*ProfTh); b ProfTb (h-ProfTh); b ProfTb (h-2*ProfTh); b 0 (h-2*ProfTh); b 0 (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert7,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
-%Querbalken Ende
-vert8= [0 (l-ProfTb) (h-2*ProfTh); 0 (l-ProfTb) (h-ProfTh); 0 l (h-ProfTh); 0 l (h-2*ProfTh); b l (h-ProfTh); b l (h-2*ProfTh); b (l-ProfTb) (h-2*ProfTh); b (l-ProfTb) (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Linker teil
+%Pfetten dazwischen
 j=0;
 while j< (b-(apres))
     j=j+apres;
@@ -182,7 +186,7 @@ patch('Faces', fac,'Vertices',vert13,'FaceColor','m');            % Erzeugen der
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Binderi i Stützen und Querbalken
+%Binderi Stützen und Querbalken dazwischen
 i1=0;
 while i1 < l-arres; 
        i1= i1 +arres;
@@ -200,14 +204,14 @@ patch('Faces', fac,'Vertices',vert10,'FaceColor','y');            % Erzeugen der
 vert11= [b XMVQ 0; b (XMVQ+ProfSt) 0; (b-ProfSb) (XMVQ+ProfSt) 0; (b-ProfSb) XMVQ 0; (b-ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (b-ProfSb) XMVQ (h-2*ProfTh); b XMVQ (h-2*ProfTh); b (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert11,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
-% unter if bedingung eine while funktion definieren welche variabel die
-% hallenaufteilung vornimmt
+%Stützenreihen bei grösseren Spannweiten >13
 if b >13 & b < 26
 %Stuetze VM
 vert3= [SMb XMVQ 0; SMb (XMVQ+ProfSt) 0; (SMb+ProfSb) (XMVQ+ProfSt) 0; (SMb+ProfSb) XMVQ 0; (SMb+ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQ (h-2*ProfTh); SMb XMVQ (h-2*ProfTh); SMb (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 end
 
+%Stüztenreihen bei grösseren Spannweiten >26
 if b > 26
 %Stuetze VM 1/3
 vert3= [S1b XMVQ 0; S1b (XMVQ+ProfSt) 0; (S1b+ProfSb) (XMVQ+ProfSt) 0; (S1b+ProfSb) XMVQ 0; (S1b+ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (S1b+ProfSb) XMVQ (h-2*ProfTh); S1b XMVQ (h-2*ProfTh); S1b (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
@@ -233,4 +237,5 @@ vert1= [(b-(bf1/2)) -((bf1/2)-(IPE/2)) -hf1; (b+(bf1/2)-(IPE/2)) -((bf1/2)-(IPE/
     (b+(bf1/2)) ((bf1/2)-(IPE/2)) 0; (b-((bf1/2)-(IPE/2))) ((bf1/2)-(IPE/2)) 0; (b-((bf1/2)-(IPE/2))) ((bf1/2)-(IPE/2)) -hf1; (b+(bf1/2)) ((bf1/2)-(IPE/2)) -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert1,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
+%}
 %}
