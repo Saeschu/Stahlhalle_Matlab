@@ -1,24 +1,150 @@
-clear all, clc
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function mygui()
+f1= figure(1)
+set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [573 438 750 420])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
+txtTittel = uicontrol('Style','text',...
+        'Position',[10 390 180 30],...
+        'String','InputWindow', 'FontSize', 16); 
 
-%Input Window
-prompt = {'Länge:','Breite:', 'Höhe','Unterkannt', 'Abstand','ProfS','ProfT'};
-dlg_title = 'Input';
-num_lines = 1;
-defaultans = {'20','27','3','0','4','0.2','0.3',''}; % Zahlenwerte können 'zwischen' entfert werden nur platzhalter
-answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-l= str2num(answer{1});
-b= str2num(answer{2});
-h= str2num(answer{3});
-BedH= str2num(answer{4});
-a= str2num(answer{5});
-ProfS= str2num(answer{6});
-ProfT= str2num(answer{7});
+txtArbTit = uicontrol('Style','text',...
+        'Position',[10 60 140 20],...
+        'String','Kräftefluss in einer Stahlhalle');
+    
+txtDatum = uicontrol('Style','text',...
+        'Position',[10  40 140 20],...
+        'String','Letze Änderung: 25.01.2017');    
+
+txtAutor = uicontrol('Style','text',...
+        'Position',[10 20 140 40],...
+        'String','Raphael Eichenberger, Simon Baumann, Sascha Hostettler');   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
+%Inof 'Position', [left bottom width height]
+
+%Eingabe Länge 
+txtLaenge = uicontrol('Style','text',...
+        'Position',[10 367 120 20],...
+        'String','Länge [m]'); 
+EditLaenge = uicontrol('style','edit',...
+            'units','pixels',...
+             'position',[105 367 100 25])       
+
+%Eingabe Breite      
+txtBreit = uicontrol('Style','text',...
+        'Position',[10 337 120 20],...
+        'String','Breite [m]'); 
+EditBreite = uicontrol('style','edit',...
+            'units','pixels',...
+            'position',[105 337 100 25])
+InfoBreit = uicontrol('Style','text',...
+        'Position',[220 337 420 40],...
+        'String','Ab einer Spannweite über 13m bzw. 26m wird die Geasmmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13m, maximale Gesammtspannweite beträgt 39m');
+    
+%Eingabe Höhe
+txtHoehe = uicontrol('Style','text',...
+        'Position',[10 307 120 20],...
+        'String','Höhe [m]'); 
+EditHoehe = uicontrol('style','edit',...
+            'units','pixels',...
+            'position',[105 307 100 25])  
+            
+%Eingabe Binderabstand
+txtBabst = uicontrol('Style','text',...
+        'Position',[0 277 120 20],...
+        'String','Binderabstand [m]'); 
+EditBabst = uicontrol('style','edit',...
+            'units','pixels',...
+            'position',[105 277 100 25])
+        
+%Eingabe Bauteildimension
+%Träger
+txtBauDimT = uicontrol('Style','text',...
+        'Position',[0 245 120 20],...
+        'String','Profiel Träger'); 
+DdownBauDimT= uicontrol('Style', 'popup',...
+             'String', {'IPE200', 'IPE220', 'IPE240', 'IPE270', 'HEA200', 'HEA220', 'HEA240', 'HEA260'},...
+             'Position', [105 247 100 20],'background','w');
+%Stütze         
+txtBauDimS = uicontrol('Style','text',...
+        'Position',[0 220 120 20],...
+        'String','Profiel Stütze'); 
+DdownBauDimS= uicontrol('Style', 'popup',...
+             'String', {'IPE200', 'IPE220', 'IPE240', 'IPE270', 'HEA200', 'HEA220', 'HEA240', 'HEA260'},...
+             'Position', [105 220 100 20],'background','w');
+% Flächenlast
+txtq = uicontrol('Style','text',...
+        'Position',[170 100 120 20],...
+        'String','Flächenlast [kN/m2]'); 
+Editq = uicontrol('style','edit',...
+            'units','pixels',...
+            'position',[300 100 100 25])
+%Bodenklasifikation
+txtBodK = uicontrol('Style', 'text',...
+        'Position',[285 220 120 20],...
+        'String', 'Bodenklasifikaitons');
+DdownBodK = uicontrol('Style', 'popup',...
+        'String', {'a1','a2','a3'},...
+        'Position', [405 220 100 20],'background','w');
+         
+% Festlegung ob Hallenhöe unter oder oberkannte Balken gesetzt werden soll
+% 1== Unterkannte, 2== Oberkannte
+txtBedH = uicontrol('Style','text',...
+        'Position',[300 245 120 20],...
+        'String','Profiel Träger'); 
+DdownBedH= uicontrol('Style', 'popup',...
+             'String', {'Unterkannte', 'Oberkannte'},...
+             'Position', [405 247 100 20],'background','w');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
+%Bauteilprofiele    %[Höhe Breite Iy]
+elementBP= [0.2 0.1 19.4e6;...        %IPE200
+          0.22 0.11 27.7e6;...      %IPE220
+          0.24 0.12 38.9e6;...      %IPE240
+          0.27 0.135 57.9e6;...     %IPE270
+          0.2 0.19 36.9e6;...       %HEA200
+          0.22 0.21 54.1e6;...      %HEA220
+          0.24 0.23 77.6e6;...      %HEA240
+          0.26 0.25 104.5e6];        %HEA260
+%Bodenklasifikation
+elementBK= []
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%f1= figure(1)
-%set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [10 438 750 420])
+%StarButton
+PushbuttonStart = uicontrol('style','pushbutton',...
+            'units','pixels',...
+            'position',[430 20 100 25],...
+            'string','Start',...
+            'foregroundcolor','b',...
+            'callback',{@Startbutton,}); 
+        
+        function Startbutton(hObject, eventdata) 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
+%Übernahme Input        
+%Editfield
+l= (str2num(get(EditLaenge, 'String')))
+b= (str2num(get(EditBreite, 'string')))
+h= (str2num(get(EditHoehe, 'String')))
+a= (str2num(get(EditBabst, 'String')))
+q= (str2num(get(Editq, 'String')))
+
+%Inpunt dropdown Profiele
+ProfS= get(DdownBauDimS, 'Value') %Profiel Stütze
+ProfSb= elementBP(ProfS, 1) 
+ProfSt= elementBP(ProfS, 2)
+IS= elementBP(ProfS, 3)
+
+ProfT= get(DdownBauDimT, 'Value') %Profiel Träger
+ProfTh= elementBP(ProfT, 1) 
+ProfTb= elementBP(ProfT, 2)
+IT= elementBP(ProfT, 3)
+
+BedH= get(DdownBedH, 'Value')  % 1== Unterkannte, 2== Oberkannte 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
+f1= figure(1)
+set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [10 438 750 420])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
+%Darstellung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 39
@@ -27,14 +153,14 @@ if b > 39
     return 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 0= Unterkannte, 1= Oberkannte
+% Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 1= Unterkannte, 2= Oberkannte
 if BedH==1        
-    h=h+2*ProfS
+    h=h+2*ProfTh
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %set axis and figure
 clf;
-f2=figure(1)
+f2=figure(2)
 format compact
 myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h]);
 axis equal
@@ -44,28 +170,27 @@ xlabel('x - Breite')
 ylabel('y - Länge')
 zlabel('z - Höhe')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%set(f1,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [800 438 750 420])
+set(f2,'Name', 'Inpunt Window', 'NumberTitle', 'off','position', [800 438 750 420])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Datenbank
 %ba= b-ProfS         %Breite Achsabstand
 %hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 %dx= 10              %Teilungsfaktor
 azb= 1;               %Anzahl Bögen
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Datenbank
-ProfSb=ProfS;
-ProfSt= ProfS/2;
-ProfTh= ProfT;
-ProfTb= ProfT/2;
-hf= 0.5
-bf= 0.4
-tf= 0.4
+
+hf= 0.5;
+bf= 0.4;
+tf= 0.4;
+
 %Längsbinder in Hallenbreite mit while schleife legen
 a1= 1; %Längsbinderabstand 1,0...4,0m
 
 % nur für testrechnung effektieve werte müssen abgefüllt werden für IPE un
 % HEA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
@@ -102,7 +227,6 @@ arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
 %Ende Aufbau der Abstände (Pfetten und Rahmen) und Anahl (Pfetten und
 %Rahmen)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plot3([b/2 b/2 0],[0 0 0],[-2 h+2 0])
 %Pfette A
 vert1= [0 0 (h-ProfTh); ProfTb 0 (h-ProfTh); ProfTb 0 h; 0 0 h; ProfTb l h; 0 l h; 0 l (h-ProfTh); ProfTb l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
@@ -150,11 +274,11 @@ vert17= [b-(ProfSb/2-bf/2) l-(ProfSt/2-tf/2) 0; b-(ProfSb/2-bf/2) l-(ProfSt/2+tf
 patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Querbalken Anfang
-vert7= [0 0 (h-2*ProfTh); 0 0 (h-ProfTh); 0 ProfTb (h-ProfTh); 0 ProfTb (h-2*ProfTh); b ProfTb (h-ProfTh); b ProfTb (h-2*ProfTh); b 0 (h-2*ProfTh); b 0 (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert7= [0 ProfSt/2-ProfTb/2 (h-2*ProfTh); 0 ProfSt/2-ProfTb/2 (h-ProfTh); 0 ProfSt/2+ProfTb/2 (h-ProfTh); 0 ProfSt/2+ProfTb/2 (h-2*ProfTh); b ProfSt/2+ProfTb/2 (h-ProfTh); b ProfSt/2+ProfTb/2 (h-2*ProfTh); b ProfSt/2-ProfTb/2 (h-2*ProfTh); b 0 (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert7,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Querbalken Ende
-vert8= [0 (l-ProfTb) (h-2*ProfTh); 0 (l-ProfTb) (h-ProfTh); 0 l (h-ProfTh); 0 l (h-2*ProfTh); b l (h-ProfTh); b l (h-2*ProfTh); b (l-ProfTb) (h-2*ProfTh); b (l-ProfTb) (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert8= [0 (l-ProfSt/2-ProfTb/2) (h-2*ProfTh); 0 (l-ProfSt/2-ProfTb/2) (h-ProfTh); 0 l-ProfSt/2+ProfTb/2 (h-ProfTh); 0 l-ProfSt/2+ProfTb/2 (h-2*ProfTh); b l-ProfSt/2+ProfTb/2 (h-ProfTh); b l-ProfSt/2+ProfTb/2 (h-2*ProfTh); b (l-ProfSt/2-ProfTb/2) (h-2*ProfTh); b (l-ProfSt/2-ProfTb/2) (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,14 +368,15 @@ end
 i1=0;
 while i1 < l-arres; 
        i1= i1 +arres;
-   XMVQ = (i1-(ProfSt/2));           %Hilfsgrösse% Achsabstand der Stütze in While Schleife
+   XMVQS = (i1-(ProfSt/2));           %Hilfsgrösse% Achsabstand der Stütze in While Schleife
+   XM
 
 %Querbalken 
-vert9= [0 XMVQ (h-2*ProfTh); 0 XMVQ (h-ProfTh); 0 (XMVQ+ProfSt) (h-ProfTh); 0 (XMVQ+ProfSt) (h-2*ProfTh); b (XMVQ+ProfSt) (h-ProfTh); b (XMVQ+ProfSt) (h-2*ProfTh); b XMVQ (h-2*ProfTh); b XMVQ (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert9= [0 XMVQS (h-2*ProfTh); 0 XMVQS (h-ProfTh); 0 (XMVQS+ProfSt) (h-ProfTh); 0 (XMVQS+ProfSt) (h-2*ProfTh); b (XMVQS+ProfSt) (h-ProfTh); b (XMVQS+ProfSt) (h-2*ProfTh); b XMVQS (h-2*ProfTh); b XMVQS (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert9,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze iA
-vert10= [0 XMVQ 0; 0 (XMVQ+ProfSt) 0; ProfSb (XMVQ+ProfSt) 0; ProfSb XMVQ 0; ProfSb (XMVQ+ProfSt) (h-2*ProfTh); ProfSb XMVQ (h-2*ProfTh); 0 XMVQ (h-2*ProfTh); 0 (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert10= [0 XMVQS 0; 0 (XMVQS+ProfSt) 0; ProfSb (XMVQS+ProfSt) 0; ProfSb XMVQS 0; ProfSb (XMVQS+ProfSt) (h-2*ProfTh); ProfSb XMVQS (h-2*ProfTh); 0 XMVQS (h-2*ProfTh); 0 (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert10,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iA
@@ -260,7 +385,7 @@ vert16= [ProfSb/2-bf/2 i1-tf/2 0; ProfSb/2-bf/2 i1+tf/2 0; ProfSb/2+bf/2 i1+tf/2
 patch('Faces', fac,'Vertices',vert16,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze iB
-vert11= [b XMVQ 0; b (XMVQ+ProfSt) 0; (b-ProfSb) (XMVQ+ProfSt) 0; (b-ProfSb) XMVQ 0; (b-ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (b-ProfSb) XMVQ (h-2*ProfTh); b XMVQ (h-2*ProfTh); b (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert11= [b XMVQS 0; b (XMVQS+ProfSt) 0; (b-ProfSb) (XMVQS+ProfSt) 0; (b-ProfSb) XMVQS 0; (b-ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (b-ProfSb) XMVQS (h-2*ProfTh); b XMVQS (h-2*ProfTh); b (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert11,'FaceColor','y');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iB
@@ -271,7 +396,7 @@ patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der
 %Stützenreihen bei grösseren Spannweiten >13
 if b >13 & b < 26
 %Stuetze iM
-vert3= [SMb XMVQ 0; SMb (XMVQ+ProfSt) 0; (SMb+ProfSb) (XMVQ+ProfSt) 0; (SMb+ProfSb) XMVQ 0; (SMb+ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQ (h-2*ProfTh); SMb XMVQ (h-2*ProfTh); SMb (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert3= [SMb XMVQS 0; SMb (XMVQS+ProfSt) 0; (SMb+ProfSb) (XMVQS+ProfSt) 0; (SMb+ProfSb) XMVQS 0; (SMb+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQS (h-2*ProfTh); SMb XMVQS (h-2*ProfTh); SMb (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iM
@@ -284,20 +409,30 @@ end
 %Stüztenreihen bei grösseren Spannweiten >26
 if b > 26
 %Stuetze i1/3
-vert3= [S1b XMVQ 0; S1b (XMVQ+ProfSt) 0; (S1b+ProfSb) (XMVQ+ProfSt) 0; (S1b+ProfSb) XMVQ 0; (S1b+ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (S1b+ProfSb) XMVQ (h-2*ProfTh); S1b XMVQ (h-2*ProfTh); S1b (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert3= [S1b XMVQS 0; S1b (XMVQS+ProfSt) 0; (S1b+ProfSb) (XMVQS+ProfSt) 0; (S1b+ProfSb) XMVQS 0; (S1b+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (S1b+ProfSb) XMVQS (h-2*ProfTh); S1b XMVQS (h-2*ProfTh); S1b (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
+%Einzelfundament i1/3
+vert17= [(b/3-bf/2) i1-tf/2 0; (b/3-bf/2) i1+tf/2 0; (b/3+bf/2) i1+tf/2 0; (b/3+bf/2) i1-tf/2 0;...
+        (b/3+bf/2) i1+tf/2 -hf; (b/3+bf/2) i1-tf/2 -hf; (b/3-bf/2) i1-tf/2 -hf; (b/3-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
+
 %Stuetze i2/3
-vert3= [S2b XMVQ 0; S2b (XMVQ+ProfSt) 0; (S2b+ProfSb) (XMVQ+ProfSt) 0; (S2b+ProfSb) XMVQ 0; (S2b+ProfSb) (XMVQ+ProfSt) (h-2*ProfTh); (S2b+ProfSb) XMVQ (h-2*ProfTh); S2b XMVQ (h-2*ProfTh); S2b (XMVQ+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert3= [S2b XMVQS 0; S2b (XMVQS+ProfSt) 0; (S2b+ProfSb) (XMVQS+ProfSt) 0; (S2b+ProfSb) XMVQS 0; (S2b+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (S2b+ProfSb) XMVQS (h-2*ProfTh); S2b XMVQS (h-2*ProfTh); S2b (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)   
 
-end
+%Einzelfundament i2/3
+vert17= [((2*b/3)-bf/2) i1-tf/2 0; ((2*b/3)-bf/2) i1+tf/2 0; ((2*b/3)+bf/2) i1+tf/2 0; ((2*b/3)+bf/2) i1-tf/2 0;...
+        ((2*b/3)+bf/2) i1+tf/2 -hf; ((2*b/3)+bf/2) i1-tf/2 -hf; ((2*b/3)-bf/2) i1-tf/2 -hf; ((2*b/3)-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 
-
-
-
-
+        end
+    
+        end
