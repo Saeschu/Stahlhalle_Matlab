@@ -79,11 +79,18 @@ Editq = uicontrol('style','edit',...
 %Bodenklasifikation
 txtBodK = uicontrol('Style', 'text',...
         'Position',[285 220 120 20],...
-        'String', 'Bodenklasifikaitons');
+        'String', 'Bodenklassifikation');
 DdownBodK = uicontrol('Style', 'popup',...
-        'String', {'a1','a2','a3'},...
+        'String', {'Ton, weich','Sand, dicht','Kies, grob mit Sand'},...
         'Position', [405 220 100 20],'background','w');
-         
+    
+%Setzungen
+txtBodK = uicontrol('Style', 'text',...
+        'Position',[285 190 120 20],...
+        'String', 'zulässige Setzungen');
+DdownBodK = uicontrol('Style', 'popup',...
+        'String', {'5mm','10mm','15mm'},...
+        'Position', [405 190 100 20],'background','w');
 % Festlegung ob Hallenhöe unter oder oberkannte Balken gesetzt werden soll
 % 1== Unterkannte, 2== Oberkannte
 txtBedH = uicontrol('Style','text',...
@@ -103,7 +110,9 @@ elementBP= [0.2 0.1 19.4e6;...        %IPE200
           0.24 0.23 77.6e6;...      %HEA240
           0.26 0.25 104.5e6];        %HEA260
 %Bodenklasifikation
-elementBK= []
+elementBK= [40000;...               %Ton, weich [MN/m3]
+          100000;...                %Sand, dicht [MN/m3] 
+          240000];                  %Kies, grob mit Sand [MN/m3]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %StarButton
@@ -180,8 +189,8 @@ set(f2,'Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off','position', [80
 azb= 1;               %Anzahl Bögen
 
 hf= 0.5;
-bf= 0.4;
-tf= 0.4;
+bf= 0.5;
+tf= 0.5;
 
 %Längsbinder in Hallenbreite mit while schleife legen
 a1= 1; %Längsbinderabstand 1,0...4,0m
