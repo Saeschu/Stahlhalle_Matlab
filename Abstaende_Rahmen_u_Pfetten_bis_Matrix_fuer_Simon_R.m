@@ -88,3 +88,5 @@ BB{1,2} = FR2;                   %Matrix mit Kräften der mittleren Rahmen
 BB{1,3} = Distanzx;              %Matrix mit den Distanzen der Pfetten von links
 
 EinwirkungenaufRahmen = cat(3,AA,BB);    %Generiung der Matrix in Matrix
+
+%
