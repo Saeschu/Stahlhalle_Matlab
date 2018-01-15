@@ -224,7 +224,7 @@ legBauDimT = uicontrol('Style','text','HorizontalAlignment', 'left',...
 ba= b-ProfS         %Breite Achsabstand
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
-AZB= 1;               %Anzahl Bögen
+b= 1;               %Anzahl Bögen
 
 hf= 0.5;
 bf= 0.4;
@@ -872,8 +872,6 @@ text(ba*0.5,h+NSupSR*dN,num2str(roundn(NSupSO,-2)))                  %Text Stab 
 
 hold off
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [ ] = Funktion_Berechnung_Fundamnet( Auflagermatrix,K,AZB,sm,ksm,)
 
@@ -1054,7 +1052,7 @@ patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der 
 %ergänzt
 %Stützen anfang und ende
 if b > 13 & b < 26
-    AZB=2;                            % Anzahl Bögen
+    azb=2;                            % Anzahl Bögen
    SMb= (b/2) -(ProfSb/2);           %Hilfsgrösse% Pos X (also Stützenabstand) der Stüzte. Einmitung auf Achsmass der Stütze
   
 %Stuetze VM 
@@ -1080,7 +1078,7 @@ end
 % Wen Hallenbreite grösser 26m ist werden weiter Stützenreihe bei 1/3 und 2/3
 % ergänzt
 if b > 26
-     AZB=3;                             % Anzahl Bögen
+     azb=3;                             % Anzahl Bögen
     S1b= (b/3) -(ProfSb/2);
     S2b= (2*b/3) -(ProfSb/2);
 %Stuetze V 1/3
