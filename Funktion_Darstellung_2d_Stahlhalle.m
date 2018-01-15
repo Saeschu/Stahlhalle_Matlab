@@ -1,4 +1,4 @@
-function [ ] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,ba,h,MMX,QMX,NMX )
+function [ figure(K) ] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,ba,h,MMX,QMX,NMX )
 %Darstellung der Resultate in 2D
 %   Input:
 %
@@ -35,7 +35,7 @@ end
 %Darstellung Bogen  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-figure(1)
+figure(K)
 
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(2,4,1)

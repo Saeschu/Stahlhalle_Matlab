@@ -13,12 +13,17 @@
 
 
 
-[ Auflagermatrix_1, MMX_1,QMX_1,NMX_1 ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
+[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
-[ Auflagermatrix_2, MMX_2,QMX_2,NMX_2 ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
+[ figure(1) ] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX )
 
+[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
+
+[ figure(2) ] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
 
 %   - Berechnung Fundamente
 
-
+%{
 Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX_1,QMX_1,NMX_1 )
+Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX_2,QMX_2,NMX_2 )
+%}
