@@ -9,8 +9,7 @@ txtArbTit = uicontrol('Style','text','HorizontalAlignment', 'left',...
         'Position',[10 60 140 20],...
         'String','Kräftefluss in einer Stahlhalle');
     
-txtDatum = uicontrol('Style','text','Hori
-zontalAlignment', 'left',...
+txtDatum = uicontrol('Style','text','HorizontalAlignment', 'left',...
         'Position',[10  40 140 20],...
         'String','Letze Änderung: 25.01.2017');    
 
@@ -37,7 +36,7 @@ EditBreite = uicontrol('style','edit',...
             'position',[105 337 100 25])
 InfoBreit = uicontrol('Style','text',...
         'Position',[220 337 420 40],'HorizontalAlignment', 'left',...
-        'String','Ab einer Spannweite über 13m bzw. 26m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13m, maximale Gesammtspannweite beträgt 39m');
+        'String','Ab einer Spannweite über 13m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13m, maximale Gesammtspannweite beträgt 26m');
     
 %Eingabe Höhe
 txtHoehe = uicontrol('Style','text','HorizontalAlignment', 'left',...
@@ -146,8 +145,8 @@ BedH= get(DdownBedH, 'Value')  % 1== Unterkannte, 2== Oberkannte
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
-if b > 39
-    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 39m. Berechnung mit mehr als 4 Stützenreihen bzw. 3 Bögen ist zur zeit nicht möglich.',...
+if b > 26
+    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 26m. Berechnung mit mehr als 4 Stützenreihen bzw. 3 Bögen ist zur zeit nicht möglich.',...
         'Infobox')
     return 
    end
@@ -224,7 +223,7 @@ legBauDimT = uicontrol('Style','text','HorizontalAlignment', 'left',...
 ba= b-ProfS         %Breite Achsabstand
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
-b= 1;               %Anzahl Bögen
+AZB= 1;               %Anzahl Bögen
 
 hf= 0.5;
 bf= 0.4;
@@ -872,6 +871,8 @@ text(ba*0.5,h+NSupSR*dN,num2str(roundn(NSupSO,-2)))                  %Text Stab 
 
 hold off
 end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [ ] = Funktion_Berechnung_Fundamnet( Auflagermatrix,K,AZB,sm,ksm,)
 
@@ -1052,7 +1053,7 @@ patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der 
 %ergänzt
 %Stützen anfang und ende
 if b > 13 & b < 26
-    azb=2;                            % Anzahl Bögen
+    AZB=2;                            % Anzahl Bögen
    SMb= (b/2) -(ProfSb/2);           %Hilfsgrösse% Pos X (also Stützenabstand) der Stüzte. Einmitung auf Achsmass der Stütze
   
 %Stuetze VM 
@@ -1078,7 +1079,7 @@ end
 % Wen Hallenbreite grösser 26m ist werden weiter Stützenreihe bei 1/3 und 2/3
 % ergänzt
 if b > 26
-     azb=3;                             % Anzahl Bögen
+     AZB=3;                             % Anzahl Bögen
     S1b= (b/3) -(ProfSb/2);
     S2b= (2*b/3) -(ProfSb/2);
 %Stuetze V 1/3
