@@ -223,33 +223,33 @@ legNumEditq = uicontrol('Style','text','HorizontalAlignment', 'left',...
 legBauDimT = uicontrol('Style','text','HorizontalAlignment', 'left',...
         'Position',[10 267 110 20],...
         'String','Flächenlast');
-%legBauDimT = uicontrol('Style','text','HorizontalAlignment', 'left',...
- %       'Position',[120 267 80 20],...
-  %      'String',get(DdownBauDimS, 'Value') );
+legBauDimT = uicontrol('Style','text','HorizontalAlignment', 'left',...
+       'Position',[120 267 80 20],...
+       'String',get(DdownBauDimS, 'Value') );
+  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
 ba= b-ProfS         %Breite Achsabstand
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
-AZB= 1;               %Anzahl Bögen
+AZB= 1;             %Anzahl Bögen
 
 hf= 0.5;
 bf= 0.5;
 tf= 0.5;
 
+%Anzahl Rahmen für Unbestimtheit
+AZB = 1;
+if b > 13 & b < 26
+    AZB=2;
+end
+
 %Längsbinder in Hallenbreite mit while schleife legen
 a1= 1; %Längsbinderabstand 1,0...4,0m
 
-% nur für testrechnung effektieve werte müssen abgefüllt werden für IPE un
-% HEA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%Dokument 'Lagerhalle_Darstellung' öffnen (Ausgangswerte enthalten)
-%und einmal 'Run', damit Ausgangswerte in Workspace
-
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
 n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
@@ -965,7 +965,6 @@ end
 [ figure(2) ] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
@@ -1030,7 +1029,6 @@ vert15= [b-(ProfSb/2-bf/2) ProfSt/2-tf/2 0; b-(ProfSb/2-bf/2) ProfSt/2+tf/2 0; b
         b-(ProfSb/2+bf/2) ProfSt/2+tf/2 -hf; b-(ProfSb/2+bf/2) ProfSt/2-tf/2 -hf; b-(ProfSb/2-bf/2) ProfSt/2-tf/2 -hf; b-(ProfSb/2-bf/2) ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert15,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
-
 %Stuetze 3
 vert5= [0 (l-ProfSt) 0; 0 l 0; ProfSb l 0; ProfSb (l-ProfSt) 0; ProfSb l (h-2*ProfTh); ProfSb (l-ProfSt) (h-2*ProfTh); 0 (l-ProfSt) (h-2*ProfTh); 0 l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert5,'FaceColor','r');            % Erzeugen der Gefärbten Flächen (Polygonen)
@@ -1062,7 +1060,6 @@ patch('Faces', fac,'Vertices',vert8,'FaceColor','g');            % Erzeugen der 
 %ergänzt
 %Stützen anfang und ende
 if b > 13 & b < 26
-    AZB=2;                            % Anzahl Bögen
    SMb= (b/2) -(ProfSb/2);           %Hilfsgrösse% Pos X (also Stützenabstand) der Stüzte. Einmitung auf Achsmass der Stütze
   
 %Stuetze VM 
@@ -1081,50 +1078,6 @@ patch('Faces', fac,'Vertices',vert5,'FaceColor','c');            % Erzeugen der 
 %Einzelfundament HM
 vert17= [(b/2-bf/2) l-(ProfSt/2-tf/2) 0; (b/2-bf/2) l-(ProfSt/2+tf/2) 0; (b/2+bf/2) l-(ProfSt/2+tf/2) 0; (b/2+bf/2) l-(ProfSt/2-tf/2) 0;...
         (b/2+bf/2) l-(ProfSt/2+tf/2) -hf; (b/2+bf/2) l-(ProfSt/2-tf/2) -hf; (b/2-bf/2) l-(ProfSt/2-tf/2) -hf; (b/2-bf/2) l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-end
-
-% Wen Hallenbreite grösser 26m ist werden weiter Stützenreihe bei 1/3 und 2/3
-% ergänzt
-if b > 26
-     AZB=3;                             % Anzahl Bögen
-    S1b= (b/3) -(ProfSb/2);
-    S2b= (2*b/3) -(ProfSb/2);
-%Stuetze V 1/3
-vert3= [S1b 0 0; S1b ProfSt 0; (S1b+ProfSb) ProfSt 0; (S1b+ProfSb) 0 0; (S1b+ProfSb) ProfSt (h-2*ProfTh); (S1b+ProfSb) 0 (h-2*ProfTh); S1b 0 (h-2*ProfTh); S1b ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Einzelfundament V 1/3
-vert15= [(b/3-bf/2) ProfSt/2-tf/2 0; (b/3-bf/2) ProfSt/2+tf/2 0; (b/3+bf/2) ProfSt/2+tf/2 0; (b/3+bf/2) ProfSt/2-tf/2 0;...
-        (b/3+bf/2) ProfSt/2+tf/2 -hf; (b/3+bf/2) ProfSt/2-tf/2 -hf; (b/3-bf/2) ProfSt/2-tf/2 -hf; (b/3-bf/2) ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert15,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze H 1/3
-vert5= [S1b (l-ProfSt) 0; S1b l 0; (S1b+ProfSb) l 0; (S1b+ProfSb) (l-ProfSt) 0; (S1b+ProfSb) l (h-2*ProfTh); (S1b+ProfSb) (l-ProfSt) (h-2*ProfTh); S1b (l-ProfSt) (h-2*ProfTh); S1b l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert5,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Einzelfundament H 1/3
-vert17= [(b/3-bf/2) l-(ProfSt/2-tf/2) 0; (b/3-bf/2) l-(ProfSt/2+tf/2) 0; (b/3+bf/2) l-(ProfSt/2+tf/2) 0; (b/3+bf/2) l-(ProfSt/2-tf/2) 0;...
-        (b/3+bf/2) l-(ProfSt/2+tf/2) -hf; (b/3+bf/2) l-(ProfSt/2-tf/2) -hf; (b/3-bf/2) l-(ProfSt/2-tf/2) -hf; (b/3-bf/2) l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze V 2/3
-vert3= [S2b 0 0; S2b ProfSt 0; (S2b+ProfSb) ProfSt 0; (S2b+ProfSb) 0 0; (S2b+ProfSb) ProfSt (h-2*ProfTh); (S2b+ProfSb) 0 (h-2*ProfTh); S2b 0 (h-2*ProfTh); S2b ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Einzelfundament V 2/3
-vert15= [((2*b/3)-bf/2) ProfSt/2-tf/2 0; ((2*b/3)-bf/2) ProfSt/2+tf/2 0; ((2*b/3)+bf/2) ProfSt/2+tf/2 0; ((2*b/3)+bf/2) ProfSt/2-tf/2 0;...
-        ((2*b/3)+bf/2) ProfSt/2+tf/2 -hf; ((2*b/3)+bf/2) ProfSt/2-tf/2 -hf; ((2*b/3)-bf/2) ProfSt/2-tf/2 -hf; ((2*b/3)-bf/2) ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert15,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze H 2/3
-vert5= [S2b (l-ProfSt) 0; S2b l 0; (S2b+ProfSb) l 0; (S2b+ProfSb) (l-ProfSt) 0; (S2b+ProfSb) l (h-2*ProfTh); (S2b+ProfSb) (l-ProfSt) (h-2*ProfTh); S2b (l-ProfSt) (h-2*ProfTh); S2b l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert5,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Einzelfundament H 2/3
-vert17= [((2*b/3)-bf/2) l-(ProfSt/2-tf/2) 0; ((2*b/3)-bf/2) l-(ProfSt/2+tf/2) 0; ((2*b/3)+bf/2) l-(ProfSt/2+tf/2) 0; ((2*b/3)+bf/2) l-(ProfSt/2-tf/2) 0;...
-        ((2*b/3)+bf/2) l-(ProfSt/2+tf/2) -hf; ((2*b/3)+bf/2) l-(ProfSt/2-tf/2) -hf; ((2*b/3)-bf/2) l-(ProfSt/2-tf/2) -hf; ((2*b/3)-bf/2) l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 end
@@ -1171,6 +1124,7 @@ patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der
 
 %Stützenreihen bei grösseren Spannweiten >13
 if b >13 & b < 26
+    
 %Stuetze iM
 vert3= [SMb XMVQS 0; SMb (XMVQS+ProfSt) 0; (SMb+ProfSb) (XMVQS+ProfSt) 0; (SMb+ProfSb) XMVQS 0; (SMb+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQS (h-2*ProfTh); SMb XMVQS (h-2*ProfTh); SMb (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
@@ -1181,34 +1135,9 @@ vert17= [(b/2-bf/2) i1-tf/2 0; (b/2-bf/2) i1+tf/2 0; (b/2+bf/2) i1+tf/2 0; (b/2+
 patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 end
-
-%Stüztenreihen bei grösseren Spannweiten >26
-if b > 26
-%Stuetze i1/3
-vert3= [S1b XMVQS 0; S1b (XMVQS+ProfSt) 0; (S1b+ProfSb) (XMVQS+ProfSt) 0; (S1b+ProfSb) XMVQS 0; (S1b+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (S1b+ProfSb) XMVQS (h-2*ProfTh); S1b XMVQS (h-2*ProfTh); S1b (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Einzelfundament i1/3
-vert17= [(b/3-bf/2) i1-tf/2 0; (b/3-bf/2) i1+tf/2 0; (b/3+bf/2) i1+tf/2 0; (b/3+bf/2) i1-tf/2 0;...
-        (b/3+bf/2) i1+tf/2 -hf; (b/3+bf/2) i1-tf/2 -hf; (b/3-bf/2) i1-tf/2 -hf; (b/3-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-%Stuetze i2/3
-vert3= [S2b XMVQS 0; S2b (XMVQS+ProfSt) 0; (S2b+ProfSb) (XMVQS+ProfSt) 0; (S2b+ProfSb) XMVQS 0; (S2b+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (S2b+ProfSb) XMVQS (h-2*ProfTh); S2b XMVQS (h-2*ProfTh); S2b (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor','c');            % Erzeugen der Gefärbten Flächen (Polygonen)   
-
-%Einzelfundament i2/3
-vert17= [((2*b/3)-bf/2) i1-tf/2 0; ((2*b/3)-bf/2) i1+tf/2 0; ((2*b/3)+bf/2) i1+tf/2 0; ((2*b/3)+bf/2) i1-tf/2 0;...
-        ((2*b/3)+bf/2) i1+tf/2 -hf; ((2*b/3)+bf/2) i1-tf/2 -hf; ((2*b/3)-bf/2) i1-tf/2 -hf; ((2*b/3)-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert17,'FaceColor','b');            % Erzeugen der Gefärbten Flächen (Polygonen)
-
-end
-
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
-
         end
     
         end
