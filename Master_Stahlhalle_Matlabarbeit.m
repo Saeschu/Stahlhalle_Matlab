@@ -36,7 +36,7 @@ EditBreite = uicontrol('style','edit',...
             'position',[105 337 100 25])
 InfoBreit = uicontrol('Style','text',...
         'Position',[220 337 420 40],'HorizontalAlignment', 'left',...
-        'String','Ab einer Spannweite über 13m bzw. 26m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13m, maximale Gesammtspannweite beträgt 39m');
+        'String','Ab einer Spannweite über 13m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13m, maximale Gesammtspannweite beträgt 26m');
     
 %Eingabe Höhe
 txtHoehe = uicontrol('Style','text','HorizontalAlignment', 'left',...
@@ -166,8 +166,8 @@ sm=elementSE (Setzungen)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
-if b > 39
-    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 39m. Berechnung mit mehr als 4 Stützenreihen bzw. 3 Bögen ist zur zeit nicht möglich.',...
+if b > 26
+    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
         'Infobox')
     return 
    end
@@ -189,7 +189,7 @@ xlabel('x - Breite')
 ylabel('y - Länge')
 zlabel('z - Höhe')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-set(f2,'Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off','position', [800 438 900 420])
+set(f2,'Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off')% 'position', [800 438 900 420])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Legende
 %Inof 'Position', [left bottom width height]
