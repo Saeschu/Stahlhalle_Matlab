@@ -80,17 +80,18 @@ Editq = uicontrol('style','edit',...
 txtBodK = uicontrol('Style', 'text','HorizontalAlignment', 'left',...
         'Position',[285 220 120 20],...
         'String', 'Bodenklassifikation');
-DdownBodK = uicontrol('Style', 'popup',...
+DdownBodK= uicontrol('Style', 'popup',...
         'String', {'Ton, weich','Sand, dicht','Kies, grob mit Sand'},...
         'Position', [405 220 100 20],'background','w');
     
 %Setzungen
-txtBodK = uicontrol('Style', 'text',...
+txtSet = uicontrol('Style', 'text',...
         'Position',[285 190 120 20],...
         'String', 'zulässige Setzungen');
-DdownBodK = uicontrol('Style', 'popup',...
+DdownSet = uicontrol('Style', 'popup',...
         'String', {'5mm','10mm','15mm'},...
         'Position', [405 190 100 20],'background','w');
+    
 % Festlegung ob Hallenhöe unter oder oberkannte Balken gesetzt werden soll
 % 1== Unterkannte, 2== Oberkannte
 txtBedH = uicontrol('Style','text','HorizontalAlignment', 'left',...
@@ -114,6 +115,10 @@ elementBK= [40000;...               %Ton, weich [MN/m3]
           100000;...                %Sand, dicht [MN/m3] 
           240000];                  %Kies, grob mit Sand [MN/m3]
 
+%Setzungen
+elementSE=[0.005;...                %5mm Setzung
+           0.01;...                 %10mm Setzung
+           0.015];                  %15mm Setzung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %StarButton
 PushbuttonStart = uicontrol('style','pushbutton',...
@@ -144,7 +149,14 @@ ProfTh= elementBP(ProfT, 1)
 ProfTb= elementBP(ProfT, 2)
 IT= elementBP(ProfT, 3)
 
-BedH= get(DdownBedH, 'Value')  % 1== Unterkannte, 2== Oberkannte 
+BedH= get(DdownBedH, 'Value')  % 1== Unterkannte, 2== Oberkannte
+
+Bodenk=get(DdownBodK, 'Value') %Bodenklassifikation
+ksm=elementBK(Bodenk)
+
+Setzungen=get(DdownSet, 'Value') %Setzungen
+sm=elementSE (Setzungen)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
 %set(f1,'position', [10 438 750 420])
@@ -235,9 +247,9 @@ hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
 AZB= 1;             %Anzahl Bögen
 
-hf= 0.5;
-bf= 0.5;
-tf= 0.5;
+%hf= 0.5;
+%bf= 0.5;
+%tf= 0.5;
 
 %Anzahl Rahmen für Unbestimtheit
 AZB = 1;
@@ -289,7 +301,7 @@ arres=(l/(nrres-1))     %resultierender Abstand der Rahmen
 %Beginn Aufteilung der Flächenlast auf Pfetten -> erster und letzter Rahmen
 %Grundlage für Matrix für Simon
                       
-q=10                            %Flächenlast (nicht offiziel, ändern nach Saschas Eingabefenster)
+                            
 F1PA=(q*(apres/2)*(arres/2))    %Flächenlast auf dem ersten Rahmnen, erste Pfette
                                 %Namensgebung: F=Kraft,1=Erster Rahmen,
                                 %PA=erste Pfette
@@ -882,70 +894,50 @@ hold off
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fundamente
 
-function [ ] = Funktion_Berechnung_Fundamnet( Auflagermatrix,K,AZB,sm,ksm,)
-
-      %Fundamente 
-
-%Für Auswahlfenster
-%zulässige Setzungen sm
-%5mm Setzung ->  sm=0.005 [m]
-%10mm Setzung -> sm=0.01 [m]
-%15mm Setzung -> sm=0.015 [m]
-
-%Bettungsmodule ksm
-%Ton,weich= 40 [MN/m3]
-%Sand, dicht= 100 [MN/m3]
-%Kies, grob mit Sand= 240 [MN/m3]
+function [ ] = Funktion_Berechnung_Fundament(Auflagermatrix,K,AZB,sm,ksm)
 
 %Fundamente Rahmen
-ksm=40000   %Ton weich
-sm=0.005    %5mm Setzung
+
 o2=ksm*sm   %Randspannung=Bettungsmodul*Setzung
 
-N=2000      %Normalkraft
-M=1000      %Moment  
-H=0         %Horizontalkraft
 hf=1        %Einbindetiefe
 
-bf1=((M+H*hf)/N)*6   %Breite aufgrund von Kernpunkt
+if K==1
+bf1=(sum(Ma)+(sum(Ah)*hf)/sum(Av))*6   %Breite aufgrund von Kernpunkt
 if bf1<=0.4          %Mindesbreite
     bf1=0.4          
-else bf1=((M+(H*hf))/N)*6 %grösser als Mindesbreite
+else bf1=((sum(Ma)+(sum(Ah)*hf))/sum(Av))*6 %grösser als Mindesbreite
 end
 
-tf1=2*N/(o2*bf)      %Länge aufgrund Einwirkung
+tf1=2*sum(Av)/(o2*bf1)      %Länge aufgrund Einwirkung
 if tf1<=0.4          %Mindeslänge
     tf1=0.4
-else tf1=2*N/(o2*bf)      %Länge aufgrund Einwirkung
+else tf1=2*sum(Av)/(o2*bf1)      %Länge aufgrund Einwirkung
+end
 end
 
-bf2=((M+H*hf)/N)*6   %Breite aufgrund von Kernpunkt
+if K==2
+bf2=(sum(Ma)+(sum(Ah)*hf)/sum(Av))*6   %Breite aufgrund von Kernpunkt
 if bf2<=0.4          %Mindesbreite
     bf2=0.4          
-else bf2=((M+(H*hf))/N)*6 %grösser als Mindesbreite
+else bf2=((sum(Ma)+(sum(Ah)*hf))/sum(Av))*6 %grösser als Mindesbreite
 end
 
-tf2=2*N/(o2*bf)      %Länge aufgrund Einwirkung
+tf2=2*sum(Av)/(o2*bf2)      %Länge aufgrund Einwirkung
 if tf2<=0.4          %Mindeslänge
     tf2=0.4
-else tf2=2*N/(o2*bf)      %Länge aufgrund Einwirkung
+else tf2=2*sum(Av)/(o2*bf2)      %Länge aufgrund Einwirkung
 end
-
-%hf= 1.0;    %Höhe Fundament
-%bf= 0.4;    %Breite Fundament
-%tf= 0.4;    %Länge Fundament
-
-%N=2000     %Fiktive Normalkraft
-%M=10       %Fiktives Moment
-%H=900      %Fiktive Horizontalkraft
+end
 
 %Fundamente Pendelstütze (Kein Moment)
 om=ksm*sm  %Bodenspannung Mitte
 
 %om=Kraft /Fläche
 
-FAM=N/om    %Fläche um Normalkraft aufzunehmen
+FAM=sum(S1v)/om    %Fläche um Normalkraft aufzunehmen
 
 blm=sqrt(FAM) %quadratisches Fundament
 
@@ -956,13 +948,13 @@ end
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 
-[ figure(1) ] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX )
+%[ figure(1) ] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX )
 
 %Plot mittlere Rahmen
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
-[ figure(2) ] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
+%[ figure(2) ] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1140,4 +1132,4 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
         end
     
-        end
+ end
