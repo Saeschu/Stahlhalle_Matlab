@@ -247,9 +247,9 @@ hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
 AZB= 1;             %Anzahl Bögen
 
-%hf= 0.5;
-%bf= 0.5;
-%tf= 0.5;
+hf= 1;
+bf= 0.5;
+tf= 0.5;
 
 %Anzahl Rahmen für Unbestimtheit
 AZB = 1;
@@ -287,7 +287,7 @@ if nr==round(nr)       %Wenn nl ganze Zahl,
     nrres=nr+1         %+1 weil Endrahmen hinzukommt
 
 else nr~=round(nr)     %Wenn nl keine ganze Zahl,
-    nrres=ceil(nr)+1   %Aufrunden, dass n15 gerade wird (+1 weil Endstütze hinzukommt)
+    nrres=ceil(nr)+1   %Aufrunden, dass nrres gerade wird (+1 weil Endstütze hinzukommt)
                        %Verändert den eingegebenen Abstand, damit eine
                        %ganze Anzahl an Rahmen entseht
 end
@@ -902,10 +902,10 @@ function [ ] = Funktion_Berechnung_Fundament(Auflagermatrix,K,AZB,sm,ksm)
 
 o2=ksm*sm   %Randspannung=Bettungsmodul*Setzung
 
-hf=1        %Einbindetiefe
+%hf=1        %Einbindetiefe
 
 if K==1
-bf1=(sum(Ma)+(sum(Ah)*hf)/sum(Av))*6   %Breite aufgrund von Kernpunkt
+    bf1=(sum(Ma)+(sum(Ah)*hf)/sum(Av))*6   %Breite aufgrund von Kernpunkt
 if bf1<=0.4          %Mindesbreite
     bf1=0.4          
 else bf1=((sum(Ma)+(sum(Ah)*hf))/sum(Av))*6 %grösser als Mindesbreite
@@ -945,14 +945,14 @@ end
 
 %Plot für erster + letzer Rahmen
 
-[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
+%[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 
 %[ figure(1) ] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX )
 
 %Plot mittlere Rahmen
 
-[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
+%[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 %[ figure(2) ] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
 

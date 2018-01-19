@@ -5,6 +5,7 @@
 
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
+
 n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
 n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
