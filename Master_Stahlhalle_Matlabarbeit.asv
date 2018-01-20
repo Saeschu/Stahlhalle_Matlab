@@ -756,12 +756,15 @@ hFM =hf                           %höhe Fundament Mitte
 hFR =hf                          %höhe Fundament Rechts
 
 hFMAX=max([hFL hFM hFR])                   %Darstellungs Faktor Bemassungs Linie 
-
+%{
 if K==1
-f3= figure('Name','Erster und Letzter Bogen')
+title('Erster und Letzter Bogen')
 else %K==2
-f4= figure('Name','Zweiter bis zweitletzter Bogen')
+title('Zweiter bis zweitletzter Bogen')
 end
+%}
+
+
 
 
 %Darstellung: Struktur, Auflast & Fundamente
@@ -1021,14 +1024,14 @@ hold off
 end
 
 
-
+%{
 %Plot für erster + letzer Rahmen
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
 
-[f3] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[figure(3)] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf1=bf
 tf1=tf
@@ -1040,12 +1043,12 @@ bfm1=bfm
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
 
-[f4] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[figure(4)] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX )
 
 bf2=bf
 tf2=tf
 bfm2=bfm
-
+%}
 
 
 
