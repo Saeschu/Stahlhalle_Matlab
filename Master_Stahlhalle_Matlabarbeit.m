@@ -896,7 +896,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Fundamente
 
-function [ ] = Funktion_Berechnung_Fundament(Auflagermatrix,K,AZB,sm,ksm)
+function [Fundamente] = Funktion_Berechnung_Fundament(Auflagermatrix,K,AZB,sm,ksm)
 
 %Fundamente Rahmen
 
