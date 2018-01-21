@@ -115,14 +115,14 @@ DdownSet = uicontrol('Style', 'popup',...
 %Info 'Position', [left bottom width height]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
 %Bauteilprofiele    %[Höhe Breite Iy]
-elementBP= [0.2 0.1 19.4e6;...        %IPE200
+elementBP= [0.2 0.1 19.4e6;...      %IPE200
           0.22 0.11 27.7e6;...      %IPE220
           0.24 0.12 38.9e6;...      %IPE240
           0.27 0.135 57.9e6;...     %IPE270
           0.2 0.19 36.9e6;...       %HEA200
           0.22 0.21 54.1e6;...      %HEA220
           0.24 0.23 77.6e6;...      %HEA240
-          0.26 0.25 104.5e6];        %HEA260
+          0.26 0.25 104.5e6];       %HEA260
 %Bodenklasifikation
 elementBK= [40000;...               %Ton, weich [MN/m3]
           100000;...                %Sand, dicht [MN/m3] 
@@ -214,9 +214,9 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
-n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
+n1=(ba/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
+n15=(ba/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
 npres=0                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
 if n15==round(n15)      %Wenn n15 ganze Zahl, 
@@ -226,7 +226,7 @@ elseif n1==round(n1)    %Wenn n1 ganze Zahl,
 else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
-apres=(b/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
+apres=(ba/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
 
 
 %Anzahl Binder abhängig von Länge und Abstand
@@ -303,30 +303,19 @@ EinwirkungenaufRahmen = cat(3,AA,BB);    %Generiung der Matrix in Matrix
 
 function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB,EinwirkungenaufRahmen,ba,h,hI )
 %Berechnet die Auflagerkraftematrix und die Plot Linien für die Bogen
-%   Input:
-%   K                               Kennzahl für EinwirkungaufRahmen Matrix 
-%                                        -   1 = Ersten + Letzten Rahmen  
-%                                        -   2 = Mittlere Rahmen
-%   AZB
-%   EinwirkungaufRahmen
-%   ba
-%   hI
 %
 %   Output:
-%   Auflagermatrix
-%   MMX     Matrix Momentenverlauf für Plot MSupSL, MSupSR ,MSupSO
-%   QMX     Matrix Querkraftverlauf für Plot VSupSL, VSupSR ,VSupSO
-%   NMX     Matrix Normalkraftverlauf für Plot NSupSL, NSupSR ,NSupSO, NSupS1, NSupS2
-
+%   Auflagermatrix      Zusammenstellung der Auflagerkräfte
+%   MMX                 Matrix Momentenverlauf für Plot MSupSL, MSupSR ,MSupSO
+%   QMX                 Matrix Querkraftverlauf für Plot VSupSL, VSupSR ,VSupSO
+%   NMX                 Matrix Normalkraftverlauf für Plot NSupSL, NSupSR ,NSupSO, NSupS1, NSupS2
 
 %Wert aus EinwirkungaufRahmen Matrix lesen
 F=EinwirkungenaufRahmen{1,2,K}
 x=EinwirkungenaufRahmen{1,3,K}
-
-
    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Funktion für Bogen 2 bis 4 Stützen
+% Funktion für Bogen 2 bis 3 Stützen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Auflagerkräfte von 0 Zustand
@@ -359,7 +348,6 @@ if AZB == 1
 %   Berechnung (n=3) mit 2 Stützen aussen      ¦           ¦            %                          
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % Matrix der Verschiebungsgrössen [B A] * X = [0;0;0]
 A=[a11,a12,a13;a12,a22,a23;a13,a23,a33]
 B=[-a10;-a20;-a30]
@@ -389,11 +377,10 @@ Ml=0+1.*X1+1.*X2+-1.*X3
 % Moment Ecke Rechts oben
 Mr=0+1.*X1+0.*X2+0.*X3
 
-
 % Werte Moment für Superposition
-dx=1000                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
 dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
-dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
+dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
 MSupSR=linspace(sum(Mb),sum(Mr),dS)                     % Superposition Stab Rechts Moment
@@ -713,13 +700,12 @@ end
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(2,2,1)
 hold on
-<<<<<<< HEAD
+
 
 axis off
-=======
 axis off
 axis equal
->>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
+
 title('Struktur')
 
 
@@ -1054,40 +1040,7 @@ legNumEditq = uicontrol('Style','text','HorizontalAlignment', 'left',...
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Anzahl Pfetten abhängig von Breite
-%Pfettenabstand
-n1=(b/a1);               %Anzahl Pfetten, wenn Abstand 1.0m
-a15=1.5;                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15);             %Anzahl Pfetten, wenn Abstand 1.5m
-npres=0;                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
-if n15==round(n15)      %Wenn n15 ganze Zahl, 
-    npres=n15+1         %+1 weil Endstütze hinzukommt
-elseif n1==round(n1)    %Wenn n1 ganze Zahl,
-    npres=n1+1          %+1 weil Endstütze hinzukommt
-else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
-    npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
-end
-apres=(b/(npres-1));      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
-
-%Anzahl Binder abhängig von Länge und Abstand
-nr=(l/a);               %Anzahl Rahmen, gegeben durch (Länge/Abstand) von Benutzer gewählt
-nrres=0;                %Anzahl Rahmen, um dann weiterzurechnen
-
-if nr==round(nr)       %Wenn nl ganze Zahl, 
-    nrres=nr+1         %+1 weil Endrahmen hinzukommt
-
-else nr~=round(nr)     %Wenn nl keine ganze Zahl,
-    nrres=ceil(nr)+1;   %Aufrunden, dass n15 gerade wird (+1 weil Endstütze hinzukommt)
-                       %Verändert den eingegebenen Abstand, damit eine
-                       %ganze Anzahl an Rahmen entseht
-end
-arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
-                       %weicht vom eingegebenen a ab, wenn (Länge/Abstand)
-                       %keine ganze Zahl ergibt
-                       
-%Ende Aufbau der Abstände (Pfetten und Rahmen) und Anahl (Pfetten und
-%Rahmen)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Patch Properties
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
