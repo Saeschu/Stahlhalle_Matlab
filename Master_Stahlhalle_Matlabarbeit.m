@@ -1,6 +1,6 @@
 function mygui()
 f1= figure('Name', 'Input Window', 'NumberTitle', 'off','MenuBar', 'None', 'color', 'w',...
-    'resize', 'on', 'nextPlot', 'new', 'units', 'normalized', 'position', [0.3 0.3 0.5 0.5])    %'units', 'normalized' => Positionsverhältis des Bildschirmes
+    'resize', 'on', 'nextPlot', 'new', 'units', 'normalized', 'position', [0.05 0.45 0.445 0.44])    %'units', 'normalized' => Positionsverhältis des Bildschirmes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
 txtTittel = uicontrol('Style','text','HorizontalAlignment', 'Center',...
         'Position',[230 380 300 30],'BackgroundColor','w',...
@@ -613,7 +613,7 @@ end
 end
 
 
-function [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
+function [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm,arres)
 %Fundamente
 %Werte aus Auflagermatrix lesen
 
@@ -636,13 +636,13 @@ o2=ksm*sm   %Randspannung=Bettungsmodul*Setzung
 hf=1        %Einbindetiefe
 
    bf=((MaT+(AhT*hf))/AvT)*6   %Breite aufgrund von Kernpunkt
-if bf<=0.4          %Mindesbreite
-     bf=0.4          
+if bf<=0.4*arres          %Mindesbreite
+     bf=0.4*arres          
 else bf=((MaT+(AhT*hf))/AvT)*6 %grösser als Mindesbreite
 end
 
 tf=(2*AvT)/(o2*bf)      %Länge aufgrund Einwirkung
-if tf<=0.4          %Mindeslänge
+if tf<=0.4              %Mindeslänge
     tf=0.4
 else tf=(2*AvT)/(o2*bf)      %Länge aufgrund Einwirkung
 end
@@ -703,16 +703,17 @@ hFR =hf                          %höhe Fundament Rechts
 
 hFMAX=max([hFL hFM hFR])                   %Darstellungs Faktor Bemassungs Linie 
 
-if K==1
-f= figure('Name','Erster und Letzter Bogen','menubar','none')%,'numbertittle', 'off', 'units', 'normalized', 'position', [0.5 0.5 0.55 0.55 ])
+if K==1                                                                                                     %Position [left bottom width height]            
+f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.63 0.524 0.36 0.44])         
 else %K==2
-f= figure('Name','Zweiter bis zweitletzter Bogen','menubar','none')%'numbertittle', 'off', 'units', 'normalized', 'position', [0.01 0.5 0.5 0.5])
+f= figure('Name','Zweiter bis zweitletzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized','color', 'w', 'position', [0.63 0.05 0.36 0.44])
 end
 
 
 %Darstellung: Struktur, Auflast & Fundamente
-subplot(3,4,5)
+subplot(2,2,1)
 hold on
+axis off
 axis equal
 title('Struktur')
 
@@ -815,10 +816,10 @@ dR= -10   %dR = Rundungsziffer weil sehr kleine Null Werte die Grafik verziehen
 
 %Daratellung Moment
 dM= (ba*0.25)/roundn(max(abs([MSupSL MSupSO MSupSR])),dR)                   %Darstellungs Faktor Moment (Mmax = 0.25 von Breite)
-subplot(3,4,6)
+subplot(2,2,2)
 hold on
+axis off
 axis equal
-
 title('Moment [kNm]')
 
 %Struktur
@@ -867,10 +868,10 @@ hold off
 
 % Darstellung Querkraft
 dV=(ba*0.25)/roundn(max(abs([VSupSL VSupSO VSupSR])),dR) 
-subplot(3,4,7)
+subplot(2,2,3)
 hold on
-axis equal 
-
+axis off 
+axis equal
 title('Querkraft [kN]')
 
 %Struktur
@@ -916,10 +917,10 @@ elseif AZB == 3
 dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1 NSupS2])) 
 end 
 
-subplot(3,4,8)
+subplot(2,2,4)
 hold on
-axis equal 
-
+axis off 
+axis equal
 title('Normalkraft [kN]')
 
 %Struktur
@@ -971,31 +972,33 @@ end
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
-[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
+[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
 [f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf1=bf
 tf1=tf
 bfm1=bfm
-
+hf1=hf
 %Plot mittlere Rahmen
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
-[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
+[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
 [f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf2=bf
 tf2=tf
 bfm2=bfm
+hf2=hf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-f2=figure('Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off', 'units','normalized', 'InnerPosition', [0.01 0.01 0.5 0.5])
+f2=figure('Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off', 'units','normalized', 'InnerPosition', [0.007 0.05 0.60 0.67])
 format compact
-myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on', 'boxstyle', 'back', 'linewidth', 1, 'Position', [0.27 0.1 0.7 0.9]); % , 'Position',[0.4 0.25 0.5 0.6]
+myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on',...
+    'boxstyle', 'back', 'linewidth', 1,'units', 'normalized', 'Position', [0.2 0.06 0.75 0.9]) 
 axis equal 
 view(3)  %Erzeugung der 3D darstellung
 grid on
@@ -1085,13 +1088,18 @@ arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
 
 %FaceColor
-FarbePfette = 'b'
-FarbePfetteI = 'm'
-FarbeStuetze = 'r'
+FarbePfette = [0 0.69 0.702]           %Pfette A und B
+FarbePfetteI = [0 0.69 0.702]           %Pfette dazwischen
+
+FarbeStuetze = 'r'          % Stuetze 1 bis 4
+FarbeStuetzeM = 'r'
+FarbeQuerbalken = 'r'
+
 FarbeStuetzeI = 'y'
-FarbeFundament = [0.12 0.56 1]
-FarbeQuerbalken = 'g'
+FarbeStuetzeIM = 'y'
 FarbeQuerbalkenI = 'y'
+
+FarbeFundament = [0.788 0.788 0.788]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Pfette A
@@ -1155,7 +1163,7 @@ if b > 13 & b < 26
   
 %Stuetze VM 
 vert3= [SMb 0 0; SMb ProfSt 0; (SMb+ProfSb) ProfSt 0; (SMb+ProfSb) 0 0; (SMb+ProfSb) ProfSt (h-2*ProfTh); (SMb+ProfSb) 0 (h-2*ProfTh); SMb 0 (h-2*ProfTh); SMb ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament VM
 vert15= [(b/2-bfm1/2) ProfSt/2-bfm1/2 0; (b/2-bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2-bfm1/2 0;...
@@ -1164,7 +1172,7 @@ patch('Faces', fac,'Vertices',vert15,'FaceColor',FarbeFundament);            % E
 
 %Stuetze HM
 vert5= [SMb (l-ProfSt) 0; SMb l 0; (SMb+ProfSb) l 0; (SMb+ProfSb) (l-ProfSt) 0; (SMb+ProfSb) l (h-2*ProfTh); (SMb+ProfSb) (l-ProfSt) (h-2*ProfTh); SMb (l-ProfSt) (h-2*ProfTh); SMb l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament HM
 vert17= [(b/2-bfm1/2) l-(ProfSt/2-bfm1/2) 0; (b/2-bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2-bfm1/2) 0;...
@@ -1218,7 +1226,7 @@ if b >13 & b < 26
     
 %Stuetze iM
 vert3= [SMb XMVQS 0; SMb (XMVQS+ProfSt) 0; (SMb+ProfSb) (XMVQS+ProfSt) 0; (SMb+ProfSb) XMVQS 0; (SMb+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQS (h-2*ProfTh); SMb XMVQS (h-2*ProfTh); SMb (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeIM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iM
 vert17= [(b/2-bfm2/2) i1-bfm2/2 0; (b/2-bfm2/2) i1+bfm2/2 0; (b/2+bfm2/2) i1+bfm2/2 0; (b/2+bfm2/2) i1-bfm2/2 0;...
