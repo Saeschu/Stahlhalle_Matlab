@@ -713,7 +713,8 @@ end
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(3,4,5)
 hold on
-axis equal
+
+axis off
 title('Struktur')
 
 
