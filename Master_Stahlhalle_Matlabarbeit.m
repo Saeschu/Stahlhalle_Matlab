@@ -1,6 +1,6 @@
 function mygui()
 f1= figure('Name', 'Input Window', 'NumberTitle', 'off','MenuBar', 'None', 'color', 'w',...
-    'resize', 'off', 'nextPlot', 'new', 'units', 'normalized', 'position', [0.3 0.3 0.445 0.43])    %'units', 'normalized' => Positionsverhältis des Bildschirmes
+    'resize', 'on', 'nextPlot', 'new', 'units', 'normalized', 'position', [0.3 0.3 0.5 0.5])    %'units', 'normalized' => Positionsverhältis des Bildschirmes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         
 txtTittel = uicontrol('Style','text','HorizontalAlignment', 'Center',...
         'Position',[230 380 300 30],'BackgroundColor','w',...
@@ -704,9 +704,9 @@ hFR =hf                          %höhe Fundament Rechts
 hFMAX=max([hFL hFM hFR])                   %Darstellungs Faktor Bemassungs Linie 
 
 if K==1
-f= figure('Name','Erster und Letzter Bogen','numbertittle', 'off', 'units', 'normalized', 'position', [0.5 0.5 0.55 0.55 ])
+f= figure('Name','Erster und Letzter Bogen','menubar','none')%,'numbertittle', 'off', 'units', 'normalized', 'position', [0.5 0.5 0.55 0.55 ])
 else %K==2
-f= figure('Name','Zweiter bis zweitletzter Bogen','numbertittle', 'off', 'units', 'normalized', 'position', [0.01 0.5 0.5 0.5])
+f= figure('Name','Zweiter bis zweitletzter Bogen','menubar','none')%'numbertittle', 'off', 'units', 'normalized', 'position', [0.01 0.5 0.5 0.5])
 end
 
 
