@@ -635,16 +635,16 @@ o2=ksm*sm   %Randspannung=Bettungsmodul*Setzung
 
 hf=1        %Einbindetiefe
 
-   bf=((MaT+(AhT*hf))/AvT)*6   %Breite aufgrund von Kernpunkt
-if bf<=0.4*arres          %Mindesbreite
-     bf=0.4*arres          
-else bf=((MaT+(AhT*hf))/AvT)*6 %grösser als Mindesbreite
+Flf=(4*AvT)/o2
+bf=sqrt(Flf)
+if bf<=3*(MaT+(AhT*hf))/AvT
+    bf=3*(MaT+(AhT*hf))/AvT
 end
 
-tf=(2*AvT)/(o2*bf)      %Länge aufgrund Einwirkung
-if tf<=0.4              %Mindeslänge
-    tf=0.4
-else tf=(2*AvT)/(o2*bf)      %Länge aufgrund Einwirkung
+tf=sqrt(Flf)
+if tf>=arres
+    tf=arres
+    bf=Flf/tf
 end
 
 bfm=0                  %damit bfm1 bei AZB=1 besetzt ist
@@ -713,13 +713,13 @@ end
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(2,2,1)
 hold on
-<<<<<<< HEAD
+%<<<<<<< HEAD
 
 axis off
-=======
+%=======
 axis off
 axis equal
->>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
+%>>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
 title('Struktur')
 
 
