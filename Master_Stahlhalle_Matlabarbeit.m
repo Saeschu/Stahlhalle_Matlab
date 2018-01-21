@@ -973,7 +973,7 @@ end
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
 
-[f_4] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf1=bf
 tf1=tf
@@ -985,7 +985,7 @@ bfm1=bfm
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm)
 
-[f4] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf2=bf
 tf2=tf
