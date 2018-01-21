@@ -704,22 +704,19 @@ hFR =hf                          %höhe Fundament Rechts
 hFMAX=max([hFL hFM hFR])                   %Darstellungs Faktor Bemassungs Linie 
 
 if K==1                                                                                                     %Position [left bottom width height]            
-f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.63 0.524 0.36 0.44])         
+f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.555 0.515 0.39 0.445])         
 else %K==2
-f= figure('Name','Zweiter bis zweitletzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized','color', 'w', 'position', [0.63 0.05 0.36 0.44])
+f= figure('Name','Zweiter bis zweitletzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized','color', 'w', 'position', [0.555 0.03 0.39 0.445])
 end
 
 
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(2,2,1)
 hold on
-<<<<<<< HEAD
+myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on', 'boxstyle', 'back', 'linewidth', 1,
 
 axis off
-=======
-axis off
 axis equal
->>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
 title('Struktur')
 
 
@@ -1000,10 +997,9 @@ hf2=hf
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-f2=figure('Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off', 'units','normalized', 'InnerPosition', [0.007 0.05 0.60 0.67])
+f2=figure('Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off', 'units','normalized', 'InnerPosition', [0.01 0.035 0.54 0.75])
 format compact
-myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on',...
-    'boxstyle', 'back', 'linewidth', 1,'units', 'normalized', 'Position', [0.2 0.06 0.75 0.9]) 
+myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on', 'boxstyle', 'back', 'linewidth', 1, 'Position', [0.27 0.1 0.7 0.9]); % , 'Position',[0.4 0.25 0.5 0.6]
 axis equal 
 view(3)  %Erzeugung der 3D darstellung
 grid on
@@ -1093,18 +1089,14 @@ arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
 
 %FaceColor
-FarbePfette = [0 0.69 0.702]           %Pfette A und B
-FarbePfetteI = [0 0.69 0.702]           %Pfette dazwischen
-
+FarbePfette = 'b'           %Pfette A und B
+FarbePfetteI = 'm'          %Pfette dazwischen
 FarbeStuetze = 'r'          % Stuetze 1 bis 4
-FarbeStuetzeM = 'r'
-FarbeQuerbalken = 'r'
-
 FarbeStuetzeI = 'y'
 FarbeStuetzeIM = 'y'
+FarbeFundament = [0.12 0.56 1]
+FarbeQuerbalken = 'r'
 FarbeQuerbalkenI = 'y'
-
-FarbeFundament = [0.788 0.788 0.788]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Pfette A
@@ -1168,7 +1160,7 @@ if b > 13 & b < 26
   
 %Stuetze VM 
 vert3= [SMb 0 0; SMb ProfSt 0; (SMb+ProfSb) ProfSt 0; (SMb+ProfSb) 0 0; (SMb+ProfSb) ProfSt (h-2*ProfTh); (SMb+ProfSb) 0 (h-2*ProfTh); SMb 0 (h-2*ProfTh); SMb ProfSt (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeI);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament VM
 vert15= [(b/2-bfm1/2) ProfSt/2-bfm1/2 0; (b/2-bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2-bfm1/2 0;...
@@ -1177,7 +1169,7 @@ patch('Faces', fac,'Vertices',vert15,'FaceColor',FarbeFundament);            % E
 
 %Stuetze HM
 vert5= [SMb (l-ProfSt) 0; SMb l 0; (SMb+ProfSb) l 0; (SMb+ProfSb) (l-ProfSt) 0; (SMb+ProfSb) l (h-2*ProfTh); (SMb+ProfSb) (l-ProfSt) (h-2*ProfTh); SMb (l-ProfSt) (h-2*ProfTh); SMb l (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
-patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
+patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetzeI);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament HM
 vert17= [(b/2-bfm1/2) l-(ProfSt/2-bfm1/2) 0; (b/2-bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2-bfm1/2) 0;...
