@@ -830,7 +830,7 @@ text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*b...
     -Ver/6,h-Ver/10-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))         % Text Max-Moment Mf 
 if AZB==2
 text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
-    -Ver/5,h+Ver/10-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))         % Text MIN-Moment Mf
+    +Ver/10,h+Ver/100-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))         % Text MIN-Moment Mf
 end
 
 %Struktur
@@ -874,7 +874,7 @@ text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b+Ver/10,h-max(VSupSO)*d
 text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b-Ver/3,h-min(VSupSO)*dV,num2str(roundn(min(VSupSO),-2)))               % Text Min-Querkraft 
 else AZB==2
 text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-Ver/3,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))        % Text Max Querkraft 
-text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+Ver/10,h-min(VSupSO)*dV+Ver/40,num2str(roundn(min(VSupSO),-2)))       % Text Min-Querkraft 
+text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+Ver/10,h-min(VSupSO)*dV,num2str(roundn(min(VSupSO),-2)))       % Text Min-Querkraft 
 end
 
 %Struktur
