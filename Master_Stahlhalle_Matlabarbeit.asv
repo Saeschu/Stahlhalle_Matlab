@@ -214,9 +214,9 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
-n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
+n1=(ba/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
+n15=(ba/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
 npres=0                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
 if n15==round(n15)      %Wenn n15 ganze Zahl, 
@@ -226,7 +226,7 @@ elseif n1==round(n1)    %Wenn n1 ganze Zahl,
 else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
-apres=(b/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
+apres=(ba/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
 
 
 %Anzahl Binder abhängig von Länge und Abstand
@@ -314,9 +314,9 @@ function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB
 F=EinwirkungenaufRahmen{1,2,K}
 x=EinwirkungenaufRahmen{1,3,K}
    
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Funktion für Bogen 2 bis 3 Stützen
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funktion für Bogen 2 bis 3 Stützen                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Auflagerkräfte von 0 Zustand
 Av0=(1.-(x./ba)).*F
@@ -342,11 +342,10 @@ a23=0.5*1*-1*hI+(1/3)*-1*1*ba                       % 2 mit 3 Zustand
 a33=(1/3)*-1*-1*hI+(1/3)*-1*-1*ba+(1/3)*1*1*hI      % 3 mit 3 Zustand
 
 
-
 if AZB == 1 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ___________ %%%%%%%%%%%%%
-%   Berechnung (n=3) mit 2 Stützen aussen      ¦           ¦            %                          
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ___________ %%%%%%%%%%%%%%
+%   Berechnung (n=3) mit 2 Stützen aussen      ¦           ¦             %                          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Matrix der Verschiebungsgrössen [B A] * X = [0;0;0]
 A=[a11,a12,a13;a12,a22,a23;a13,a23,a33]
@@ -385,7 +384,7 @@ dS=2                                                    % Anzahl Teilstücke des 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
 MSupSR=linspace(sum(Mb),sum(Mr),dS)                     % Superposition Stab Rechts Moment
 
-MSupSO=zeros(1,dT)                                      % 0 Vektor mit Anzahl Einträgen wie MSO für Addition
+MSupSO=zeros(1,dT)                                      % 0 Vektor mit Länge wie MSO (Anzahl Einträge) für Addition
  for z=[1:length(F)]
     if x(z)== 0 
     MSO{z}=zeros(1,dT)                                  % Momente Stab oben wenn x = 0 
@@ -423,9 +422,9 @@ NSupSO=linspace(sum(Ah),sum(Bh),dS)                     % Superposition Stab Obe
 
 
 elseif  AZB == 2
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ___________%%%%%%%%%%%%%%
-%    Berechnung (n=4) mit 3 Stützen            ¦     ¦     ¦            %                          
-%}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ___________%%%%%%%%%%%%%%%
+%    Berechnung (n=4) mit 3 Stützen            ¦     ¦     ¦             %                          
+%}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % Verschiebungsgrössen Ergänzung für System (n=4)(Überlagerung der Momente - Kraftgrössenverfahren mit Werte aus Integrationstabelle)
@@ -505,7 +504,7 @@ dS=2                                                    % Anzahl Teilstücke des 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
 MSupSR=linspace(sum(Mb),sum(Mr),dS)                     % Superposition Stab Rechts Moment
 
-MSupSO=zeros(1,dT)                                      % 0 Vektor mit Anzahl Einträgen wie MSO für Addition
+MSupSO=zeros(1,dT)                                      % 0 Vektor mit Länge wie MSO (Anzahl Einträge) für Addition
  for z=[1:length(F)]
     if x(z)==0
     MSO{z}=zeros(1,dT)                                  % Momente Stab oben wenn x = 0 
@@ -571,9 +570,9 @@ NSupS1=linspace(sum(S1v),sum(S1v),dS)                   % Superposition Stab Mit
 
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Erstellen der Outputmatrizen                                          %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Erstellen der Outputmatrizen                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Aufbau Auflagermatrix
 
@@ -650,11 +649,8 @@ end
 end
 
 
-function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
-%   Input:
-%   Output:
-%
 
 %Entschlüsselung Matrix Momentenverlauf für Plot 
 MSupSL=MMX{1} 
@@ -672,141 +668,116 @@ if AZB == 2
 NSupS1=NMX{4} 
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Darstellung Bogen                                                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Bezeichnugen anpassen
+bFL =bf                              % breite Fundament Links
+bFM =bfm                             % breite Fundament Mitte
+bFR =bf                              % breite Fundament Rechts
+hFL =hf                              % höhe Fundament Links
+hFM =hf                              % höhe Fundament Mitte
+hFR =hf                              % höhe Fundament Rechts
 
+hFMAX=max([hFL hFM hFR])             % Darstellungs Faktor Bemassungs Linie damit Abstand zwischen Fundament und Bemassungslinie stimmt 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Darstellung Bogen  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%DimensionderFundamente
-
-bFL =bf                              %breite Fundament Links
-bFM =bfm                             %breite Fundament Mitte
-bFR =bf                             %breite Fundament Rechts
-hFL =hf                            %höhe Fundament Links
-hFM =hf                           %höhe Fundament Mitte
-hFR =hf                          %höhe Fundament Rechts
-
-hFMAX=max([hFL hFM hFR])                   %Darstellungs Faktor Bemassungs Linie 
-
-if K==1                                                                                                     %Position [left bottom width height]            
+if K==1                                                                                                                  %position [left bottom width height]            
 f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.63 0.524 0.36 0.44])         
 else %K==2
 f= figure('Name','Zweiter bis zweitletzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized','color', 'w', 'position', [0.63 0.05 0.36 0.44])
 end
 
-
-%Darstellung: Struktur, Auflast & Fundamente
+%Darstellung: Struktur Feld
 subplot(2,2,1)
 hold on
-
-
-axis off
 axis off
 axis equal
-
 title('Struktur')
 
-
-plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
+%Darstellung Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                                                     % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                                                     % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                                                     % Stab Rechts
 if AZB==2
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Mitte 
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                                                     % Stab Mitte 
 end
 
-%Darstellung Bemassung
-plot([-0.5,ba+0.5],[-2-hFMAX,-2-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)         %Bemassung Linie (Breite) Grau oben
-plot([0,0],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                              %Bemassung Hilfslinie rechts (Breite) Grau oben
-plot([ba,ba],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                            %Bemassung Hilfslinie links (Breite) Grau oben
-plot([-0.5+(-bFL/2),ba+0.5+(bFR/2)],[-5-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)         %Bemassung Linie (Breite) Grau unten
-plot([0+(-bFL/2),0+(-bFL/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)            %Bemassung Hilfslinie links (Breite) Grau unten
-plot([0+(bFL/2),0+(bFL/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)              %Bemassung Hilfslinie links (Breite) Grau unten
-plot([ba+(-bFR/2),ba+(-bFR/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)          %Bemassung Hilfslinie links (Breite) Grau
-plot([ba+(bFR/2),ba+(bFR/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)          %Bemassung Hilfslinie links (Breite) Grau
-text(-0.5,-4-hFMAX,(num2str(roundn(bFL,-2))),'Color',[0.19 0.19 0.19])                               %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
-text(ba-0.5,-4-hFMAX,(num2str(roundn(bFR,-2))),'Color',[0.19 0.19 0.19])                               %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
+%Darstellung Bemassung horizontal
+plot([-0.5,b+0.5],[-2-hFMAX,-2-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                           % Bemassung Linie (Breite) Grau oben
+plot([0,0],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                              % Bemassung Hilfslinie links (Breite) Grau oben
+plot([b,b],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                              % Bemassung Hilfslinie rechts (Breite) Grau oben
+plot([-0.5+(-bFL/2),b+0.5+(bFR/2)],[-5.5-hFMAX,-5.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)      % Bemassung Linie (Breite) Grau unten
+plot([0+(-bFL/2),0+(-bFL/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                % Bemassung Hilfslinie links von linken Funament(Breite) Grau unten
+plot([0+(bFL/2),0+(bFL/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie rechts von linken Fundament (Breite) Grau unten
+plot([b+(-bFR/2),b+(-bFR/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                % Bemassung Hilfslinie links vom rechten Fundament (Breite) Grau
+plot([b+(bFR/2),b+(bFR/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie rechts vom rechten Fundament (Breite) Grau
+text(-1.5,-3.5-hFMAX,(num2str(roundn(bFL,-2))),'Color',[0.19 0.19 0.19])                                % Wert Bemassung Fundament links (Breite) Grau
+text(b-1.5,-3.5-hFMAX,(num2str(roundn(bFR,-2))),'Color',[0.19 0.19 0.19])                               % Wert Bemassung Fundament rechts (Breite) Grau
 
 if AZB ==1
-text(ba*0.5-0.5,-1-hFMAX,(num2str(roundn(ba,-2))),'Color',[0.19 0.19 0.19])       %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
-text(ba*0.5-0.5,-4-hFMAX,(num2str(roundn((ba-(bFL/2+bFR/2)),-2))),'Color',[0.19 0.19 0.19])       %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
+text(b*0.5-1.5,-0.5-hFMAX,(num2str(roundn(b,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung der Breite (Breite) Grau
+text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn((b-(bFL/2+bFR/2)),-2))),'Color',[0.19 0.19 0.19])             % Wert Bemassung Distanz zwischen Fundamenten(Breite) Grau
 
 else %AZB = 2
-plot([(ba/2)+(-bFM/2),(ba/2)+(-bFM/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)          %Bemassung Hilfslinie links (Breite) Grau
-plot([(ba/2)+(bFM/2),(ba/2)+(bFM/2)],[-5.5-hFMAX,-4.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)          %Bemassung Hilfslinie links (Breite) Grau
+plot([(b/2)+(-bFM/2),(b/2)+(-bFM/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)        % Bemassung Hilfslinie links Mittel Fundament (Breite) Grau
+plot([(b/2)+(bFM/2),(b/2)+(bFM/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)          % Bemassung Hilfslinie rechts Mittel Fundament (Breite) Grau
 
-plot([0.5*ba,0.5*ba],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)        %Bemassung Hilfslinie Stütze 1 (Breite) Grau    
-text(ba*0.25-0.5,-1-hFMAX,(num2str(roundn(0.5*ba,-2))),'Color',[0.19 0.19 0.19])       %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
-text(ba*0.75-0.5,-1-hFMAX,(num2str(roundn(0.5*ba,-2))),'Color',[0.19 0.19 0.19])       %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
-text(ba*0.5-0.5,-4-hFMAX,(num2str(roundn(bFM,-2))),'Color',[0.19 0.19 0.19])                               %Wert Bemassung (Breite) (Breite !!ba!! -> muss b sein) Grau
-text(((ba/2-bFL/2-bFM/2)/2)+bFL/2-0.5,-4-hFMAX,(num2str(roundn((ba/2-bFL/2-bFM/2),-2))),'Color',[0.19 0.19 0.19])                               %Wert Bemassung (Breite) (Breite !!ba!! ->
-text(ba-(((ba/2-bFL/2-bFM/2)/2)+bFL/2)-0.5,-4-hFMAX,(num2str(roundn((ba/2-bFL/2-bFM/2),-2))),'Color',[0.19 0.19 0.19])                               %Wert Bemassung (Breite) (Breite !!ba!! ->
+plot([0.5*b,0.5*b],[-2.5-hFMAX,-1.5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)                      % Bemassung Hilfslinie oben mitte bei Stütze (Breite) Grau    
+text(b*0.25-0.5,-0.5-hFMAX,(num2str(roundn(0.5*b,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Bogen links (Breite) Grau
+text(b*0.75-0.5,-0.5-hFMAX,(num2str(roundn(0.5*b,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Bogen rechts (Breite) Grau
+text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn(bFM,-2))),'Color',[0.19 0.19 0.19])                           % Wert Bemassung Mittel Fundament(Breite) Grau
 end
 
-
-
-plot([ba+2+(bFR/2),ba+2+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)      %Bemassung Linie (Höhe) Grau
-plot([ba+1.5+(bFR/2),ba+2.5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)          %Bemassung Hilfslinie rechts (Höhe) Grau
-plot([ba+1.5+(bFR/2),ba+2.5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)        %Bemassung Hilfslinie links (Höhe) Grau
-plot([ba+1.5+(bFR/2),ba+2.5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)        %Bemassung Hilfslinie links (Höhe) Grau
-text(ba+0.75+(bFR/2),h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                  %Wert Bemassung (Höhe) (Breite !!h!! -> muss ... sein) Grau
-text(ba+0.75+(bFR/2),-hFR*0.5,(num2str(roundn(hFR,-2))),'Color',[0.19 0.19 0.19])                  %Wert Bemassung (Höhe) (Breite !!h!! -> muss ... sein) Grau
-
-
-
+%Darstellung Bemassung vertikal
+plot([b+4+(bFR/2),b+4+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)                 % Bemassung Linie (Höhe) Grau
+plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie unten Stab (Höhe) Grau
+plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie oben Stab (Höhe) Grau
+plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie unten Fundament (Höhe) Grau
+text(b+0.75+(bFR/2),h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung Stab(Höhe) Grau
+text(b+0.75+(bFR/2),-hFR*0.5,(num2str(roundn(hFR,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Fundament (Höhe)Grau
 
 %Darstellung Fundament
-plot([0-(bFL/2),0+(bFL/2)],[0,0],'Color','c','LineWidth',1)                         % obere Linie Fundament Links
-plot([0-(bFL/2),0+(bFL/2)],[0-hFL,0-hFL],'Color','c','LineWidth',1)                 % untere Linie Fundament Links
-plot([0-(bFL/2),0-(bFL/2)],[0,0-hFL],'Color','c','LineWidth',1)                     % Linke Linie Fundament Links
-plot([0+(bFL/2),0+(bFL/2)],[0,0-hFL],'Color','c','LineWidth',1)                     % Rechet Linie Fundament Links
+plot([0-(bFL/2),0+(bFL/2)],[0,0],'Color','c','LineWidth',1)                                             % obere Linie Fundament Links
+plot([0-(bFL/2),0+(bFL/2)],[0-hFL,0-hFL],'Color','c','LineWidth',1)                                     % untere Linie Fundament Links
+plot([0-(bFL/2),0-(bFL/2)],[0,0-hFL],'Color','c','LineWidth',1)                                         % Linke Linie Fundament Links
+plot([0+(bFL/2),0+(bFL/2)],[0,0-hFL],'Color','c','LineWidth',1)                                         % Rechet Linie Fundament Links
 
-plot([ba-(bFR/2),ba+(bFR/2)],[0,0],'Color','c','LineWidth',1)                         % obere Linie Fundament Rechts
-plot([ba-(bFR/2),ba+(bFR/2)],[0-hFR,0-hFR],'Color','c','LineWidth',1)                 % untere Linie Fundament Rechts
-plot([ba-(bFR/2),ba-(bFR/2)],[0,0-hFR],'Color','c','LineWidth',1)                     % Linke Linie Fundament Rechts
-plot([ba+(bFR/2),ba+(bFR/2)],[0,0-hFR],'Color','c','LineWidth',1)                     % Rechet Linie Fundament Rechts
+plot([b-(bFR/2),b+(bFR/2)],[0,0],'Color','c','LineWidth',1)                                             % obere Linie Fundament Rechts
+plot([b-(bFR/2),b+(bFR/2)],[0-hFR,0-hFR],'Color','c','LineWidth',1)                                     % untere Linie Fundament Rechts
+plot([b-(bFR/2),b-(bFR/2)],[0,0-hFR],'Color','c','LineWidth',1)                                         % Linke Linie Fundament Rechts
+plot([b+(bFR/2),b+(bFR/2)],[0,0-hFR],'Color','c','LineWidth',1)                                         % Rechet Linie Fundament Rechts
 
 if AZB == 2
-plot([(ba/2)-(bFM/2),(ba/2)+(bFM/2)],[0,0],'Color','c','LineWidth',1)                         % obere Linie Fundament Mitte
-plot([(ba/2)-(bFM/2),(ba/2)+(bFM/2)],[0-hFM,0-hFM],'Color','c','LineWidth',1)                 % untere Linie Fundament Mitte
-plot([(ba/2)-(bFM/2),(ba/2)-(bFM/2)],[0,0-hFM],'Color','c','LineWidth',1)                     % Linke Linie Fundament Mitte
-plot([(ba/2)+(bFM/2),(ba/2)+(bFM/2)],[0,0-hFM],'Color','c','LineWidth',1)                     % Rechet Linie Fundament Mitte
+plot([(b/2)-(bFM/2),(b/2)+(bFM/2)],[0,0],'Color','c','LineWidth',1)                                     % obere Linie Fundament Mitte
+plot([(b/2)-(bFM/2),(b/2)+(bFM/2)],[0-hFM,0-hFM],'Color','c','LineWidth',1)                             % untere Linie Fundament Mitte
+plot([(b/2)-(bFM/2),(b/2)-(bFM/2)],[0,0-hFM],'Color','c','LineWidth',1)                                 % Linke Linie Fundament Mitte
+plot([(b/2)+(bFM/2),(b/2)+(bFM/2)],[0,0-hFM],'Color','c','LineWidth',1)                                 % Rechet Linie Fundament Mitte
 end
 
-%Darstellung Auflast
-
-dQ=0.25                                         %Faktor der Höhenlast Darstellung                                         %Linienlast muss noch richtigen Buchstaben haben 
-Q=q*dQ
-%Koord=[0,h;ba,h;ba,h+Q;0,h+Q]
-Ko=[0,ba,ba,0]
-Or=[h,h,h+Q,h+Q]
-patch(Ko,Or,[0.9725    0.9255    0.3137])  %'Color',[0.9725    0.9255    0.3137]
-
-plot([0,ba],[h,h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                              %Stab Oben
-plot([0,ba],[h+Q,h+Q],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                    %Stab Oben
-plot([0,0],[h+Q,h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([ba,ba],[h,Q+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([0,-0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([0,0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([0.5,-0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                   %Stab Rechts
-
-plot([ba,ba-0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([ba,ba+0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                     %Stab Links 
-plot([ba-0.5,ba+0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                   %Stab Rechts
-
-text(ba/2-0.5,h+Q+2,(num2str(q)))
+%Darstellung Auflast   
+Q=2.5                                                                                                   % Höhe der Linenlast Darstellung
+patch([0,b,b,0],[h,h,h+Q,h+Q],[0.9725    0.9255    0.3137])                                             % Fläche der Linienlast
+plot([0,b],[h,h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                        % Linie unten
+plot([0,b],[h+Q,h+Q],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                    % Linie oben
+plot([0,0],[h+Q,h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                      % Linie links 
+plot([b,b],[h,Q+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                      % Linie rechts 
+plot([0,-0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                 % Linie Pfeil links 
+plot([0,0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                  % Linie Pfeil rechts
+plot([0.5,-0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                           % Linie Pfeil oben
+plot([b,b-0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                % Linie Pfeil links 
+plot([b,b+0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                % Linie Pfeil rechts 
+plot([b-0.5,b+0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                        % Linie Pfeil oben
+text(b/2-3,h+1.25,(num2str(q)))                                                                      	% Text Grösse q
+text(b/2,h+1.5,('kN/m^2'))                                                                              % Text kN pro m^2
 
 hold off
 
 
-
-
-
-dR= -10   %dR = Rundungsziffer weil sehr kleine Null Werte die Grafik verziehen
+dR= -10                                                                     % dR = Rundungsziffer weil sehr kleine Null Werte die Grafik verziehen
 
 %Daratellung Moment
-dM= (ba*0.25)/roundn(max(abs([MSupSL MSupSO MSupSR])),dR)                   %Darstellungs Faktor Moment (Mmax = 0.25 von Breite)
+dM= (b*0.25)/roundn(max(abs([MSupSL MSupSO MSupSR])),dR)                    % Darstellungs Faktor Moment (Mmax = 0.25 von Breite)
 subplot(2,2,2)
 hold on
 axis off
@@ -814,51 +785,48 @@ axis equal
 title('Moment [kNm]')
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
-if AZB>1
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
-end
-if AZB==3
-plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
 end
 
 %Momentenverlauf Stab links 
 MxSL=(MSupSL.*dM)
 MySL=linspace(h,0,2)
-plot(MxSL,MySL,'r','LineWidth',2)                    %Stab-Moment Rechts
-plot([0,MSupSL(2)*dM],[0,0],'r','LineWidth',2)         %Stab-Moment Ergänzung unten
-plot([0,MSupSL(1)*dM],[h,h],'r','LineWidth',2)         %Stab-Moment Ergänzung oben
-text((MSupSL(2)*dM),-1,num2str(roundn(MSupSL(2),-2)))  %Text unten Ma !!! Wert -1 !!!
+plot(MxSL,MySL,'r','LineWidth',2)                                           % Stab-Moment Rechts
+plot([0,MSupSL(2)*dM],[0,0],'r','LineWidth',2)                              % Stab-Moment Ergänzung unten
+plot([0,MSupSL(1)*dM],[h,h],'r','LineWidth',2)                              % Stab-Moment Ergänzung oben
+text(1,-1,num2str(roundn(MSupSL(2),-2)))                                    % Text unten Ma
 
 %Momentenverlauf Stab rechts
-MxSR=ba-(MSupSR.*dM)           
+MxSR=b-(MSupSR.*dM)           
 MySR=linspace(0,h,2)
-plot(MxSR,MySR,'r','LineWidth',2)                      %Stab-Moment Links
-plot([ba,ba-MSupSR(1)*dM],[0,0],'r','LineWidth',2)       %Stab-Moment Ergänzung unten
-plot([ba,ba-MSupSR(2)*dM],[h,h],'r','LineWidth',2)       %Stab-Moment Ergänzung oben
-text((ba-MSupSR(1)*dM)-4,-1,num2str(roundn(MSupSR(1),-2)))   %Text unten Mb !!! Wert -4&-1 !!! 
+plot(MxSR,MySR,'r','LineWidth',2)                                           % Stab-Moment Links
+plot([b,b-MSupSR(1)*dM],[0,0],'r','LineWidth',2)                            % Stab-Moment Ergänzung unten
+plot([b,b-MSupSR(2)*dM],[h,h],'r','LineWidth',2)                            % Stab-Moment Ergänzung oben
+text(b-2,-1,num2str(roundn(MSupSR(1),-2)))                                  % Text unten Mb 
 
 %Momentenverlauf Stab oben
 MySO=h-(MSupSO.*dM)
-MxSO=linspace(0,ba,length(MSupSO))
-plot(MxSO,MySO,'r','LineWidth',2)                       %Stab-Moment Oben
-plot([0,0],[h,h-MSupSL(1)*dM],'r','LineWidth',2)          %Stab-Moment Ergänzung Links
-plot([ba,ba],[h,h-MSupSR(2)*dM],'r','LineWidth',2)        %Stab-Moment Ergänzung rechts
-text(-1+MSupSL(1)*dM,h+1-MSupSL(1)*dM,num2str(roundn(MSupSL(1),-2)))               %Text Ml !!! +1 % -1!!!
-text(ba-MSupSR(2)*dM,h-MSupSR(2)*dM,num2str(roundn(MSupSR(2),-2)))                  %Text Mr
-text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*ba...
-    ,h-1-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))             %Text Max-Moment Mf !!! -1 !!!
+MxSO=linspace(0,b,length(MSupSO))
+plot(MxSO,MySO,'r','LineWidth',2)                                           % Stab-Moment Oben
+plot([0,0],[h,h-MSupSL(1)*dM],'r','LineWidth',2)                            % Stab-Moment Ergänzung Links
+plot([b,b],[h,h-MSupSR(2)*dM],'r','LineWidth',2)                            % Stab-Moment Ergänzung rechts
+text(-3.5+MSupSL(1)*dM,h+2,num2str(roundn(MSupSL(1),-2)))                   % Text Moment oben Links
+text(b+1,h+2,num2str(roundn(MSupSR(2),-2)))                                 % Text Moment oben Rechts
+text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*b...
+    -2,h-1-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))                  % Text Max-Moment Mf 
 if AZB>1
-text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*ba...
-    ,h-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                                 %Text MIN-Moment Mf
+text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
+    -2,h+1-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                  % Text MIN-Moment Mf
 end
 
 hold off
 
 % Darstellung Querkraft
-dV=(ba*0.25)/roundn(max(abs([VSupSL VSupSO VSupSR])),dR) 
+dV=(b*0.25)/roundn(max(abs([VSupSL VSupSO VSupSR])),dR) 
 subplot(2,2,3)
 hold on
 axis off 
@@ -866,46 +834,41 @@ axis equal
 title('Querkraft [kN]')
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
-if AZB>1
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
-end
-if AZB==3
-plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
 end
 
 %Querkraftverlauf Stab Links
-plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)            %Querkraft Stab links
-plot([0,VSupSL(1)*dV],[0,0],'b','LineWidth',2)                      %Querkraft Stab links Ergänzunglinie unten
-plot([0,VSupSL(1)*dV],[h,h],'b','LineWidth',2)                      %Querkraft Stab links Ergänzunglinie oben
-text(VSupSL(1)*dV,h*0.5,num2str(roundn(VSupSL(1),-2)))             %Text Stab Links !!!  !!!
+plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)                   % Querkraft Stab links
+plot([0,VSupSL(1)*dV],[0,0],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie unten
+plot([0,VSupSL(1)*dV],[h,h],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie oben
+text(VSupSL(1)*dV-2,-1,num2str(roundn(VSupSL(1),-2)))                       % Text Stab Links 
 
 %Querkraftverlauf Stab Rechts
-plot([ba-VSupSR(1)*dV,ba-VSupSR(1)*dV],[0,h],'b','LineWidth',2)            %Querkraft Stab links
-plot([ba,ba-VSupSR(1)*dV],[0,0],'b','LineWidth',2)                      %Querkraft Stab links Ergänzunglinie unten
-plot([ba,ba-VSupSR(1)*dV],[h,h],'b','LineWidth',2)                      %Querkraft Stab links Ergänzunglinie oben
-text(ba-VSupSR(1)*dV,h*0.5,num2str(roundn(VSupSR(1),-2)))             %Text Stab Links !!!  !!!
+plot([b-VSupSR(1)*dV,b-VSupSR(1)*dV],[0,h],'b','LineWidth',2)               % Querkraft Stab links
+plot([b,b-VSupSR(1)*dV],[0,0],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie unten
+plot([b,b-VSupSR(1)*dV],[h,h],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie oben
+text(b-VSupSR(1)*dV-2,-1,num2str(roundn(VSupSR(1),-2)))                     % Text Stab Rechts
 
 %Querkraftverlauf Stab oben
 VySO=h-(VSupSO.*dV)
-VxSO=linspace(0,ba,length(VSupSO))
-plot(VxSO,VySO,'b','LineWidth',2)                   %Querkraft Stab oben
-plot([0,0],[h,VySO(1)],'b','LineWidth',2)           %Querkraft Stab oben Ergänzungslinie links
-plot([ba,ba],[h,VySO(end)],'b','LineWidth',2)       %Querkraft Stab oben Ergänzungslinie rechts
-text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*ba,h-max(VSupSO)*dV,num2str(roundn(max(VSupSO),-2)))             %Text Max Querkraft !!!  !!!
-text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*ba,h-min(VSupSO)*dV,num2str(roundn(min(VSupSO),-2)))                %Text Min-Querkraft !!!  !!!
+VxSO=linspace(0,b,length(VSupSO))
+plot(VxSO,VySO,'b','LineWidth',2)                                           % Querkraft Stab oben
+plot([0,0],[h,VySO(1)],'b','LineWidth',2)                                   % Querkraft Stab oben Ergänzungslinie links
+plot([b,b],[h,VySO(end)],'b','LineWidth',2)                                 % Querkraft Stab oben Ergänzungslinie rechts
+text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.5,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
+text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.5,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
 
 hold off
 
 %Normalkaft
 if AZB==1
-dN=(ba*0.25)/roundn(max(abs([NSupSL NSupSO NSupSR])),dR) 
+dN=(b*0.25)/roundn(max(abs([NSupSL NSupSO NSupSR])),dR) 
 elseif AZB ==2
-dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1]))     
-elseif AZB == 3
-dN=(ba*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1 NSupS2])) 
+dN=(b*0.25)/max(abs([NSupSL NSupSO NSupSR NSupS1]))     
 end 
 
 subplot(2,2,4)
@@ -915,42 +878,38 @@ axis equal
 title('Normalkraft [kN]')
 
 %Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                     %Stab Links 
-plot([0,ba],[h,h],'k','LineWidth',3)                                    %Stab Oben
-plot([ba,ba],[0,h],'k','LineWidth',3)                                   %Stab Rechts
-if AZB>1
-plot([(1/AZB)*ba,(1/AZB)*ba],[0,h],'k','LineWidth',3)                   %Stab Links 
-end
-if AZB==3
-plot([(2/3)*ba,(2/3)*ba],[0,h],'k','LineWidth',3)                       %Stab Links 
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
 end
 
 %Normalkraftverlauf Stab Links
-plot([-NSupSL(1)*dN,-NSupSL(1)*dN],[0,h],'g','LineWidth',2)            %Normalkraft Stab links
-plot([0,-NSupSL(1)*dN],[0,0],'g','LineWidth',2)                     %Normalkraft Stab links Ergänzunglinie unten
-plot([0,-NSupSL(1)*dN],[h,h],'g','LineWidth',2)                     %Normalkraft Stab links Ergänzunglinie oben
-text(-NSupSL(1)*dN,h*0.5,num2str(roundn(NSupSL(1),-2)))                %Text Stab Links !!!  !!!
+plot([-NSupSL(1)*dN,-NSupSL(1)*dN],[0,h],'g','LineWidth',2)                 % Normalkraft Stab links
+plot([0,-NSupSL(1)*dN],[0,0],'g','LineWidth',2)                             % Normalkraft Stab links Ergänzunglinie unten
+plot([0,-NSupSL(1)*dN],[h,h],'g','LineWidth',2)                             % Normalkraft Stab links Ergänzunglinie oben
+text(-2,-1,num2str(roundn(NSupSL(1),-2)))                                   % Text Stab Links
 
 %Normalkraftverlauf Stab Rechts
-plot([ba-NSupSR(1)*dN,ba-NSupSR(1)*dN],[0,h],'g','LineWidth',2)            %Normalkraft Stab rechts
-plot([ba,ba-NSupSR(1)*dN],[0,0],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie unten
-plot([ba,ba-NSupSR(1)*dN],[h,h],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie oben
-text(ba-NSupSR(1)*dN,h*0.5,num2str(roundn(NSupSR(1),-2)))                  %Text Stab Links !!!  !!!
+plot([b-NSupSR(1)*dN,b-NSupSR(1)*dN],[0,h],'g','LineWidth',2)               % Normalkraft Stab rechts
+plot([b,b-NSupSR(1)*dN],[0,0],'g','LineWidth',2)                            % Normalkraft Stab rechts Ergänzunglinie unten
+plot([b,b-NSupSR(1)*dN],[h,h],'g','LineWidth',2)                            % Normalkraft Stab rechts Ergänzunglinie oben
+text(b,-1,num2str(roundn(NSupSR(1),-2)))                                    % Text Stab Rechts
 
 %Querkraftverlauf Stab Mitte
 if AZB==2
-plot([(1/AZB)*ba-NSupS1(1)*dN,(1/AZB)*ba-NSupS1(1)*dN],[0,h],'g','LineWidth',2)            %Normalkraft Stab rechts
-plot([(1/AZB)*ba,(1/AZB)*ba-NSupS1(1)*dN],[0,0],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie unten
-plot([(1/AZB)*ba,(1/AZB)*ba-NSupS1(1)*dN],[h,h],'g','LineWidth',2)                      %Normalkraft Stab rechts Ergänzunglinie oben
-text((1/AZB)*ba-NSupS1(1)*dN,h*0.5,num2str(roundn(NSupS1(1),-2)))                  %Text Stab Links !!!  !!!
-elseif AZB==3
-    
+plot([(1/AZB)*b-NSupS1(1)*dN,(1/AZB)*b-NSupS1(1)*dN],[0,h],'g','LineWidth',2)   % Normalkraft Stab rechts
+plot([(1/AZB)*b,(1/AZB)*b-NSupS1(1)*dN],[0,0],'g','LineWidth',2)                % Normalkraft Stab rechts Ergänzunglinie unten
+plot([(1/AZB)*b,(1/AZB)*b-NSupS1(1)*dN],[h,h],'g','LineWidth',2)                % Normalkraft Stab rechts Ergänzunglinie oben
+text(b/2,-1,num2str(roundn(NSupS1(1),-2)))                % Text Stab Mitte   
 end
+
 %Normalkraftverlauf Stab oben
-plot([0,ba],[h+NSupSO(1)*dN,h+NSupSO(1)*dN],'g','LineWidth',2)            %Normalkraft Stab oben
+plot([0,b],[h+NSupSO(1)*dN,h+NSupSO(1)*dN],'g','LineWidth',2)            %Normalkraft Stab oben
 plot([0,0],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                      %Normalkraft Stab oben Ergänzunglinie unten
-plot([ba,ba],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                      %Normalkraft Stab oben Ergänzunglinie oben
-text(ba*0.5,h+NSupSR(1)*dN,num2str(roundn(NSupSO(1),-2)))                  %Text Stab Links !!!  !!!
+plot([b,b],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                      %Normalkraft Stab oben Ergänzunglinie oben
+text(b*0.5,h+NSupSR(1)*dN,num2str(roundn(NSupSO(1),-2)))                  %Text Stab Links !!!  !!!
 
 hold off
 
@@ -965,7 +924,7 @@ end
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
-[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf1=bf
 tf1=tf
@@ -977,7 +936,7 @@ hf1=hf
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
-[f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
+[f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 
 bf2=bf
 tf2=tf
@@ -1040,40 +999,7 @@ legNumEditq = uicontrol('Style','text','HorizontalAlignment', 'left',...
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Anzahl Pfetten abhängig von Breite
-%Pfettenabstand
-n1=(b/a1);               %Anzahl Pfetten, wenn Abstand 1.0m
-a15=1.5;                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15);             %Anzahl Pfetten, wenn Abstand 1.5m
-npres=0;                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
-if n15==round(n15)      %Wenn n15 ganze Zahl, 
-    npres=n15+1         %+1 weil Endstütze hinzukommt
-elseif n1==round(n1)    %Wenn n1 ganze Zahl,
-    npres=n1+1          %+1 weil Endstütze hinzukommt
-else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
-    npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
-end
-apres=(b/(npres-1));      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
-
-%Anzahl Binder abhängig von Länge und Abstand
-nr=(l/a);               %Anzahl Rahmen, gegeben durch (Länge/Abstand) von Benutzer gewählt
-nrres=0;                %Anzahl Rahmen, um dann weiterzurechnen
-
-if nr==round(nr)       %Wenn nl ganze Zahl, 
-    nrres=nr+1         %+1 weil Endrahmen hinzukommt
-
-else nr~=round(nr)     %Wenn nl keine ganze Zahl,
-    nrres=ceil(nr)+1;   %Aufrunden, dass n15 gerade wird (+1 weil Endstütze hinzukommt)
-                       %Verändert den eingegebenen Abstand, damit eine
-                       %ganze Anzahl an Rahmen entseht
-end
-arres=(l/(nrres-1));     %resultierender Abstand der Rahmen
-                       %weicht vom eingegebenen a ab, wenn (Länge/Abstand)
-                       %keine ganze Zahl ergibt
-                       
-%Ende Aufbau der Abstände (Pfetten und Rahmen) und Anahl (Pfetten und
-%Rahmen)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Patch Properties
 fac= [1 2 3 4; 4 3 5 6; 6 7 8 5; 1 2 8 7; 6 7 1 4; 2 3 5 8];    % Welche Eckpunkte werden als eine Polygonfläche eingefärbt
