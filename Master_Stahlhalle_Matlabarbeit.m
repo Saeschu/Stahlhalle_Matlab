@@ -717,6 +717,7 @@ subplot(2,2,1)
 hold on
 
 axis off
+<<<<<<< HEAD
 axis equal
 
 %<<<<<<< HEAD
@@ -731,6 +732,22 @@ axis equal
 
 
 axis off
+=======
+axis equal
+
+%<<<<<<< HEAD
+%<<<<<<< HEAD
+
+axis off
+%=======
+axis off
+axis equal
+%>>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
+%=======
+
+
+axis off
+>>>>>>> parent of b529fa4... Jetzt stemmts weder
 axis off
 axis equal
 
