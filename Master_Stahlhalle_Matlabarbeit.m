@@ -309,9 +309,9 @@ function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB
 %
 %   Output:
 %   Auflagermatrix      Zusammenstellung der Auflagerkräfte
-%   MMX                 Matrix Momentenverlauf für Plot MSupSL, MSupSR ,MSupSO
-%   QMX                 Matrix Querkraftverlauf für Plot VSupSL, VSupSR ,VSupSO
-%   NMX                 Matrix Normalkraftverlauf für Plot NSupSL, NSupSR ,NSupSO, NSupS1, NSupS2
+%   MMX                 Matrix Momentenverlauf für Plot [ MSupSL, MSupSR,MSupSO ]
+%   QMX                 Matrix Querkraftverlauf für Plot [ VSupSL, VSupSR,VSupSO ]
+%   NMX                 Matrix Normalkraftverlauf für Plot [ NSupSL, NSupSR,NSupSO, NSupS1 ]
 
 %Wert aus EinwirkungaufRahmen Matrix lesen
 F=EinwirkungenaufRahmen{1,2,K}
@@ -379,8 +379,8 @@ Ml=0+1.*X1+1.*X2+-1.*X3
 Mr=0+1.*X1+0.*X2+0.*X3
 
 % Werte Moment für Superposition
-dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),-2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dx=10                                                   % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dT=roundn((ba*dx),-2)                                   % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -499,7 +499,7 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 
 % Werte Moment für Superposition
-dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dx=10                                                   % Teilungsfaktor Stab Oben(Stücke pro Meter)
 dT=roundn((ba*dx),2)                                    % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
@@ -579,9 +579,9 @@ end
 %Aufbau Auflagermatrix
 
 if AZB == 1
-Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb)]                     %Generiung der Matrix für AZB = 1
+Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb)]                     % Generiung der Matrix für AZB = 1
 elseif AZB == 2
-Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb);sum(S1v),0,0]             %Generiung der Matrix für AZB = 2
+Auflagermatrix = [sum(Av),sum(Ah),sum(Ma);sum(Bv),sum(Bh),sum(Mb);sum(S1v),0,0]        % Generiung der Matrix für AZB = 2
 end
 
 %Aufbau Matrix Momentenverlauf für Plot 
@@ -605,10 +605,6 @@ function [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,s
 MaT=Auflagermatrix(1,3)
 AhT=Auflagermatrix(1,2)
 AvT=Auflagermatrix(1,1)
-%Mb=Auflagermatrix(8)
-%Bh=Auflagermatrix(5)
-%Bv=Auflagermatrix(2)
-
 
 if AZB==2
 S1vT=Auflagermatrix(3,1)
@@ -701,6 +697,7 @@ hFM =hf                              % höhe Fundament Mitte
 hFR =hf                              % höhe Fundament Rechts
 
 hFMAX=max([hFL hFM hFR])             % Darstellungs Faktor Bemassungs Linie damit Abstand zwischen Fundament und Bemassungslinie stimmt 
+Ver=max([b h])                       % Darstellungs Faktor beachtet Verhältnis zwischen Höhe und Breite
 
 if K==1                                                                                                                  %position [left bottom width height]            
 f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.63 0.524 0.36 0.44])         
@@ -739,7 +736,6 @@ text(b-1.5,-3.5-hFMAX,(num2str(roundn(bFR,-2))),'Color',[0.19 0.19 0.19])       
 
 if AZB ==1
 text(b*0.5-1.5,-0.5-hFMAX,(num2str(roundn(b,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung der Breite (Breite) Grau
-%text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn((b-(bFL/2+bFR/2)),-2))),'Color',[0.19 0.19 0.19])             % Wert Bemassung Distanz zwischen Fundamenten(Breite) Grau
 
 else %AZB = 2
 plot([(b/2)+(-bFM/2),(b/2)+(-bFM/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)        % Bemassung Hilfslinie links Mittel Fundament (Breite) Grau
@@ -790,7 +786,7 @@ plot([0.5,-0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)   
 plot([b,b-0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                % Linie Pfeil links 
 plot([b,b+0.5],[h,Q/2+h],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                                % Linie Pfeil rechts 
 plot([b-0.5,b+0.5],[h+Q/2,h+Q/2],'Color',[0.9686 0.4549 0.0510],'LineWidth',1.5)                        % Linie Pfeil oben
-text(b/2-3,h+1.25,(num2str(q)))                                                                      	% Text Grösse q
+text(b/4,h+1.25,(num2str(q)))                                                                           % Text Grösse q
 text(b/2,h+1.5,('kN/m^2'))                                                                              % Text kN pro m^2
 
 hold off
@@ -812,7 +808,7 @@ MySL=linspace(h,0,2)
 plot(MxSL,MySL,'r','LineWidth',2)                                           % Stab-Moment Rechts
 plot([0,MSupSL(2)*dM],[0,0],'r','LineWidth',2)                              % Stab-Moment Ergänzung unten
 plot([0,MSupSL(1)*dM],[h,h],'r','LineWidth',2)                              % Stab-Moment Ergänzung oben
-text(-2.5,-1,num2str(roundn(MSupSL(2),-2)))                                    % Text unten Ma
+text(-Ver/10,-Ver/10,num2str(roundn(MSupSL(2),-2)))                         % Text unten Ma
 
 %Momentenverlauf Stab rechts
 MxSR=b-(MSupSR.*dM)           
@@ -820,7 +816,7 @@ MySR=linspace(0,h,2)
 plot(MxSR,MySR,'r','LineWidth',2)                                           % Stab-Moment Links
 plot([b,b-MSupSR(1)*dM],[0,0],'r','LineWidth',2)                            % Stab-Moment Ergänzung unten
 plot([b,b-MSupSR(2)*dM],[h,h],'r','LineWidth',2)                            % Stab-Moment Ergänzung oben
-text(b-2,-1,num2str(roundn(MSupSR(1),-2)))                                  % Text unten Mb 
+text(b-Ver/10,-Ver/10,num2str(roundn(MSupSR(1),-2)))                        % Text unten Mb 
 
 %Momentenverlauf Stab oben
 MySO=h-(MSupSO.*dM)
@@ -828,13 +824,13 @@ MxSO=linspace(0,b,length(MSupSO))
 plot(MxSO,MySO,'r','LineWidth',2)                                           % Stab-Moment Oben
 plot([0,0],[h,h-MSupSL(1)*dM],'r','LineWidth',2)                            % Stab-Moment Ergänzung Links
 plot([b,b],[h,h-MSupSR(2)*dM],'r','LineWidth',2)                            % Stab-Moment Ergänzung rechts
-text(-3.5+MSupSL(1)*dM,h+2,num2str(roundn(MSupSL(1),-2)))                   % Text Moment oben Links
-text(b+1,h+2,num2str(roundn(MSupSR(2),-2)))                                 % Text Moment oben Rechts
+text(-Ver/3+MSupSL(1)*dM,h+Ver/10,num2str(roundn(MSupSL(1),-2)))            % Text Moment oben Links
+text(b+Ver/10,h+Ver/10,num2str(roundn(MSupSR(2),-2)))                       % Text Moment oben Rechts
 text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*b...
-    -2,h-1-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))                  % Text Max-Moment Mf 
-if AZB>1
+    -Ver/3.5,h-Ver/10-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))       % Text Max-Moment Mf 
+if AZB==2
 text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
-    -2,h+1-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                  % Text MIN-Moment Mf
+    -Ver/5,h+Ver/10-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))         % Text MIN-Moment Mf
 end
 
 %Struktur
@@ -859,13 +855,13 @@ title('Querkraft [kN]')
 plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)                   % Querkraft Stab links
 plot([0,VSupSL(1)*dV],[0,0],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie unten
 plot([0,VSupSL(1)*dV],[h,h],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie oben
-text(VSupSL(1)*dV-2,-2,num2str(roundn(VSupSL(1),-2)))                       % Text Stab Links 
+text(VSupSL(1)*dV-Ver/10,-Ver/10,num2str(roundn(VSupSL(1),-2)))             % Text Stab Links 
 
 %Querkraftverlauf Stab Rechts
 plot([b-VSupSR(1)*dV,b-VSupSR(1)*dV],[0,h],'b','LineWidth',2)               % Querkraft Stab links
 plot([b,b-VSupSR(1)*dV],[0,0],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie unten
 plot([b,b-VSupSR(1)*dV],[h,h],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie oben
-text(b-VSupSR(1)*dV-2,-2,num2str(roundn(VSupSR(1),-2)))                     % Text Stab Rechts
+text(b-VSupSR(1)*dV-Ver/10,-Ver/10,num2str(roundn(VSupSR(1),-2)))           % Text Stab Rechts
 
 %Querkraftverlauf Stab oben
 VySO=h-(VSupSO.*dV)
@@ -873,8 +869,13 @@ VxSO=linspace(0,b,length(VSupSO))
 plot(VxSO,VySO,'b','LineWidth',2)                                           % Querkraft Stab oben
 plot([0,0],[h,VySO(1)],'b','LineWidth',2)                                   % Querkraft Stab oben Ergänzungslinie links
 plot([b,b],[h,VySO(end)],'b','LineWidth',2)                                 % Querkraft Stab oben Ergänzungslinie rechts
-text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.75,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
-text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.75,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
+if AZB==1
+text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b+Ver/10,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))       % Text Max Querkraft 
+text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b-Ver/3,h-min(VSupSO)*dV,num2str(roundn(min(VSupSO),-2)))               % Text Min-Querkraft 
+else AZB==2
+text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-Ver/3.5,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))      % Text Max Querkraft 
+text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+Ver/10,h-min(VSupSO)*dV+Ver/40,num2str(roundn(min(VSupSO),-2)))       % Text Min-Querkraft 
+end
 
 %Struktur
 plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
@@ -903,27 +904,27 @@ title('Normalkraft [kN]')
 plot([-NSupSL(1)*dN,-NSupSL(1)*dN],[0,h],'g','LineWidth',2)                 % Normalkraft Stab links
 plot([0,-NSupSL(1)*dN],[0,0],'g','LineWidth',2)                             % Normalkraft Stab links Ergänzunglinie unten
 plot([0,-NSupSL(1)*dN],[h,h],'g','LineWidth',2)                             % Normalkraft Stab links Ergänzunglinie oben
-text(-2,-1,num2str(roundn(NSupSL(1),-2)))                                   % Text Stab Links
+text(-Ver/5,-Ver/10,num2str(roundn(NSupSL(1),-2)))                          % Text Stab Links
 
 %Normalkraftverlauf Stab Rechts
 plot([b-NSupSR(1)*dN,b-NSupSR(1)*dN],[0,h],'g','LineWidth',2)               % Normalkraft Stab rechts
 plot([b,b-NSupSR(1)*dN],[0,0],'g','LineWidth',2)                            % Normalkraft Stab rechts Ergänzunglinie unten
 plot([b,b-NSupSR(1)*dN],[h,h],'g','LineWidth',2)                            % Normalkraft Stab rechts Ergänzunglinie oben
-text(b,-1,num2str(roundn(NSupSR(1),-2)))                                    % Text Stab Rechts
+text(b,-Ver/10,num2str(roundn(NSupSR(1),-2)))                               % Text Stab Rechts
 
 %Querkraftverlauf Stab Mitte
 if AZB==2
 plot([(1/AZB)*b-NSupS1(1)*dN,(1/AZB)*b-NSupS1(1)*dN],[0,h],'g','LineWidth',2)   % Normalkraft Stab rechts
 plot([(1/AZB)*b,(1/AZB)*b-NSupS1(1)*dN],[0,0],'g','LineWidth',2)                % Normalkraft Stab rechts Ergänzunglinie unten
 plot([(1/AZB)*b,(1/AZB)*b-NSupS1(1)*dN],[h,h],'g','LineWidth',2)                % Normalkraft Stab rechts Ergänzunglinie oben
-text(b*0.5-2.5,-1,num2str(roundn(NSupS1(1),-2)))                                % Text Stab Mitte   
+text(b*0.5-Ver/3,-Ver/10,num2str(roundn(NSupS1(1),-2)))                         % Text Stab Mitte   
 end
 
 %Normalkraftverlauf Stab oben
 plot([0,b],[h+NSupSO(1)*dN,h+NSupSO(1)*dN],'g','LineWidth',2)               % Normalkraft Stab oben
 plot([0,0],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % Normalkraft Stab oben Ergänzunglinie unten
 plot([b,b],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % Normalkraft Stab oben Ergänzunglinie oben
-text(b*0.5-2.5,h-NSupSR(1)*dN,num2str(roundn(NSupSO(1),-2)))                % Text Stab oben
+text(-Ver/4,h+NSupSO(1)*dN,num2str(roundn(NSupSO(1),-2)))                   % Text Stab oben
 
 %Struktur
 plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
