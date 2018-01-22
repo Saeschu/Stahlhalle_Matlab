@@ -193,7 +193,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
 
-ba= b-ProfSb         %Breite Achsabstand
+ba= b-ProfSt         %Breite Achsabstand
 
 
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
@@ -217,9 +217,9 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
-n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
+n1=(ba/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
+n15=(ba/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
 npres=0                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
 if n15==round(n15)      %Wenn n15 ganze Zahl, 
@@ -229,7 +229,7 @@ elseif n1==round(n1)    %Wenn n1 ganze Zahl,
 else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
-apres=(ba/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
+apres=(b/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
 
 
 %Anzahl Binder abhängig von Länge und Abstand
@@ -316,6 +316,7 @@ function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB
 %Wert aus EinwirkungaufRahmen Matrix lesen
 F=EinwirkungenaufRahmen{1,2,K}
 x=EinwirkungenaufRahmen{1,3,K}
+   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funktion für Bogen 2 bis 3 Stützen                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -380,7 +381,7 @@ Mr=0+1.*X1+0.*X2+0.*X3
 
 % Werte Moment für Superposition
 dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),-2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -713,8 +714,27 @@ end
 %Darstellung: Struktur Feld
 subplot(2,2,1)
 hold on
-axis equal
+
 axis off
+axis equal
+
+%<<<<<<< HEAD
+%<<<<<<< HEAD
+
+axis off
+%=======
+axis off
+axis equal
+%>>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
+%=======
+
+
+axis off
+axis off
+axis equal
+
+%>>>>>>> 78989d9545a632410461627e0bac7927da906626
+
 title('Struktur')
 
 %Darstellung Struktur
@@ -752,10 +772,10 @@ text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn(bFM,-2))),'Color',[0.19 0.19 0.19])   
 end
 
 %Darstellung Bemassung vertikal
-plot([b+4.5+(bFR/2),b+4.5+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)             % Bemassung Linie (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                            % Bemassung Hilfslinie unten Stab (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                            % Bemassung Hilfslinie oben Stab (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                      % Bemassung Hilfslinie unten Fundament (Höhe) Grau
+plot([b+4.5+(bFR/2),b+4.5+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)                 % Bemassung Linie (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie unten Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie oben Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie unten Fundament (Höhe) Grau
 text(b+0.75+(bFR/2),h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung Stab(Höhe) Grau
 text(b+0.75+(bFR/2),-hFR*0.5,(num2str(roundn(hFR,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Fundament (Höhe)Grau
 
@@ -1208,4 +1228,4 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%            
         end
     
-end
+ end
