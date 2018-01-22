@@ -378,7 +378,7 @@ Mr=0+1.*X1+0.*X2+0.*X3
 
 % Werte Moment für Superposition
 dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),0)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
