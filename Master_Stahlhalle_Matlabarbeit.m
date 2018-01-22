@@ -217,9 +217,9 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
-n1=(ba/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
+n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
-n15=(ba/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
+n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
 npres=0                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
 if n15==round(n15)      %Wenn n15 ganze Zahl, 
