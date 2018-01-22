@@ -182,7 +182,7 @@ if b > 26
     msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige Maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
         'Infobox')
     return 
-   end
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 1= Unterkannte, 2= Oberkannte
 if BedH==1        
@@ -601,7 +601,6 @@ end
 
 end
 
-
 function [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm,arres)
 %Fundamente
 %Werte aus Auflagermatrix lesen
@@ -660,19 +659,6 @@ if bfm<=0.4
 end
 end
 end
-
-if AZB==1 & bf >= b
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
-    return
-    
-elseif AZB==2 & bf >= (b/2)
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
-    return 
-   end
-
-
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
 
@@ -947,6 +933,19 @@ end
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+       return
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 
@@ -959,6 +958,20 @@ hf1=hf
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+       return
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if arres ~= l
 [f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
