@@ -203,7 +203,7 @@ tf= 0.5;
 
 %Anzahl Rahmen für Unbestimtheit
 AZB = 1;
-if b > 13 & b < 26
+if b >= 13 & b <= 26
     AZB=2;
 end
 
@@ -624,16 +624,23 @@ hf=1        %Einbindetiefe
 
 Flf=(4*AvT)/o2
 bf=sqrt(Flf)
+
 if bf<=3*(MaT+(AhT*hf))/AvT
     bf=3*(MaT+(AhT*hf))/AvT
+elseif bf<=0.4
+    bf=0.4
 end
 
 tf=sqrt(Flf)
-if tf>=arres
+if tf<=0.4
+    tf=0.4
+elseif tf>=arres
     tf=arres
-    bf=Flf/tf
 end
 
+if (Flf/tf)>=bf
+    bf=(Flf/tf)
+end
 bfm=0                  %damit bfm1 bei AZB=1 besetzt ist
 
 if AZB ==2
@@ -646,6 +653,9 @@ om=ksm*sm  %Bodenspannung Mitte
 FAM=sum(S1vT)/om    %Fläche um Normalkraft aufzunehmen
 
 bfm=sqrt(FAM) %quadratisches Fundament
+if bfm<=0.4
+    bfm=0.4
+end
 end
 end
 
@@ -700,7 +710,7 @@ end
 %Darstellung: Struktur, Auflast & Fundamente
 subplot(2,2,1)
 hold on
-<<<<<<< HEAD
+%<<<<<<< HEAD
 %<<<<<<< HEAD
 
 axis off
@@ -708,14 +718,14 @@ axis off
 axis off
 axis equal
 %>>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
-=======
+%=======
 
 
 axis off
 axis off
 axis equal
 
->>>>>>> 78989d9545a632410461627e0bac7927da906626
+%>>>>>>> 78989d9545a632410461627e0bac7927da906626
 title('Struktur')
 
 
@@ -1126,7 +1136,7 @@ patch('Faces', fac,'Vertices',vert8,'FaceColor',FarbeQuerbalken);            % E
 %Wenn Hallenbreite grösser 13m ist wird eine weiter Sttzenreihe bei 1/2
 %ergänzt
 %Stützen anfang und ende
-if b > 13 & b < 26
+if b >= 13 & b <= 26
    SMb= (b/2) -(ProfSb/2);           %Hilfsgrösse% Pos X (also Stützenabstand) der Stüzte. Einmitung auf Achsmass der Stütze
   
 %Stuetze VM 
@@ -1190,7 +1200,7 @@ vert17= [b-(ProfSb/2-bf2/2) i1-tf2/2 0; b-(ProfSb/2-bf2/2) i1+tf2/2 0; b-(ProfSb
 patch('Faces', fac,'Vertices',vert17,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stützenreihen bei grösseren Spannweiten >13
-if b >13 & b < 26
+if b >=13 & b <= 26
     
 %Stuetze iM
 vert3= [SMb XMVQS 0; SMb (XMVQS+ProfSt) 0; (SMb+ProfSb) (XMVQS+ProfSt) 0; (SMb+ProfSb) XMVQS 0; (SMb+ProfSb) (XMVQS+ProfSt) (h-2*ProfTh); (SMb+ProfSb) XMVQS (h-2*ProfTh); SMb XMVQS (h-2*ProfTh); SMb (XMVQS+ProfSt) (h-2*ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
