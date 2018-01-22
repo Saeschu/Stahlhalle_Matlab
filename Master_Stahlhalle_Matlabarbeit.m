@@ -659,22 +659,19 @@ if bfm<=0.4
 end
 end
 end
-<<<<<<< HEAD
+
 
 if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return
     
-elseif & AZB==2 & bf >= (b/2)
+elseif AZB==2 & bf >= (b/2)
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return 
    end
 
-
-=======
->>>>>>> 282431838b94787d9faec96e05db33538207bdc1
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
 
