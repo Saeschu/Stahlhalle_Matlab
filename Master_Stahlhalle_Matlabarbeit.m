@@ -501,7 +501,7 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 % Werte Moment für Superposition
 dx=100                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -659,22 +659,18 @@ if bfm<=0.4
 end
 end
 end
-<<<<<<< HEAD
 
 if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return
     
-elseif & AZB==2 & bf >= (b/2)
+elseif AZB==2 & bf >= (b/2)
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return 
    end
 
-
-=======
->>>>>>> 282431838b94787d9faec96e05db33538207bdc1
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
 
@@ -943,29 +939,6 @@ hold off
 
 end
 
-
-%Plot für erster + letzer Rahmen
-
-[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
-
-[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
-%Bedingung bzw. Fehlermeldung bei zu grossen Moment
-if AZB==1 & bf >= ba
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox','Error','error')
-    return
-    
-elseif AZB==2 & bf >= (b/2)
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox', 'Error','error')
-       return
-else
-
-[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
-
-end
-
-
 %Plot mittlere Rahmen
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
@@ -989,16 +962,40 @@ if arres ~= l
 end 
 end
 
-
-%%%%%%%%
-bf1=bf
-tf1=tf
-bfm1=bfm
-hf1=hf
+%%%%%%%%%%
 bf2=bf
 tf2=tf
 bfm2=bfm
 hf2=hf
+%%%%%%%%%
+
+%Plot für erster + letzer Rahmen
+
+[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
+
+[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox','Error','error')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox', 'Error','error')
+       return
+else
+
+[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
+
+end
+%%%%%%%%%%%
+bf1=bf
+tf1=tf
+bfm1=bfm
+hf1=hf
+%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
