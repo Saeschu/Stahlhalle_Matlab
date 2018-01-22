@@ -713,10 +713,10 @@ end
 %Darstellung: Struktur Feld
 subplot(2,2,1)
 hold on
-<<<<<<< HEAD
+
 axis off
 axis equal
-=======
+
 %<<<<<<< HEAD
 %<<<<<<< HEAD
 
@@ -733,7 +733,7 @@ axis off
 axis equal
 
 %>>>>>>> 78989d9545a632410461627e0bac7927da906626
->>>>>>> cb55bc6c68d7d5389ef710192f70aa951d3cde4f
+
 title('Struktur')
 
 %Darstellung Struktur
