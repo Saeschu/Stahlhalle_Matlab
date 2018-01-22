@@ -727,7 +727,7 @@ text(b-1.5,-3.5-hFMAX,(num2str(roundn(bFR,-2))),'Color',[0.19 0.19 0.19])       
 
 if AZB ==1
 text(b*0.5-1.5,-0.5-hFMAX,(num2str(roundn(b,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung der Breite (Breite) Grau
-text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn((b-(bFL/2+bFR/2)),-2))),'Color',[0.19 0.19 0.19])             % Wert Bemassung Distanz zwischen Fundamenten(Breite) Grau
+%text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn((b-(bFL/2+bFR/2)),-2))),'Color',[0.19 0.19 0.19])             % Wert Bemassung Distanz zwischen Fundamenten(Breite) Grau
 
 else %AZB = 2
 plot([(b/2)+(-bFM/2),(b/2)+(-bFM/2)],[-6-hFMAX,-5-hFMAX],'Color',[0.19 0.19 0.19],'LineWidth',1)        % Bemassung Hilfslinie links Mittel Fundament (Breite) Grau
@@ -740,10 +740,10 @@ text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn(bFM,-2))),'Color',[0.19 0.19 0.19])   
 end
 
 %Darstellung Bemassung vertikal
-plot([b+4+(bFR/2),b+4+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)                 % Bemassung Linie (Höhe) Grau
-plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie unten Stab (Höhe) Grau
-plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie oben Stab (Höhe) Grau
-plot([b+3.5+(bFR/2),b+4.5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie unten Fundament (Höhe) Grau
+plot([b+4.5+(bFR/2),b+4.5+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)                 % Bemassung Linie (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie unten Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie oben Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie unten Fundament (Höhe) Grau
 text(b+0.75+(bFR/2),h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung Stab(Höhe) Grau
 text(b+0.75+(bFR/2),-hFR*0.5,(num2str(roundn(hFR,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Fundament (Höhe)Grau
 
@@ -808,7 +808,7 @@ MySL=linspace(h,0,2)
 plot(MxSL,MySL,'r','LineWidth',2)                                           % Stab-Moment Rechts
 plot([0,MSupSL(2)*dM],[0,0],'r','LineWidth',2)                              % Stab-Moment Ergänzung unten
 plot([0,MSupSL(1)*dM],[h,h],'r','LineWidth',2)                              % Stab-Moment Ergänzung oben
-text(1,-1,num2str(roundn(MSupSL(2),-2)))                                    % Text unten Ma
+text(-2.5,-1,num2str(roundn(MSupSL(2),-2)))                                    % Text unten Ma
 
 %Momentenverlauf Stab rechts
 MxSR=b-(MSupSR.*dM)           
@@ -855,13 +855,13 @@ end
 plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)                   % Querkraft Stab links
 plot([0,VSupSL(1)*dV],[0,0],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie unten
 plot([0,VSupSL(1)*dV],[h,h],'b','LineWidth',2)                              % Querkraft Stab links Ergänzunglinie oben
-text(VSupSL(1)*dV-2,-1,num2str(roundn(VSupSL(1),-2)))                       % Text Stab Links 
+text(VSupSL(1)*dV-2,-2,num2str(roundn(VSupSL(1),-2)))                       % Text Stab Links 
 
 %Querkraftverlauf Stab Rechts
 plot([b-VSupSR(1)*dV,b-VSupSR(1)*dV],[0,h],'b','LineWidth',2)               % Querkraft Stab links
 plot([b,b-VSupSR(1)*dV],[0,0],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie unten
 plot([b,b-VSupSR(1)*dV],[h,h],'b','LineWidth',2)                            % Querkraft Stab links Ergänzunglinie oben
-text(b-VSupSR(1)*dV-2,-1,num2str(roundn(VSupSR(1),-2)))                     % Text Stab Rechts
+text(b-VSupSR(1)*dV-2,-2,num2str(roundn(VSupSR(1),-2)))                     % Text Stab Rechts
 
 %Querkraftverlauf Stab oben
 VySO=h-(VSupSO.*dV)
@@ -869,8 +869,8 @@ VxSO=linspace(0,b,length(VSupSO))
 plot(VxSO,VySO,'b','LineWidth',2)                                           % Querkraft Stab oben
 plot([0,0],[h,VySO(1)],'b','LineWidth',2)                                   % Querkraft Stab oben Ergänzungslinie links
 plot([b,b],[h,VySO(end)],'b','LineWidth',2)                                 % Querkraft Stab oben Ergänzungslinie rechts
-text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.5,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
-text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.5,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
+text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.75,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
+text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.75,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
 
 hold off
 
