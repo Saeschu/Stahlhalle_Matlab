@@ -659,6 +659,22 @@ if bfm<=0.4
 end
 end
 end
+<<<<<<< HEAD
+
+if  AZB==1 & bf >= b 
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif & AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return 
+   end
+
+
+=======
+>>>>>>> 282431838b94787d9faec96e05db33538207bdc1
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
 
@@ -796,14 +812,6 @@ axis off
 axis equal
 title('Moment [kNm]')
 
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
-
 %Momentenverlauf Stab links 
 MxSL=(MSupSL.*dM)
 MySL=linspace(h,0,2)
@@ -835,6 +843,14 @@ text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
     -2,h+1-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                  % Text MIN-Moment Mf
 end
 
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
+
 hold off
 
 % Darstellung Querkraft
@@ -844,14 +860,6 @@ hold on
 axis off 
 axis equal
 title('Querkraft [kN]')
-
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
 
 %Querkraftverlauf Stab Links
 plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)                   % Querkraft Stab links
@@ -874,6 +882,14 @@ plot([b,b],[h,VySO(end)],'b','LineWidth',2)                                 % Qu
 text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.75,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
 text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.75,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
 
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
+
 hold off
 
 %Normalkaft
@@ -888,14 +904,6 @@ hold on
 axis off 
 axis equal
 title('Normalkraft [kN]')
-
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
 
 %Normalkraftverlauf Stab Links
 plot([-NSupSL(1)*dN,-NSupSL(1)*dN],[0,h],'g','LineWidth',2)                 % Normalkraft Stab links
@@ -922,6 +930,14 @@ plot([0,b],[h+NSupSO(1)*dN,h+NSupSO(1)*dN],'g','LineWidth',2)               % No
 plot([0,0],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % Normalkraft Stab oben Ergänzunglinie unten
 plot([b,b],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % Normalkraft Stab oben Ergänzunglinie oben
 text(b*0.5-2.5,h-NSupSR(1)*dN,num2str(roundn(NSupSO(1),-2)))                % Text Stab oben
+
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
 
 hold off
 
