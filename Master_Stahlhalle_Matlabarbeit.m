@@ -1153,7 +1153,7 @@ end
 
 %Pfetten dazwischen
 j=0;
-while j< (b-(apres))
+while j< (ba-(apres))
     j=j+apres;
   XMRL = (j-(ProfTb/2));      %Hilfsgrösse% Achsabstand der Längsbinder in While Schleife
 vert13= [XMRL 0 (h-ProfTh); (XMRL+ProfTb) 0 (h-ProfTh); (XMRL+ProfTb) 0 h; XMRL 0 h; (XMRL+ProfTb) l h; XMRL l h; XMRL l (h-ProfTh); (XMRL+ProfTb) l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
