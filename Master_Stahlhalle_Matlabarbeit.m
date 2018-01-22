@@ -316,7 +316,6 @@ function [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( K,AZB
 %Wert aus EinwirkungaufRahmen Matrix lesen
 F=EinwirkungenaufRahmen{1,2,K}
 x=EinwirkungenaufRahmen{1,3,K}
-   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funktion für Bogen 2 bis 3 Stützen                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -381,7 +380,7 @@ Mr=0+1.*X1+0.*X2+0.*X3
 
 % Werte Moment für Superposition
 dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),0)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),-2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -500,8 +499,8 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 
 % Werte Moment für Superposition
-dx=100                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dT=roundn((ba*dx),2)                                    % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -594,8 +593,6 @@ if AZB == 1
 NMX = {NSupSL, NSupSR ,NSupSO}
 elseif AZB == 2
 NMX = {NSupSL, NSupSR ,NSupSO NSupS1} 
-else AZB == 3
-NMX = {NSupSL, NSupSR ,NSupSO, NSupS1, NSupS2}
 end
 
 
@@ -755,10 +752,10 @@ text(b*0.5-1.5,-3.5-hFMAX,(num2str(roundn(bFM,-2))),'Color',[0.19 0.19 0.19])   
 end
 
 %Darstellung Bemassung vertikal
-plot([b+4.5+(bFR/2),b+4.5+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)                 % Bemassung Linie (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie unten Stab (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                        % Bemassung Hilfslinie oben Stab (Höhe) Grau
-plot([b+4+(bFR/2),b+5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                  % Bemassung Hilfslinie unten Fundament (Höhe) Grau
+plot([b+4.5+(bFR/2),b+4.5+(bFR/2)],[-0.5-hFR,h+0.5],'Color',[0.19 0.19 0.19],'LineWidth',1)             % Bemassung Linie (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[0,0],'Color',[0.19 0.19 0.19],'LineWidth',1)                            % Bemassung Hilfslinie unten Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[h,h],'Color',[0.19 0.19 0.19],'LineWidth',1)                            % Bemassung Hilfslinie oben Stab (Höhe) Grau
+plot([b+4+(bFR/2),b+5+(bFR/2)],[-hFR,-hFR],'Color',[0.19 0.19 0.19],'LineWidth',1)                      % Bemassung Hilfslinie unten Fundament (Höhe) Grau
 text(b+0.75+(bFR/2),h*0.5,(num2str(roundn(h,-2))),'Color',[0.19 0.19 0.19])                             % Wert Bemassung Stab(Höhe) Grau
 text(b+0.75+(bFR/2),-hFR*0.5,(num2str(roundn(hFR,-2))),'Color',[0.19 0.19 0.19])                        % Wert Bemassung Fundament (Höhe)Grau
 
