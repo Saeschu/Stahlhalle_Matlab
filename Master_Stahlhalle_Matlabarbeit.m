@@ -179,7 +179,7 @@ sm=elementSE (Setzungen)
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 26
-    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
+    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige Maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
         'Infobox')
     return 
    end
@@ -192,7 +192,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
-ba= b-ProfS         %Breite Achsabstand
+ba= b-ProfSt         %Breite Achsabstand
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
 AZB= 1;             %Anzahl Bögen
@@ -226,7 +226,7 @@ elseif n1==round(n1)    %Wenn n1 ganze Zahl,
 else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
-apres=(ba/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
+apres=(b/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
 
 
 %Anzahl Binder abhängig von Länge und Abstand
@@ -658,6 +658,17 @@ if bfm<=0.4
 end
 end
 end
+
+if AZB==1 & bf >= b
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return 
+   end
 
 
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,ba,h,MMX,QMX,NMX,bf,tf,bfm )
