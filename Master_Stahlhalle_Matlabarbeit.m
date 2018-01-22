@@ -35,7 +35,7 @@ EditBreite = uicontrol('style','edit',...
         'position',[130 305 100 22])
 InfoBreit = uicontrol('Style','text','BackgroundColor', 'w',...
         'Position',[20 215 733 30],'HorizontalAlignment', 'left','fontsize', 8.5,...
-        'String','Ab einer Spannweite über 13 m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13 m, maximale Gesammtspannweite beträgt 26 m.');
+        'String','Ab einer Spannweite ab 13 m wird die Geasmtspannweite mittels Stützen gewährleistet. Maximalespannweite zwischen den Stüzten beträgt 13 m, maximale Gesammtspannweite beträgt 26 m.');
     
 %Eingabe Höhe
 txtHoehe = uicontrol('Style','text','HorizontalAlignment', 'right',...
@@ -695,7 +695,9 @@ hFMAX=max([hFL hFM hFR])             % Darstellungs Faktor Bemassungs Linie dami
 if K==1                                                                                                                  %position [left bottom width height]            
 f= figure('Name','Erster und Letzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized', 'color', 'w', 'position', [0.63 0.524 0.36 0.44])         
 else %K==2
+    if arres ~= l
 f= figure('Name','Zweiter bis zweitletzter Bogen','NumberTitle', 'off','menubar', 'None', 'units', 'normalized','color', 'w', 'position', [0.63 0.05 0.36 0.44])
+    end
 end
 
 %Darstellung: Struktur Feld
@@ -944,7 +946,9 @@ hf1=hf
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
+if arres ~= l
 [f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
+end
 
 bf2=bf
 tf2=tf
@@ -955,7 +959,7 @@ hf2=hf
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 f2=figure('Name', 'Darstellung Lagerhalle 3D', 'NumberTitle', 'off', 'units','normalized', 'InnerPosition', [0.007 0.05 0.60 0.67])
 format compact
-myaxes =axes('xlim', [-1, b+1], 'ylim', [-1, l+1], 'zlim', [-1, h], 'box', 'on',...
+myaxes =axes('xlim', [-(bf/2)-1, b+(bf/2)+1], 'ylim', [-(tf/2)-1, l+(tf/2)+1], 'zlim', [-1.2, h], 'box', 'on',...
     'boxstyle', 'back', 'linewidth', 1,'units', 'normalized', 'Position', [0.2 0.06 0.75 0.9]) 
 axis equal 
 view(3)  %Erzeugung der 3D darstellung
@@ -1050,7 +1054,7 @@ patch('Faces', fac,'Vertices',vert4,'FaceColor',FarbeStuetze);            % Erze
 
 %Einzelfundament 2
 vert15= [b-(ProfSb/2-bf1/2) ProfSt/2-tf1/2 0; b-(ProfSb/2-bf1/2) ProfSt/2+tf1/2 0; b-(ProfSb/2+bf1/2) ProfSt/2+tf1/2 0; b-(ProfSb/2+bf1/2) ProfSt/2-tf1/2 0;...
-        b-(ProfSb/2+bf1/2) ProfSt/2+tf1/2 -hf1; b-(ProfSb/2+bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2+tf/2 -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+        b-(ProfSb/2+bf1/2) ProfSt/2+tf1/2 -hf1; b-(ProfSb/2+bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2+tf1/2 -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert15,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 3
