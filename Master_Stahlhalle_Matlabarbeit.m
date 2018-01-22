@@ -501,7 +501,7 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 
 % Werte Moment für Superposition
-dx=1000                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dx=100                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
 dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
