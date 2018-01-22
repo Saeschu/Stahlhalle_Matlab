@@ -659,10 +659,7 @@ if bfm<=0.4
 end
 end
 end
-<<<<<<< HEAD
 
-=======
->>>>>>> 01583c6e6d95edbc3adf8e57c8f73a7c797675ad
 
 if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
