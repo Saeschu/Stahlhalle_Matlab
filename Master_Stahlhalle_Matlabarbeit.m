@@ -827,7 +827,7 @@ plot([b,b],[h,h-MSupSR(2)*dM],'r','LineWidth',2)                            % St
 text(-Ver/3+MSupSL(1)*dM,h+Ver/10,num2str(roundn(MSupSL(1),-2)))            % Text Moment oben Links
 text(b+Ver/10,h+Ver/10,num2str(roundn(MSupSR(2),-2)))                       % Text Moment oben Rechts
 text((mean((find(MSupSO==max(MSupSO))/length(MSupSO))))*b...
-    -Ver/3.5,h-Ver/10-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))       % Text Max-Moment Mf 
+    -Ver/6,h-Ver/10-max(MSupSO)*dM,num2str(roundn(max(MSupSO),-2)))         % Text Max-Moment Mf 
 if AZB==2
 text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
     -Ver/5,h+Ver/10-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))         % Text MIN-Moment Mf
@@ -873,7 +873,7 @@ if AZB==1
 text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b+Ver/10,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))       % Text Max Querkraft 
 text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b-Ver/3,h-min(VSupSO)*dV,num2str(roundn(min(VSupSO),-2)))               % Text Min-Querkraft 
 else AZB==2
-text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-Ver/3.5,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))      % Text Max Querkraft 
+text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-Ver/3,h-max(VSupSO)*dV-Ver/40,num2str(roundn(max(VSupSO),-2)))      % Text Max Querkraft 
 text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+Ver/10,h-min(VSupSO)*dV+Ver/40,num2str(roundn(min(VSupSO),-2)))       % Text Min-Querkraft 
 end
 
