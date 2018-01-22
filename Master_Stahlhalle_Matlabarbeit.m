@@ -179,10 +179,10 @@ sm=elementSE (Setzungen)
 %Textausgabe, Gesammtspannweite überschreitet einzelspannweiten der Träger.
 %Berechnung kann nicht weiter ausgeführt werden.
 if b > 26
-    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
+    msgbox('Die gewählte Gesamtspannweite der Lagerhalle [Breite], überschreitet die zulässige Maximalspannweite von 26m. Berechnung mit mehr als 3 Stützenreihen bzw. 2 Rahmen ist zur zeit nicht möglich.',...
         'Infobox')
     return 
-   end
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Festlegung ob Hallenhöhe unter oder oberkannte Balken ist... 1= Unterkannte, 2= Oberkannte
 if BedH==1        
@@ -192,7 +192,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
-ba= b-ProfSb         %Breite Achsabstand
+
+ba= b-ProfSt         %Breite Achsabstand
+
+
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
 AZB= 1;             %Anzahl Bögen
@@ -226,7 +229,7 @@ elseif n1==round(n1)    %Wenn n1 ganze Zahl,
 else n15~=round(n15)    %Wenn n15 keine ganze Zahl,
     npres=ceil(n15)+1   %Aufrunden, dass n15 ganz wird (+1 weil Endstütze hinzukommt)
 end
-apres=(ba/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
+apres=(b/(npres-1))      %resultierender Pfettenabstand (variert zwischen 1 und 1.5)
 
 
 %Anzahl Binder abhängig von Länge und Abstand
@@ -598,7 +601,6 @@ end
 
 end
 
-
 function [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm,arres)
 %Fundamente
 %Werte aus Auflagermatrix lesen
@@ -657,8 +659,22 @@ if bfm<=0.4
 end
 end
 end
+<<<<<<< HEAD
+
+if  AZB==1 & bf >= b 
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif & AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return 
+   end
 
 
+=======
+>>>>>>> 282431838b94787d9faec96e05db33538207bdc1
 function [f] = Funktion_Darstellung_2d_Stahlhalle( K,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 %Darstellung der Resultate in 2D
 
@@ -933,6 +949,19 @@ end
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+       return
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
 
@@ -945,6 +974,20 @@ hf1=hf
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox')
+       return
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if arres ~= l
 [f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
