@@ -217,9 +217,9 @@ a1= 1; %Längsbinderabstand 1,0...4,0m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Anzahl Pfetten abhängig von Breite
 %Pfettenabstand
-n1=(b/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
+n1=(ba/a1)               %Anzahl Pfetten, wenn Abstand 1.0m
 a15=1.5                 %Definition von a15; Pfettenabstand 1.5m
-n15=(b/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
+n15=(ba/a15)             %Anzahl Pfetten, wenn Abstand 1.5m
 npres=0                 %entgültige Anzahl an Pfetten, um dann weiterzurechnen
 
 if n15==round(n15)      %Wenn n15 ganze Zahl, 
@@ -1156,7 +1156,7 @@ end
 j=0;
 while j< (ba-(apres))
     j=j+apres;
-  XMRL = (j-(ProfTb/2));      %Hilfsgrösse% Achsabstand der Längsbinder in While Schleife
+  XMRL = ((j+(ProfSb/2))-(ProfTb/2));      %Hilfsgrösse% Achsabstand der Längsbinder in While Schleife
 vert13= [XMRL 0 (h-ProfTh); (XMRL+ProfTb) 0 (h-ProfTh); (XMRL+ProfTb) 0 h; XMRL 0 h; (XMRL+ProfTb) l h; XMRL l h; XMRL l (h-ProfTh); (XMRL+ProfTb) l (h-ProfTh)]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert13,'FaceColor',FarbePfetteI);            % Erzeugen der Gefärbten Flächen (Polygonen)  
 end
