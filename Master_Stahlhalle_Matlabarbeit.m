@@ -501,7 +501,7 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 % Werte Moment für Superposition
 dx=100                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=(ba*dx)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -659,7 +659,10 @@ if bfm<=0.4
 end
 end
 end
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01583c6e6d95edbc3adf8e57c8f73a7c797675ad
 
 if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
@@ -809,14 +812,6 @@ axis off
 axis equal
 title('Moment [kNm]')
 
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
-
 %Momentenverlauf Stab links 
 MxSL=(MSupSL.*dM)
 MySL=linspace(h,0,2)
@@ -848,6 +843,14 @@ text((mean((find(MSupSO==min(MSupSO))/length(MSupSO))))*b...
     -2,h+1-min(MSupSO)*dM,num2str(roundn(min(MSupSO),-2)))                  % Text MIN-Moment Mf
 end
 
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
+
 hold off
 
 % Darstellung Querkraft
@@ -857,14 +860,6 @@ hold on
 axis off 
 axis equal
 title('Querkraft [kN]')
-
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
 
 %Querkraftverlauf Stab Links
 plot([VSupSL(1)*dV,VSupSL(1)*dV],[0,h],'b','LineWidth',2)                   % Querkraft Stab links
@@ -887,6 +882,14 @@ plot([b,b],[h,VySO(end)],'b','LineWidth',2)                                 % Qu
 text((mean((find(VSupSO==max(VSupSO))/length(VSupSO))))*b-5,h-max(VSupSO)*dV-0.75,num2str(roundn(max(VSupSO),-2)))     % Text Max Querkraft 
 text((mean((find(VSupSO==min(VSupSO))/length(VSupSO))))*b+1,h-min(VSupSO)*dV+0.75,num2str(roundn(min(VSupSO),-2)))     % Text Min-Querkraft 
 
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
+
 hold off
 
 %Normalkaft
@@ -901,14 +904,6 @@ hold on
 axis off 
 axis equal
 title('Normalkraft [kN]')
-
-%Struktur
-plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
-plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
-plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
-if AZB==2
-plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
-end
 
 %Normalkraftverlauf Stab Links
 plot([-NSupSL(1)*dN,-NSupSL(1)*dN],[0,h],'g','LineWidth',2)                 % Normalkraft Stab links
@@ -936,64 +931,75 @@ plot([0,0],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % No
 plot([b,b],[h,h+NSupSO(1)*dN],'g','LineWidth',2)                            % Normalkraft Stab oben Ergänzunglinie oben
 text(b*0.5-2.5,h-NSupSR(1)*dN,num2str(roundn(NSupSO(1),-2)))                % Text Stab oben
 
+%Struktur
+plot([0,0],[0,h],'k','LineWidth',3)                                         % Stab Links 
+plot([0,b],[h,h],'k','LineWidth',3)                                         % Stab Oben
+plot([b,b],[0,h],'k','LineWidth',3)                                         % Stab Rechts
+if AZB==2
+plot([(1/AZB)*b,(1/AZB)*b],[0,h],'k','LineWidth',3)                         % Stab Links 
+end
+
 hold off
 
 end
 
-
-%Plot für erster + letzer Rahmen
-
-[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
-
-[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Bedingung bzw. Fehlermeldung bei zu grossen Moment
-if AZB==1 & bf >= ba
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
-    return
-    
-elseif AZB==2 & bf >= (b/2)
-    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
-       return
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
-
-bf1=bf
-tf1=tf
-bfm1=bfm
-hf1=hf
 %Plot mittlere Rahmen
 
 [ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 2,AZB,EinwirkungenaufRahmen,ba,h,hI )
 
 [bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %Bedingung bzw. Fehlermeldung bei zu grossen Moment
 if AZB==1 & bf >= ba
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
+        'Infobox','Error','error')
     return
     
 elseif AZB==2 & bf >= (b/2)
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
-        'Infobox')
+        'Infobox', 'Error','error')
        return
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+else
 if arres ~= l
 [f] = Funktion_Darstellung_2d_Stahlhalle( 2,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
+end 
 end
 
+%%%%%%%%%%
 bf2=bf
 tf2=tf
 bfm2=bfm
 hf2=hf
+%%%%%%%%%
+
+%Plot für erster + letzer Rahmen
+
+[ Auflagermatrix, MMX,QMX,NMX ] = Funktion_Berechnung_Stahlhalle( 1,AZB,EinwirkungenaufRahmen,ba,h,hI )
+
+[bf, tf, bfm, hf ] = Funktion_Berechnung_Fundament(Auflagermatrix,AZB,sm,ksm, arres)
+%Bedingung bzw. Fehlermeldung bei zu grossen Moment
+if AZB==1 & bf >= ba
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox','Error','error')
+    return
+    
+elseif AZB==2 & bf >= (b/2)
+    msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
+        'Infobox', 'Error','error')
+       return
+else
+
+[f] = Funktion_Darstellung_2d_Stahlhalle( 1,AZB,b,h,MMX,QMX,NMX,bf,tf,bfm )
+
+end
+%%%%%%%%%%%
+bf1=bf
+tf1=tf
+bfm1=bfm
+hf1=hf
+%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
