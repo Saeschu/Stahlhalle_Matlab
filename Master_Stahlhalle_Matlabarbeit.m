@@ -381,7 +381,7 @@ Mr=0+1.*X1+0.*X2+0.*X3
 
 % Werte Moment für Superposition
 dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
+dT=roundn((ba*dx),0)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe 
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -500,8 +500,8 @@ Mr=0+1.*X1+0.*X2+0.*X3+0*X4
 
 
 % Werte Moment für Superposition
-dx=100                                                  % Teilungsfaktor Stab Oben(Stücke pro Meter)
-dT=roundn((ba*dx),2)                                    % Anzahl Teilstücke des Verlaufs vom Träger
+dx=100                                                 % Teilungsfaktor Stab Oben(Stücke pro Meter)
+dT=roundn((ba*dx),2)                                              % Anzahl Teilstücke des Verlaufs vom Träger
 dS=2                                                    % Anzahl Teilstücke des Verlaufs der Stäbe (dS=1, generiert ein Wert -> ausreichend )
 
 MSupSL=linspace(sum(Ml),sum(Ma),dS)                     % Superposition Stab Links Moment
@@ -594,6 +594,8 @@ if AZB == 1
 NMX = {NSupSL, NSupSR ,NSupSO}
 elseif AZB == 2
 NMX = {NSupSL, NSupSR ,NSupSO NSupS1} 
+else AZB == 3
+NMX = {NSupSL, NSupSR ,NSupSO, NSupS1, NSupS2}
 end
 
 
@@ -658,7 +660,6 @@ end
 end
 end
 
-
 if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
@@ -714,27 +715,8 @@ end
 %Darstellung: Struktur Feld
 subplot(2,2,1)
 hold on
-
-axis off
 axis equal
-
-%<<<<<<< HEAD
-%<<<<<<< HEAD
-
 axis off
-%=======
-axis off
-axis equal
-%>>>>>>> b49f4288c6e63750b5ed5f0ca01a58d4abcd884c
-%=======
-
-
-axis off
-axis off
-axis equal
-
-%>>>>>>> 78989d9545a632410461627e0bac7927da906626
-
 title('Struktur')
 
 %Darstellung Struktur
@@ -1104,8 +1086,8 @@ vert3= [0 0 0; 0 ProfSt 0; ProfSb ProfSt 0; ProfSb 0 0; ProfSb ProfSt (h-2*ProfT
 patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament 1
-vert14= [ProfSb/2-bf1/2 ProfSt/2-tf1/2 0; ProfSb/2-bf1/2 ProfSt/2+tf1/2 0; ProfSb/2+bf1/2 ProfSt/2+tf1/2 0; ProfSb/2+bf1/2 ProfSt/2-tf1/2 0;...
-        ProfSb/2+bf1/2 ProfSt/2+tf1/2 -hf1; ProfSb/2+bf1/2 ProfSt/2-tf1/2 -hf1; ProfSb/2-bf1/2 ProfSt/2-tf1/2 -hf1; ProfSb/2-bf1/2 ProfSt/2+tf1/2 -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert14= [ProfSb/2-bf/2 ProfSt/2-tf/2 0; ProfSb/2-bf/2 ProfSt/2+tf/2 0; ProfSb/2+bf/2 ProfSt/2+tf/2 0; ProfSb/2+bf/2 ProfSt/2-tf/2 0;...
+        ProfSb/2+bf/2 ProfSt/2+tf/2 -hf; ProfSb/2+bf/2 ProfSt/2-tf/2 -hf; ProfSb/2-bf/2 ProfSt/2-tf/2 -hf; ProfSb/2-bf/2 ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert14,'FaceColor', FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 2
@@ -1113,8 +1095,13 @@ vert4= [b 0 0; b ProfSt 0; (b-ProfSb) ProfSt 0; (b-ProfSb) 0 0; (b-ProfSb) ProfS
 patch('Faces', fac,'Vertices',vert4,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament 2
+<<<<<<< HEAD
 vert15= [b-(ProfSb/2-bf1/2) ProfSt/2-tf1/2 0; b-(ProfSb/2-bf1/2) ProfSt/2+tf1/2 0; b-(ProfSb/2+bf1/2) ProfSt/2+tf1/2 0; b-(ProfSb/2+bf1/2) ProfSt/2-tf1/2 0;...
         b-(ProfSb/2+bf1/2) ProfSt/2+tf1/2 -hf1; b-(ProfSb/2+bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2-tf1/2 -hf1; b-(ProfSb/2-bf1/2) ProfSt/2+tf1/2 -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+=======
+vert15= [b-(ProfSb/2-bf/2) ProfSt/2-tf/2 0; b-(ProfSb/2-bf/2) ProfSt/2+tf/2 0; b-(ProfSb/2+bf/2) ProfSt/2+tf/2 0; b-(ProfSb/2+bf/2) ProfSt/2-tf/2 0;...
+        b-(ProfSb/2+bf/2) ProfSt/2+tf/2 -hf; b-(ProfSb/2+bf/2) ProfSt/2-tf/2 -hf; b-(ProfSb/2-bf/2) ProfSt/2-tf/2 -hf; b-(ProfSb/2-bf/2) ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+>>>>>>> parent of b571b18... fundament zeichnen anpassen
 patch('Faces', fac,'Vertices',vert15,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 3
@@ -1122,8 +1109,8 @@ vert5= [0 (l-ProfSt) 0; 0 l 0; ProfSb l 0; ProfSb (l-ProfSt) 0; ProfSb l (h-2*Pr
 patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament 3
-vert16= [ProfSb/2-bf1/2 l-(ProfSt/2-tf1/2) 0; ProfSb/2-bf1/2 l-(ProfSt/2+tf1/2) 0; ProfSb/2+bf1/2 l-(ProfSt/2+tf1/2) 0; ProfSb/2+bf1/2 l-(ProfSt/2-tf1/2) 0;...
-        ProfSb/2+bf1/2 l-(ProfSt/2+tf1/2) -hf1; ProfSb/2+bf1/2 l-(ProfSt/2-tf1/2) -hf1; ProfSb/2-bf1/2 l-(ProfSt/2-tf1/2) -hf1; ProfSb/2-bf1/2 l-(ProfSt/2+tf1/2) -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert16= [ProfSb/2-bf/2 l-(ProfSt/2-tf/2) 0; ProfSb/2-bf/2 l-(ProfSt/2+tf/2) 0; ProfSb/2+bf/2 l-(ProfSt/2+tf/2) 0; ProfSb/2+bf/2 l-(ProfSt/2-tf/2) 0;...
+        ProfSb/2+bf/2 l-(ProfSt/2+tf/2) -hf; ProfSb/2+bf/2 l-(ProfSt/2-tf/2) -hf; ProfSb/2-bf/2 l-(ProfSt/2-tf/2) -hf; ProfSb/2-bf/2 l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert16,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze 4
@@ -1131,8 +1118,8 @@ vert6= [b (l-ProfSt) 0; b l 0; (b-ProfSb) l 0; (b-ProfSb) (l-ProfSt) 0; (b-ProfS
 patch('Faces', fac,'Vertices',vert6,'FaceColor',FarbeStuetze);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament 4
-vert17= [b-(ProfSb/2-bf1/2) l-(ProfSt/2-tf1/2) 0; b-(ProfSb/2-bf1/2) l-(ProfSt/2+tf1/2) 0; b-(ProfSb/2+bf1/2) l-(ProfSt/2+tf1/2) 0; b-(ProfSb/2+bf1/2) l-(ProfSt/2-tf1/2) 0;...
-        b-(ProfSb/2+bf1/2) l-(ProfSt/2+tf1/2) -hf1; b-(ProfSb/2+bf1/2) l-(ProfSt/2-tf1/2) -hf1; b-(ProfSb/2-bf1/2) l-(ProfSt/2-tf1/2) -hf1; b-(ProfSb/2-bf1/2) l-(ProfSt/2+tf1/2) -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert17= [b-(ProfSb/2-bf/2) l-(ProfSt/2-tf/2) 0; b-(ProfSb/2-bf/2) l-(ProfSt/2+tf/2) 0; b-(ProfSb/2+bf/2) l-(ProfSt/2+tf/2) 0; b-(ProfSb/2+bf/2) l-(ProfSt/2-tf/2) 0;...
+        b-(ProfSb/2+bf/2) l-(ProfSt/2+tf/2) -hf; b-(ProfSb/2+bf/2) l-(ProfSt/2-tf/2) -hf; b-(ProfSb/2-bf/2) l-(ProfSt/2-tf/2) -hf; b-(ProfSb/2-bf/2) l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert17,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Querbalken Anfang
@@ -1155,8 +1142,8 @@ vert3= [SMb 0 0; SMb ProfSt 0; (SMb+ProfSb) ProfSt 0; (SMb+ProfSb) 0 0; (SMb+Pro
 patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament VM
-vert15= [(b/2-bfm1/2) ProfSt/2-bfm1/2 0; (b/2-bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2+bfm1/2 0; (b/2+bfm1/2) ProfSt/2-bfm1/2 0;...
-        (b/2+bfm1/2) ProfSt/2+bfm1/2 -hf1; (b/2+bfm1/2) ProfSt/2-bfm1/2 -hf1; (b/2-bfm1/2) ProfSt/2-bfm1/2 -hf1; (b/2-bfm1/2) ProfSt/2+bfm1/2 -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert15= [(b/2-bf/2) ProfSt/2-tf/2 0; (b/2-bf/2) ProfSt/2+tf/2 0; (b/2+bf/2) ProfSt/2+tf/2 0; (b/2+bf/2) ProfSt/2-tf/2 0;...
+        (b/2+bf/2) ProfSt/2+tf/2 -hf; (b/2+bf/2) ProfSt/2-tf/2 -hf; (b/2-bf/2) ProfSt/2-tf/2 -hf; (b/2-bf/2) ProfSt/2+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert15,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze HM
@@ -1164,8 +1151,8 @@ vert5= [SMb (l-ProfSt) 0; SMb l 0; (SMb+ProfSb) l 0; (SMb+ProfSb) (l-ProfSt) 0; 
 patch('Faces', fac,'Vertices',vert5,'FaceColor',FarbeStuetzeM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament HM
-vert17= [(b/2-bfm1/2) l-(ProfSt/2-bfm1/2) 0; (b/2-bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2+bfm1/2) 0; (b/2+bfm1/2) l-(ProfSt/2-bfm1/2) 0;...
-        (b/2+bfm1/2) l-(ProfSt/2+bfm1/2) -hf1; (b/2+bfm1/2) l-(ProfSt/2-bfm1/2) -hf1; (b/2-bfm1/2) l-(ProfSt/2-bfm1/2) -hf1; (b/2-bfm1/2) l-(ProfSt/2+bfm1/2) -hf1]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert17= [(b/2-bf/2) l-(ProfSt/2-tf/2) 0; (b/2-bf/2) l-(ProfSt/2+tf/2) 0; (b/2+bf/2) l-(ProfSt/2+tf/2) 0; (b/2+bf/2) l-(ProfSt/2-tf/2) 0;...
+        (b/2+bf/2) l-(ProfSt/2+tf/2) -hf; (b/2+bf/2) l-(ProfSt/2-tf/2) -hf; (b/2-bf/2) l-(ProfSt/2-tf/2) -hf; (b/2-bf/2) l-(ProfSt/2+tf/2) -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert17,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 end
@@ -1197,8 +1184,8 @@ vert10= [0 XMVQS 0; 0 (XMVQS+ProfSt) 0; ProfSb (XMVQS+ProfSt) 0; ProfSb XMVQS 0;
 patch('Faces', fac,'Vertices',vert10,'FaceColor',FarbeQuerbalkenI);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iA
-vert16= [ProfSb/2-bf2/2 i1-tf2/2 0; ProfSb/2-bf2/2 i1+tf2/2 0; ProfSb/2+bf2/2 i1+tf2/2 0; ProfSb/2+bf2/2 i1-tf2/2 0;...
-        ProfSb/2+bf2/2 i1+tf2/2 -hf; ProfSb/2+bf2/2 i1-tf2/2 -hf; ProfSb/2-bf2/2 i1-tf2/2 -hf; ProfSb/2-bf2/2 i1+tf2/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert16= [ProfSb/2-bf/2 i1-tf/2 0; ProfSb/2-bf/2 i1+tf/2 0; ProfSb/2+bf/2 i1+tf/2 0; ProfSb/2+bf/2 i1-tf/2 0;...
+        ProfSb/2+bf/2 i1+tf/2 -hf; ProfSb/2+bf/2 i1-tf/2 -hf; ProfSb/2-bf/2 i1-tf/2 -hf; ProfSb/2-bf/2 i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert16,'FaceColor', FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stuetze iB
@@ -1206,8 +1193,8 @@ vert11= [b XMVQS 0; b (XMVQS+ProfSt) 0; (b-ProfSb) (XMVQS+ProfSt) 0; (b-ProfSb) 
 patch('Faces', fac,'Vertices',vert11,'FaceColor',FarbeStuetzeI);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iB
-vert17= [b-(ProfSb/2-bf2/2) i1-tf2/2 0; b-(ProfSb/2-bf2/2) i1+tf2/2 0; b-(ProfSb/2+bf2/2) i1+tf2/2 0; b-(ProfSb/2+bf2/2) i1-tf2/2 0;...
-        b-(ProfSb/2+bf2/2) i1+tf2/2 -hf; b-(ProfSb/2+bf2/2) i1-tf2/2 -hf; b-(ProfSb/2-bf2/2) i1-tf2/2 -hf; b-(ProfSb/2-bf2/2) i1+tf2/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert17= [b-(ProfSb/2-bf/2) i1-tf/2 0; b-(ProfSb/2-bf/2) i1+tf/2 0; b-(ProfSb/2+bf/2) i1+tf/2 0; b-(ProfSb/2+bf/2) i1-tf/2 0;...
+        b-(ProfSb/2+bf/2) i1+tf/2 -hf; b-(ProfSb/2+bf/2) i1-tf/2 -hf; b-(ProfSb/2-bf/2) i1-tf/2 -hf; b-(ProfSb/2-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert17,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Stützenreihen bei grösseren Spannweiten >13
@@ -1218,8 +1205,8 @@ vert3= [SMb XMVQS 0; SMb (XMVQS+ProfSt) 0; (SMb+ProfSb) (XMVQS+ProfSt) 0; (SMb+P
 patch('Faces', fac,'Vertices',vert3,'FaceColor',FarbeStuetzeIM);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 %Einzelfundament iM
-vert17= [(b/2-bfm2/2) i1-bfm2/2 0; (b/2-bfm2/2) i1+bfm2/2 0; (b/2+bfm2/2) i1+bfm2/2 0; (b/2+bfm2/2) i1-bfm2/2 0;...
-        (b/2+bfm2/2) i1+bfm2/2 -hf; (b/2+bfm2/2) i1-bfm2/2 -hf; (b/2-bfm2/2) i1-bfm2/2 -hf; (b/2-bfm2/2) i1+bfm2/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
+vert17= [(b/2-bf/2) i1-tf/2 0; (b/2-bf/2) i1+tf/2 0; (b/2+bf/2) i1+tf/2 0; (b/2+bf/2) i1-tf/2 0;...
+        (b/2+bf/2) i1+tf/2 -hf; (b/2+bf/2) i1-tf/2 -hf; (b/2-bf/2) i1-tf/2 -hf; (b/2-bf/2) i1+tf/2 -hf]; % [x y z] Eckpunkte der Träger in Vektorschreibweise
 patch('Faces', fac,'Vertices',vert17,'FaceColor',FarbeFundament);            % Erzeugen der Gefärbten Flächen (Polygonen)
 
 end
