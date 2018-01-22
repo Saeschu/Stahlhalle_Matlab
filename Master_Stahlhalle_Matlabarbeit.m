@@ -661,12 +661,12 @@ end
 end
 end
 
-if AZB==1 & bf >= b
+if  AZB==1 & bf >= b 
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return
     
-elseif AZB==2 & bf >= (b/2)
+elseif & AZB==2 & bf >= (b/2)
     msgbox('Fundamente werden sich überschneiden,wählen Sie ein stärkeres Profil oder eine kleinere Last.',...
         'Infobox')
     return 
