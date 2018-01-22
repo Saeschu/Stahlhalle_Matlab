@@ -192,7 +192,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Datenbank
-ba= b-ProfS         %Breite Achsabstand
+ba= b-ProfSb         %Breite Achsabstand
 hI=h*(IT/IS)        %Vergleichshöhe für Stütze
 dx= 10              %Teilungsfaktor
 AZB= 1;             %Anzahl Bögen
