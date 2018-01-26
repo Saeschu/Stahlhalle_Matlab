@@ -1,3 +1,6 @@
+
+%Programm startet mit Taste F5 oder 'Run'
+
 function mygui()
 f1= figure('Name', 'Input Window', 'NumberTitle', 'off','MenuBar', 'None', 'color', 'w',...
     'resize', 'on', 'nextPlot', 'new', 'units', 'normalized', 'position', [0.05 0.45 0.445 0.44])    %'units', 'normalized' => Positionsverhältis des Bildschirmes
